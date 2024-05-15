@@ -1,12 +1,9 @@
 import { Category } from "@/types/models/category.types";
 
-export default async function NavbarCategories() {
-  const res = await fetch("http://localhost:5001/api/v1/categories");
-  const categories = await res.json();
-
+export default function NavbarCategories({ categories }: { categories: Category[] }) {
   return (
-    <div>
-      <ul className="flex">
+    <div className="navbar-categories">
+      <ul className="navbar-categories-wrapper">
         {categories.map((category: Category, index: number) => (
           <li key={index} className="px-4">
             {category.name}

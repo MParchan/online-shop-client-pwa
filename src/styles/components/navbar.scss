@@ -1,0 +1,27 @@
+.navbar {
+  @apply bg-white border-gray-200;
+
+  .navbar-wrapper {
+    @apply max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-4;
+  }
+
+  li {
+    @apply flex flex-wrap;
+
+    ul {
+      @apply w-24 flex flex-col items-center justify-center;
+
+      span {
+        @apply text-xs;
+      }
+    }
+  }
+
+  .navbar-categories {
+    @apply bg-gray-100;
+
+    .navbar-categories-wrapper {
+      @apply max-w-screen-xl mx-auto p-4 flex flex-wrap items-center justify-between;
+    }
+  }
+}
