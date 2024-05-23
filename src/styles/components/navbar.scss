@@ -1,5 +1,5 @@
 .navbar {
-  @apply bg-white border-gray-200;
+  @apply bg-white border-gray-200 shadow-lg;
 
   .navbar-wrapper {
     @apply max-w-screen-xl flex flex-wrap items-center justify-between mx-auto p-3;
@@ -35,26 +35,35 @@
         @apply outline-none ring-0;
       }
     }
+
     .separator {
       @apply mx-1 bg-gray-300 w-[1px] border-none min-h-6;
     }
+
     .select-container {
       @apply p-1 px-2 mx-1 cursor-pointer whitespace-nowrap flex shrink-0 rounded-lg;
       &:hover,
       &.active {
         @apply bg-gray-100;
       }
+
+      .arrow-icon {
+        @apply w-4 h-4;
+      }
     }
-    .category-dropdown {
-      @apply hidden bg-white;
+
+    .select-category-dropdown {
+      @apply hidden bg-white z-20;
       @apply rounded-lg border absolute top-[42px] w-[200px] right-0 translate-x-[-55px];
       &.active {
         @apply block;
       }
+
       ul {
         @apply flex flex-col w-full;
-        .category-item {
-          @apply w-full p-2 py-3 cursor-pointer;
+
+        .select-category-dropdown-item {
+          @apply w-full p-2 py-3 cursor-pointer rounded-lg;
           &:hover {
             @apply bg-gray-100;
           }
@@ -75,11 +84,57 @@
 
   .navbar-categories {
     @apply bg-gray-100;
-    ul {
-      @apply max-w-screen-xl mx-auto p-2 flex flex-wrap items-center justify-between;
-      li {
-        @apply flex-1 basis-1/6 p-2 text-center;
+    .category-list {
+      @apply max-w-screen-xl mx-auto  flex flex-wrap items-center justify-between;
+
+      .category-list-item {
+        @apply flex-1 basis-1/6 mt-[2px] flex rounded-t-lg relative;
+
+        &.active {
+          @apply bg-white shadow-[0_10px_15px_3px_rgba(0,0,0,0.1),0_4px_6px_4px_rgba(0,0,0,0.1)];
+        }
+
+        a {
+          @apply p-4 flex w-full justify-center;
+
+          .category-icon {
+            @apply mx-1 w-auto h-6;
+          }
+        }
+
+        .category-list-dropdown {
+          @apply hidden absolute z-10 top-full w-[280px] bg-white shadow-lg;
+          &.left {
+            @apply left-0 rounded-b-lg rounded-tr-lg;
+          }
+          &.right {
+            @apply right-0 rounded-b-lg rounded-tl-lg;
+          }
+          &.active {
+            @apply block;
+          }
+          ul {
+            @apply w-full my-2;
+            li {
+              @apply w-full cursor-pointer;
+              &:hover {
+                @apply bg-gray-100;
+              }
+              a {
+                @apply p-4 flex justify-between items-center;
+              }
+            }
+          }
+        }
       }
     }
   }
+}
+
+.overlay {
+  @apply fixed w-[100%] h-[100%] bg-black opacity-0 transition-opacity duration-500 ease-in-out;
+}
+.overlay-block {
+  @apply block;
+  @apply opacity-50;
 }
