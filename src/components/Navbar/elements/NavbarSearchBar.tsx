@@ -2,25 +2,28 @@
 
 import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
+import { Product } from "@/types/models/product.types";
 import Image from "next/image";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-export default function SearchBar({ categories }: { categories: Category[] }) {
+export default function NavbarSearchBar({ categories }: { categories: Category[] }) {
   const [categoryOpened, setCategoryOpened] = useState(false);
   const [productQuery, setProductQuery] = useState("");
-  const [productData, setProductData] = useState(null);
+  const [productData, setProductData] = useState<Product[] | null>(null);
   const [isLoading, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All categories");
+  const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
   const containerRef = useRef<HTMLDivElement | null>(null);
-  const dropdownRef = useRef<HTMLDivElement | null>(null);
+  const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const productDropdownRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (
-        dropdownRef.current &&
-        !dropdownRef.current.contains(event.target as Node) &&
+        categoryDropdownRef.current &&
+        !categoryDropdownRef.current.contains(event.target as Node) &&
         containerRef.current &&
         !containerRef.current.contains(event.target as Node)
       ) {
@@ -34,15 +37,19 @@ export default function SearchBar({ categories }: { categories: Category[] }) {
   }, [categoryOpened]);
 
   useEffect(() => {
-    if (productQuery === "") return;
+    if (productQuery === "") {
+      setProductData(null);
+      return;
+    }
 
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
 
     let url = "http://localhost:5001/api/v1/products?limit=5";
-    if (selectedCategory !== "All categories") {
-      url += `&${selectedCategory}`;
+    url += `&name=${productQuery}`;
+    if (selectedCategoryId !== null) {
+      url += `&category=${selectedCategoryId}`;
     }
     console.log(url);
     const id = setTimeout(() => {
@@ -58,7 +65,7 @@ export default function SearchBar({ categories }: { categories: Category[] }) {
     setTimeoutId(id);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productQuery]);
+  }, [productQuery, selectedCategoryId]);
 
   useEffect(() => {
     console.log("products: ", productData);
@@ -70,14 +77,20 @@ export default function SearchBar({ categories }: { categories: Category[] }) {
     console.log(inputRef.current?.value);
   }
 
-  const handleSelectCategory = (name: string) => {
-    setSelectedCategory(name);
+  const handleSelectCategory = (categoryName: string, categoryId: null | string) => {
+    setSelectedCategoryId(categoryId);
+    setSelectedCategory(categoryName);
     setCategoryOpened(!categoryOpened);
     inputRef.current?.focus();
   };
 
   return (
-    <form className="navbar-search-bar" onSubmit={onSubmit}>
+    <form
+      className={cn("navbar-search-bar", {
+        dropdown_active: productData !== null && productData.length
+      })}
+      onSubmit={onSubmit}
+    >
       <input
         type="text"
         placeholder="Search..."
@@ -107,11 +120,11 @@ export default function SearchBar({ categories }: { categories: Category[] }) {
         className={cn("select-category-dropdown", {
           active: categoryOpened
         })}
-        ref={dropdownRef}
+        ref={categoryDropdownRef}
       >
         <ul>
           <li
-            onClick={() => handleSelectCategory("All categories")}
+            onClick={() => handleSelectCategory("All categories", null)}
             className={cn("select-category-dropdown-item", {
               selected: selectedCategory === "All categories"
             })}
@@ -121,7 +134,7 @@ export default function SearchBar({ categories }: { categories: Category[] }) {
           {categories.map((category: Category) => (
             <li
               key={category._id}
-              onClick={() => handleSelectCategory(category.name)}
+              onClick={() => handleSelectCategory(category.name, category._id)}
               className={cn("select-category-dropdown-item", {
                 selected: selectedCategory === category.name
               })}
@@ -140,6 +153,14 @@ export default function SearchBar({ categories }: { categories: Category[] }) {
           className="search-icon"
         />
       </button>
+      <div
+        className={cn("search-product-dropdown", {
+          active: productData !== null && productData.length
+        })}
+        ref={productDropdownRef}
+      >
+        <ul>{productData?.map((product: Product) => <li key={product._id}>{product.name}</li>)}</ul>
+      </div>
     </form>
   );
 }
