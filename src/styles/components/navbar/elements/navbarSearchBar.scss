@@ -33,7 +33,7 @@
   }
 
   .select-category-dropdown {
-    @apply hidden bg-white z-20;
+    @apply hidden bg-white z-30;
     @apply rounded-lg border absolute top-[42px] w-[200px] right-0 translate-x-[-55px];
     &.active {
       @apply block;
@@ -72,7 +72,7 @@
       @apply flex flex-col w-full;
 
       li {
-        @apply w-full p-2 py-3 cursor-pointer rounded-lg;
+        @apply w-full p-2 py-3 mx-2 cursor-pointer rounded-lg;
       }
     }
   }
