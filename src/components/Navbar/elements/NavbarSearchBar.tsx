@@ -14,7 +14,7 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
-  const containerRef = useRef<HTMLDivElement | null>(null);
+  const categoryContainerRef = useRef<HTMLDivElement | null>(null);
   const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const productDropdownRef = useRef<HTMLDivElement | null>(null);
@@ -24,8 +24,8 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
       if (
         categoryDropdownRef.current &&
         !categoryDropdownRef.current.contains(event.target as Node) &&
-        containerRef.current &&
-        !containerRef.current.contains(event.target as Node)
+        categoryContainerRef.current &&
+        !categoryContainerRef.current.contains(event.target as Node)
       ) {
         setCategoryOpened(false);
       }
@@ -51,7 +51,6 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
     if (selectedCategoryId !== null) {
       url += `&category=${selectedCategoryId}`;
     }
-    console.log(url);
     const id = setTimeout(() => {
       setLoading(true);
       fetch(url)
@@ -94,18 +93,19 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
       <input
         type="text"
         placeholder="Search..."
+        className="navbar-search-bar-input"
         onChange={(e) => setProductQuery(e.target.value)}
         ref={inputRef}
       />
       <div className="separator" />
       <div
-        className={cn("select-container", {
+        className={cn("select-category-container", {
           active: categoryOpened
         })}
         onClick={() => {
           setCategoryOpened(!categoryOpened);
         }}
-        ref={containerRef}
+        ref={categoryContainerRef}
       >
         {selectedCategory}
         <Image
@@ -122,7 +122,7 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
         })}
         ref={categoryDropdownRef}
       >
-        <ul>
+        <ul className="select-category-dropdown-list">
           <li
             onClick={() => handleSelectCategory("All categories", null)}
             className={cn("select-category-dropdown-item", {
@@ -144,7 +144,7 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
           ))}
         </ul>
       </div>
-      <button type="submit">
+      <button type="submit" className="navbar-search-bar-button ">
         <Image
           src="/assets/icons/search.svg"
           alt="Search logo"
@@ -159,7 +159,13 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
         })}
         ref={productDropdownRef}
       >
-        <ul>{productData?.map((product: Product) => <li key={product._id}>{product.name}</li>)}</ul>
+        <ul className="search-product-dropdown-list">
+          {productData?.map((product: Product) => (
+            <li className="search-product-dropdown-item" key={product._id}>
+              {product.name}
+            </li>
+          ))}
+        </ul>
       </div>
     </form>
   );

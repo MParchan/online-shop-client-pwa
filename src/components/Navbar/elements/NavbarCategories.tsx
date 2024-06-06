@@ -34,38 +34,38 @@ export default function NavbarCategories({ categories }: { categories: Category[
 
   return (
     <div className="navbar-categories">
-      <ul className="category-list">
+      <ul className="navbar-category-list">
         {categories.map((category: Category, index: number) => (
           <li
             key={category._id}
             onMouseEnter={() => handleMouseEnter(category._id)}
             onMouseLeave={() => handleMouseLeave()}
-            className={cn("category-list-item", {
+            className={cn("navbar-category-item", {
               active: categorySelected === category._id
             })}
           >
-            <a href="/">
+            <a href="/" className="navbar-category-tile">
               <Image
                 src={`/assets/icons/${category.name}.svg`}
                 alt={`${category.name} logo`}
                 width={24}
                 height={24}
-                className="category-icon"
+                className="navbar-category-icon"
               />
               {category.name}
             </a>
 
             <div
-              className={cn("category-list-dropdown", {
+              className={cn("navbar-category-dropdown", {
                 active: categorySelected === category._id,
                 left: index < categories.length / 2,
                 right: index >= categories.length / 2
               })}
             >
-              <ul>
+              <ul className="navbar-category-dropdown-list">
                 {category.subcategories.map((subcategory: Subcategory) => (
-                  <li key={subcategory._id}>
-                    <a href="/">
+                  <li className="navbar-category-dropdown-item" key={subcategory._id}>
+                    <a className="navbar-category-dropdown-link" href="/">
                       <span>{subcategory.name}</span>
                       <Image
                         src="/assets/icons/arrow_right.svg"

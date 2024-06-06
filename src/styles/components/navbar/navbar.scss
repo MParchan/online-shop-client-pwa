@@ -2,22 +2,30 @@
   @apply bg-white border-gray-200 shadow-lg;
 
   .navbar-wrapper {
-    @apply max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-3 py-2;
-    a {
-      @apply flex items-center space-x-3 mr-3;
-      span {
-        @apply text-2xl font-semibold pt-2;
+    @apply max-w-screen-xl flex flex-wrap items-center justify-between mx-auto px-2 lg:px-3 py-2;
+    .navbar-logo {
+      @apply flex items-center sm:space-x-3 sm:mr-3;
+      .navbar-logo-text {
+        @apply text-2xl font-semibold;
       }
     }
 
-    @import "./elements/navbarSearchBar.scss";
+    .navbar-search-bar-wrapper {
+      @apply hidden lg:block grow mx-3;
+    }
 
-    ul {
-      @apply flex items-center space-x-4;
-      li {
-        @apply w-20 relative rounded-t-lg mx-2;
-        a {
-          @apply flex flex-col m-auto items-center justify-center text-sm py-1 cursor-pointer;
+    .navbar-tile-list {
+      @apply flex items-center;
+      .navbar-tile-list-item {
+        @apply w-12 sm:w-20 relative rounded-t-lg xl:mx-2;
+        .navbar-tile {
+          @apply flex flex-col m-auto items-center justify-center text-sm cursor-pointer;
+          .navbar-tile-logo {
+            @apply h-12 sm:h-8;
+          }
+          .navbar-tile-text {
+            @apply hidden sm:block;
+          }
         }
         &:hover {
           @apply rounded-t-lg shadow-[0_10px_15px_3px_rgba(0,0,0,0.1),0_4px_6px_4px_rgba(0,0,0,0.1)];
@@ -27,6 +35,16 @@
       }
     }
   }
+
+  .navbar-wrapper-responive {
+    @apply lg:hidden flex px-2 pb-2;
+
+    .navbar-search-bar-wrapper {
+      @apply grow mx-3;
+    }
+  }
+
+  @import "./elements/navbarSearchBar.scss";
   @import "./elements/navbarCategories.scss";
 }
 

@@ -12,26 +12,46 @@ export default async function Navbar() {
     <>
       <nav className="navbar">
         <div className="navbar-wrapper">
-          <a href="/">
+          <a href="/" className="navbar-logo">
             <Image src="/assets/icons/logo.svg" alt="Online shop logo" width={48} height={48} />
-            <span>Online shop</span>
+            <span className="navbar-logo-text">Online shop</span>
           </a>
-          <NavbarSearchBar categories={categories} />
-          <ul>
-            <li>
-              <a>
-                <Image src="/assets/icons/contact.svg" alt="Contact logo" width={32} height={32} />
-                Contact
+          <div className="navbar-search-bar-wrapper">
+            <NavbarSearchBar categories={categories} />
+          </div>
+          <ul className="navbar-tile-list">
+            <li className="navbar-tile-list-item">
+              <a className="navbar-tile">
+                <Image
+                  src="/assets/icons/contact.svg"
+                  alt="Contact logo"
+                  width={32}
+                  height={32}
+                  className="navbar-tile-logo"
+                />
+                <p className="navbar-tile-text">Contact</p>
               </a>
             </li>
             <NavbarAccountMenu />
-            <li>
-              <a>
-                <Image src="/assets/icons/cart.svg" alt="Cart logo" width={32} height={32} />
-                Cart
+            <li className="navbar-tile-list-item">
+              <a className="navbar-tile">
+                <Image
+                  src="/assets/icons/cart.svg"
+                  alt="Cart logo"
+                  width={32}
+                  height={32}
+                  className="navbar-tile-logo"
+                />
+                <p className="navbar-tile-text">Cart</p>
               </a>
             </li>
           </ul>
+        </div>
+        <div className="navbar-wrapper-responive">
+          <Image src="/assets/icons/menu.svg" alt="Menu logo" width={32} height={32} />
+          <div className="navbar-search-bar-wrapper">
+            <NavbarSearchBar categories={categories} />
+          </div>
         </div>
         <NavbarCategories categories={categories} />
       </nav>

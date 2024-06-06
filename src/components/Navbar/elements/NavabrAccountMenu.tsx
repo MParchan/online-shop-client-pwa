@@ -16,10 +16,20 @@ export default function NavbarAccountMenu() {
   };
 
   return (
-    <li onMouseEnter={() => handleMouseEnter()} onMouseLeave={() => handleMouseLeave()}>
-      <a href="/">
-        <Image src="/assets/icons/user.svg" alt="Account" width={32} height={32} />
-        Account
+    <li
+      className="navbar-tile-list-item"
+      onMouseEnter={() => handleMouseEnter()}
+      onMouseLeave={() => handleMouseLeave()}
+    >
+      <a href="/" className="navbar-tile">
+        <Image
+          src="/assets/icons/user.svg"
+          alt="Account"
+          width={32}
+          height={32}
+          className="navbar-tile-logo"
+        />
+        <p className="navbar-tile-text">Account</p>
       </a>
       <div
         className={cn("account-menu", {

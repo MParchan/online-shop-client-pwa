@@ -1,5 +1,5 @@
 .navbar-search-bar {
-  @apply border rounded-lg flex items-center justify-between grow mx-3 relative;
+  @apply flex border rounded-lg relative items-center justify-between;
 
   &:focus-within {
     @apply shadow-lg;
@@ -9,7 +9,7 @@
     @apply rounded-b-none border-b-0;
   }
 
-  input {
+  .navbar-search-bar-input {
     @apply p-2 w-full rounded-lg;
     &:focus {
       @apply outline-none ring-0;
@@ -17,11 +17,12 @@
   }
 
   .separator {
-    @apply mx-1 bg-gray-300 w-[1px] border-none min-h-6;
+    @apply hidden sm:block mx-1 bg-gray-300 w-[1px] border-none min-h-6;
   }
 
-  .select-container {
-    @apply p-1 px-2 mx-1 cursor-pointer whitespace-nowrap flex shrink-0 rounded-lg;
+  .select-category-container {
+    @apply hidden;
+    @apply p-1 px-2 mx-1 cursor-pointer whitespace-nowrap sm:flex shrink-0 rounded-lg;
     &:hover,
     &.active {
       @apply bg-gray-100;
@@ -34,12 +35,12 @@
 
   .select-category-dropdown {
     @apply hidden bg-white z-30;
-    @apply rounded-lg border absolute top-[42px] w-[200px] right-0 translate-x-[-55px];
+    @apply rounded-lg shadow-lg border absolute top-[42px] w-[200px] right-0 translate-x-[-55px];
     &.active {
       @apply block;
     }
 
-    ul {
+    .select-category-dropdown-list {
       @apply flex flex-col w-full;
 
       .select-category-dropdown-item {
@@ -54,7 +55,7 @@
     }
   }
 
-  button {
+  .navbar-search-bar-button {
     @apply px-4 py-2 rounded-lg bg-zinc-700 shrink-0;
     .search-icon {
       @apply invert;
@@ -68,10 +69,10 @@
       @apply block;
     }
 
-    ul {
+    .search-product-dropdown-list {
       @apply flex flex-col w-full;
 
-      li {
+      .search-product-dropdown-item {
         @apply w-full p-2 py-3 mx-2 cursor-pointer rounded-lg;
       }
     }
