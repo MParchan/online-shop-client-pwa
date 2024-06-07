@@ -48,7 +48,13 @@ export default async function Navbar() {
           </ul>
         </div>
         <div className="navbar-wrapper-responive">
-          <Image src="/assets/icons/menu.svg" alt="Menu logo" width={32} height={32} />
+          <Image
+            src="/assets/icons/menu.svg"
+            alt="Menu logo"
+            width={32}
+            height={32}
+            className="navbar-menu-icon"
+          />
           <div className="navbar-search-bar-wrapper">
             <NavbarSearchBar categories={categories} />
           </div>
