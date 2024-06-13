@@ -3,19 +3,20 @@ import NavbarCategories from "./elements/NavbarCategories";
 import { Category } from "@/types/models/category.types";
 import NavbarSearchBar from "./elements/NavbarSearchBar";
 import NavbarAccountMenu from "./elements/NavabrAccountMenu";
+import Link from "next/link";
 
 export default async function Navbar() {
-  const res = await fetch("http://localhost:5001/api/v1/categories");
+  const res = await fetch(`${process.env.NEXT_PUBLIC_API_URL}/categories`);
   const categories: Category[] = await res.json();
 
   return (
     <>
       <nav className="navbar">
         <div className="navbar-wrapper">
-          <a href="/" className="navbar-logo">
+          <Link href="/" className="navbar-logo">
             <Image src="/assets/icons/logo.svg" alt="Online shop logo" width={48} height={48} />
             <span className="navbar-logo-text">Online shop</span>
-          </a>
+          </Link>
           <div className="navbar-search-bar-wrapper">
             <NavbarSearchBar categories={categories} />
           </div>
@@ -61,7 +62,6 @@ export default async function Navbar() {
         </div>
         <NavbarCategories categories={categories} />
       </nav>
-      <div className="overlay" id="overlay"></div>
     </>
   );
 }

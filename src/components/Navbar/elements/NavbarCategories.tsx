@@ -4,6 +4,7 @@ import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
 import { Subcategory } from "@/types/models/subcategory.types";
 import Image from "next/image";
+import Link from "next/link";
 import React from "react";
 import { useState } from "react";
 
@@ -44,7 +45,7 @@ export default function NavbarCategories({ categories }: { categories: Category[
               active: categorySelected === category._id
             })}
           >
-            <a href="/" className="navbar-category-tile">
+            <Link href={`/category/${category._id}`} className="navbar-category-tile">
               <Image
                 src={`/assets/icons/${category.name}.svg`}
                 alt={`${category.name} logo`}
@@ -53,7 +54,7 @@ export default function NavbarCategories({ categories }: { categories: Category[
                 className="navbar-category-icon"
               />
               {category.name}
-            </a>
+            </Link>
 
             <div
               className={cn("navbar-category-dropdown", {
@@ -65,7 +66,10 @@ export default function NavbarCategories({ categories }: { categories: Category[
               <ul className="navbar-category-dropdown-list">
                 {category.subcategories.map((subcategory: Subcategory) => (
                   <li className="navbar-category-dropdown-item" key={subcategory._id}>
-                    <a className="navbar-category-dropdown-link" href="/">
+                    <Link
+                      className="navbar-category-dropdown-link"
+                      href={`/subcategory/${subcategory._id}`}
+                    >
                       <span>{subcategory.name}</span>
                       <Image
                         src="/assets/icons/arrow_right.svg"
@@ -73,7 +77,7 @@ export default function NavbarCategories({ categories }: { categories: Category[
                         width={24}
                         height={24}
                       />
-                    </a>
+                    </Link>
                   </li>
                 ))}
               </ul>

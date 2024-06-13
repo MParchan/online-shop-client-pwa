@@ -18,6 +18,16 @@
 
 body {
   @apply bg-white;
+  .layout {
+    @apply m-2 max-w-screen-xl xl:mx-auto h-[100%] flex;
+  }
+  .overlay {
+    @apply fixed w-[100%] h-[100%] bg-black opacity-0 transition-opacity duration-500 ease-in-out;
+  }
+  .overlay-block {
+    @apply block top-[126px];
+    @apply opacity-50;
+  }
 }
 
 @layer utilities {
@@ -27,3 +37,5 @@ body {
 }
 
 @import "./components/navbar/navbar.scss";
+@import "./components/productsFilter/productsFilter.scss";
+@import "./components/productList/productList.scss";

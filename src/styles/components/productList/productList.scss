@@ -1,0 +1,5 @@
+.product-list {
+  @apply grid grid-cols-2 xl:grid-cols-3 px-4;
+
+  @import "./productTile/productTile.scss";
+}

@@ -1,0 +1,11 @@
+.products-filter {
+  @apply border rounded-lg p-2 w-64;
+
+  .products-filter-section {
+    @apply mt-2;
+
+    .products-filter-section-header {
+      @apply font-bold;
+    }
+  }
+}

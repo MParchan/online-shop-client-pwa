@@ -23,7 +23,8 @@ export default function RootLayout({
       </Head>
       <body className={inter.className}>
         <Navbar />
-        {children}
+        <main className="layout">{children}</main>
+        <div className="overlay" id="overlay"></div>
       </body>
     </html>
   );

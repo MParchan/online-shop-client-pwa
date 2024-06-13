@@ -2,6 +2,7 @@
 
 import { cn } from "@/libs/twMerge.lib";
 import Image from "next/image";
+import Link from "next/link";
 import { useState } from "react";
 
 export default function NavbarAccountMenu() {
@@ -21,7 +22,7 @@ export default function NavbarAccountMenu() {
       onMouseEnter={() => handleMouseEnter()}
       onMouseLeave={() => handleMouseLeave()}
     >
-      <a href="/" className="navbar-tile">
+      <Link href="/" className="navbar-tile">
         <Image
           src="/assets/icons/user.svg"
           alt="Account"
@@ -30,7 +31,7 @@ export default function NavbarAccountMenu() {
           className="navbar-tile-logo"
         />
         <p className="navbar-tile-text">Account</p>
-      </a>
+      </Link>
       <div
         className={cn("account-menu", {
           active: accountMenu

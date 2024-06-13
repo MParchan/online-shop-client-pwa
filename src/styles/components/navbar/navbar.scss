@@ -50,11 +50,3 @@
   @import "./elements/navbarSearchBar.scss";
   @import "./elements/navbarCategories.scss";
 }
-
-.overlay {
-  @apply fixed w-[100%] h-[100%] bg-black opacity-0 transition-opacity duration-500 ease-in-out;
-}
-.overlay-block {
-  @apply block;
-  @apply opacity-50;
-}

@@ -1,0 +1,15 @@
+.product-tile {
+  @apply px-4 pt-4 mx-2 min-w-80 max-w-96;
+
+  &:hover {
+    @apply rounded-lg shadow-lg border;
+  }
+
+  .product-tile-price {
+    @apply py-3 text-lg;
+  }
+
+  .product-tile-hr {
+    @apply relative top-[1px];
+  }
+}

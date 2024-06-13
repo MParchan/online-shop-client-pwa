@@ -46,8 +46,9 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
       clearTimeout(timeoutId);
     }
 
-    let url = "http://localhost:5001/api/v1/products?limit=5";
+    let url = `${process.env.NEXT_PUBLIC_API_URL}/products?limit=5`;
     url += `&name=${productQuery}`;
+    console.log(url);
     if (selectedCategoryId !== null) {
       url += `&category=${selectedCategoryId}`;
     }
