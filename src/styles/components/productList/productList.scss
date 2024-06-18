@@ -1,5 +1,5 @@
 .product-list {
-  @apply grid grid-cols-2 xl:grid-cols-3 px-4;
+  @apply flex flex-wrap pl-4 justify-between;
 
   @import "./productTile/productTile.scss";
 }

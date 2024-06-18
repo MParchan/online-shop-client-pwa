@@ -18,7 +18,10 @@ export default async function SubcategoryId({ params }: SubcategoryProps) {
     { cache: "no-store" }
   );
   const products: Product[] = await productsRes.json();
-  const extendedList = Array.from({ length: 10 }, () => products[0]);
+  let extendedList: Product[] = [];
+  if (products.length) {
+    extendedList = Array.from({ length: 10 }, () => products[0]);
+  }
 
   return (
     <div>
@@ -26,12 +29,8 @@ export default async function SubcategoryId({ params }: SubcategoryProps) {
         Subcategory properties: {subcategory.name} {products.length}
       </p>
       <div className="flex">
-        <div>
-          <ProductsFilter propertyTypes={subcategory.propertyTypes} />
-        </div>
-        <div>
-          <ProductList products={extendedList} />
-        </div>
+        <ProductsFilter propertyTypes={subcategory.propertyTypes} />
+        <ProductList products={extendedList} />
       </div>
     </div>
   );

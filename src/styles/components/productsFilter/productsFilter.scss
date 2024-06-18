@@ -1,11 +1,14 @@
-.products-filter {
-  @apply border rounded-lg p-2 w-64;
+.products-filter-wrapper {
+  @apply hidden lg:block;
+  .products-filter {
+    @apply border rounded-lg p-2 w-64;
 
-  .products-filter-section {
-    @apply mt-2;
+    .products-filter-section {
+      @apply mt-2;
 
-    .products-filter-section-header {
-      @apply font-bold;
+      .products-filter-section-header {
+        @apply font-bold;
+      }
     }
   }
 }

@@ -19,7 +19,7 @@
 body {
   @apply bg-white;
   .layout {
-    @apply m-2 max-w-screen-xl xl:mx-auto h-[100%] flex;
+    @apply mx-3 sm:mx-6 my-4 max-w-screen-xl xl:mx-auto xl:px-6 h-[100%];
   }
   .overlay {
     @apply fixed w-[100%] h-[100%] bg-black opacity-0 transition-opacity duration-500 ease-in-out;
