@@ -3,6 +3,7 @@
 import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
 import { Subcategory } from "@/types/models/subcategory.types";
+import createSlug from "@/utils/createSlug";
 import Image from "next/image";
 import Link from "next/link";
 import React from "react";
@@ -45,7 +46,10 @@ export default function NavbarCategories({ categories }: { categories: Category[
               active: categorySelected === category._id
             })}
           >
-            <Link href={`/category/${category._id}`} className="navbar-category-tile">
+            <Link
+              href={`/c/${createSlug(category.name)}/${category._id}`}
+              className="navbar-category-tile"
+            >
               <Image
                 src={`/assets/icons/${category.name}.svg`}
                 alt={`${category.name} logo`}
@@ -68,7 +72,7 @@ export default function NavbarCategories({ categories }: { categories: Category[
                   <li className="navbar-category-dropdown-item" key={subcategory._id}>
                     <Link
                       className="navbar-category-dropdown-link"
-                      href={`/subcategory/${subcategory._id}`}
+                      href={`/s/${createSlug(subcategory.name)}/${subcategory._id}`}
                     >
                       <span>{subcategory.name}</span>
                       <Image

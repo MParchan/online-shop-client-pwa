@@ -1,11 +1,11 @@
 import { Property } from "@/types/models/property.types";
 import { PropertyType } from "@/types/models/propertyType.types";
 
-interface ProductsFilterProps {
+interface ProductFilterProps {
   propertyTypes: PropertyType[];
 }
 
-export default function ProductsFilter({ propertyTypes }: ProductsFilterProps) {
+export default function ProductFilter({ propertyTypes }: ProductFilterProps) {
   return (
     <div className="products-filter-wrapper">
       <div className="products-filter">

@@ -1,5 +1,6 @@
 import { ProductImage } from "@/types/models/image.types";
 import { Product } from "@/types/models/product.types";
+import createSlug from "@/utils/createSlug";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -8,10 +9,12 @@ interface ProductTileProps {
 }
 
 export default function ProductTile({ product }: ProductTileProps) {
-  const mainImage: ProductImage = product.images.find((image: ProductImage) => image.main);
+  const mainImage: ProductImage | undefined = product.images.find(
+    (image: ProductImage) => image.main
+  );
   return (
     <div className="product-tile">
-      <Link href={`/product/${product._id}`}>
+      <Link href={`/p/${createSlug(product.name)}/${product._id}`}>
         <div className="product-tile-content">
           {mainImage ? (
             <Image
@@ -20,6 +23,7 @@ export default function ProductTile({ product }: ProductTileProps) {
               height={300}
               alt="Picture of the product"
               className="product-tile-image"
+              priority
             />
           ) : (
             <></>

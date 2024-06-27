@@ -2,7 +2,7 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.scss";
 import Head from "next/head";
-import Navbar from "@/components/navbar/Navbar";
+import Navbar from "@/components/ui/navbar/Navbar";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -20,6 +20,7 @@ export default function RootLayout({
     <html lang="en">
       <Head>
         <link rel="manifest" href="/manifest.json" />
+        <link rel="icon" href="/favicon.ico" sizes="any" />
       </Head>
       <body className={inter.className}>
         <Navbar />
