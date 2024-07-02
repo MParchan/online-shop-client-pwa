@@ -1,10 +1,17 @@
 "use client";
 
+import productsService from "@/api/services/productsService";
 import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
 import { Product } from "@/types/models/product.types";
 import Image from "next/image";
 import { FormEvent, useEffect, useRef, useState } from "react";
+
+interface ProductParams {
+  limit: number;
+  name: string;
+  category?: string | null;
+}
 
 export default function NavbarSearchBar({ categories }: { categories: Category[] }) {
   const [categoryOpened, setCategoryOpened] = useState(false);
@@ -41,27 +48,26 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
       setProductData(null);
       return;
     }
-
     if (timeoutId) {
       clearTimeout(timeoutId);
     }
-
-    let url = `${process.env.NEXT_PUBLIC_API_URL}/products?limit=5`;
-    url += `&name=${productQuery}`;
-    console.log(url);
+    const params: ProductParams = {
+      limit: 5,
+      name: productQuery
+    };
     if (selectedCategoryId !== null) {
-      url += `&category=${selectedCategoryId}`;
+      params.category = selectedCategoryId;
     }
-    const id = setTimeout(() => {
+    const id = setTimeout(async () => {
       setLoading(true);
-      fetch(url)
-        .then((res) => res.json())
-        .then((data) => {
-          setProductData(data);
-          setLoading(false);
-        });
+      try {
+        const products = await productsService.getProducts(params);
+        setProductData(products);
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
     }, 1000);
-
     setTimeoutId(id);
     return () => clearTimeout(id);
     // eslint-disable-next-line react-hooks/exhaustive-deps

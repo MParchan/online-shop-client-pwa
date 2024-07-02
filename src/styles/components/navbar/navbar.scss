@@ -6,7 +6,7 @@
     .navbar-logo {
       @apply flex items-center sm:space-x-3 sm:mr-3;
       .navbar-logo-text {
-        @apply text-xl sm:text-2xl font-semibold;
+        @apply text-lg sm:text-2xl font-semibold;
       }
     }
 
@@ -38,10 +38,8 @@
 
   .navbar-wrapper-responive {
     @apply lg:hidden flex px-2 pb-2;
+    @import "./elements/navbarHamburgerMenu.scss";
 
-    .navbar-menu-icon {
-      @apply h-8 w-auto ml-1;
-    }
     .navbar-search-bar-wrapper {
       @apply grow ml-3;
     }
