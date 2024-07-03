@@ -49,7 +49,7 @@ export default async function Navbar() {
         </ul>
       </div>
       <div className="navbar-wrapper-responive">
-        <NavbarHamburgerMenu />
+        <NavbarHamburgerMenu categories={categories} />
         <div className="navbar-search-bar-wrapper">
           <NavbarSearchBar categories={categories} />
         </div>
