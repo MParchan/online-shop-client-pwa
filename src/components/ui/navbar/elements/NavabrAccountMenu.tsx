@@ -33,12 +33,28 @@ export default function NavbarAccountMenu() {
         <p className="navbar-tile-text">Account</p>
       </Link>
       <div
-        className={cn("account-menu", {
+        className={cn("account-menu-wrapper", {
           active: accountMenu
         })}
       >
-        <a>Log In</a>
-        <a>Sign Up</a>
+        <div className="account-menu">
+          <div>
+            <div className="login-button-wrapper">
+              <Link href="/">
+                <button className="login-button">Log In</button>
+              </Link>
+            </div>
+            <hr />
+            <div className="signup-button-header-wrapper">
+              <p className="signup-button-header">You dont have account?</p>
+            </div>
+            <div className="signup-button-wrapper">
+              <Link href="/">
+                <button className="signup-button">Sign up</button>
+              </Link>
+            </div>
+          </div>
+        </div>
       </div>
     </li>
   );

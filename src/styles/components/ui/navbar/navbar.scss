@@ -17,9 +17,9 @@
     .navbar-tile-list {
       @apply flex items-center;
       .navbar-tile-list-item {
-        @apply w-12 sm:w-20 relative rounded-t-lg xl:mx-2;
+        @apply w-12 sm:w-20 relative rounded-lg xl:mx-2;
         .navbar-tile {
-          @apply flex flex-col m-auto items-center justify-center text-sm cursor-pointer;
+          @apply flex flex-col m-auto items-center justify-center text-sm cursor-pointer sm:py-0.5;
           .navbar-tile-logo {
             @apply h-12 sm:h-8;
           }
