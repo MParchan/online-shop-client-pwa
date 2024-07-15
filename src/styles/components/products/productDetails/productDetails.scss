@@ -1,0 +1,14 @@
+.product-details {
+  .product-details-main {
+    @apply flex;
+    .product-details-images {
+      @apply flex-1;
+    }
+    .product-details-info {
+      @apply w-1/2;
+      .product-details-info-name {
+        @apply text-3xl;
+      }
+    }
+  }
+}

@@ -1,4 +1,5 @@
 import productsService from "@/api/services/productsService";
+import ProductDetails from "@/components/products/productDetails/ProductDetails";
 import { Product } from "@/types/models/product.types";
 import createSlug from "@/utils/createSlug";
 import { Metadata } from "next";
@@ -21,5 +22,9 @@ export default async function ProductPage({ params }: ProductProps) {
     redirect(`/p/${createSlug(product.name)}/${params.id}`);
   }
 
-  return <div>{product.name}</div>;
+  return (
+    <div>
+      <ProductDetails product={product} />
+    </div>
+  );
 }
