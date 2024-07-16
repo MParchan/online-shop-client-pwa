@@ -1,0 +1,46 @@
+.product-images {
+  .main-image {
+    @apply mb-5 cursor-pointer;
+  }
+
+  .thumbnail-images {
+    @apply flex justify-center;
+
+    .thumbnail-image {
+      @apply mx-2 p-1 cursor-pointer flex border rounded-lg;
+
+      &.selected {
+        @apply ring-1 ring-zinc-700;
+      }
+      .hidden-thumbnails {
+        @apply flex justify-center items-center mx-3;
+      }
+    }
+  }
+}
+
+.product-images-modal {
+  @apply fixed left-1/2 top-1/2 z-30 h-full w-full bg-white duration-300;
+  transform: translate(-50%, -50%) scale(0);
+  &.open {
+    transform: translate(-50%, -50%) scale(1);
+  }
+  .product-images-modal-close {
+    @apply absolute top-4 right-4 cursor-pointer;
+  }
+  .modalproduct-name {
+    @apply flex justify-center mt-8 p-4 text-3xl;
+  }
+  .modal-main-image {
+    @apply flex items-center justify-center p-4;
+  }
+  .modal-thumbnail-images {
+    @apply flex justify-center space-x-2 mt-4;
+    .modal-thumbnail-image {
+      @apply mx-2 p-1 cursor-pointer flex border rounded-lg;
+      &.selected {
+        @apply ring-1 ring-zinc-700;
+      }
+    }
+  }
+}

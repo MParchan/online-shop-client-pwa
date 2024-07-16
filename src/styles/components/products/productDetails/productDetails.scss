@@ -1,13 +1,29 @@
-.product-details {
-  .product-details-main {
+.product {
+  .product-main {
     @apply flex;
-    .product-details-images {
+    .product-images-wrapper {
       @apply flex-1;
     }
-    .product-details-info {
+    .product-info {
       @apply w-1/2;
-      .product-details-info-name {
+      .product-info-name {
         @apply text-3xl;
+      }
+
+      .product-info-details {
+        @apply flex;
+        .product-info-specification {
+          @apply w-1/2 p-4 rounded-lg;
+        }
+        .product-info-order {
+          @apply w-1/2 p-4 rounded-lg border;
+          .product-info-order-price {
+            @apply text-right text-2xl pb-2;
+          }
+          .product-info-order-cart {
+            @apply flex;
+          }
+        }
       }
     }
   }

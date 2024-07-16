@@ -116,8 +116,8 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
       >
         {selectedCategory}
         <Image
-          src="/assets/icons/arrow.svg"
-          alt="Arrow logo"
+          src="/assets/icons/arrow_open.svg"
+          alt="Arrow open logo"
           width={16}
           height={16}
           className="arrow-icon"
