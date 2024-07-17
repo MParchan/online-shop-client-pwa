@@ -8,7 +8,7 @@ interface ProductSpecificationProps {
 
 export default function ProductSpecification({ productProperties }: ProductSpecificationProps) {
   return (
-    <div className="product-specification">
+    <div id="productSpecificationId" className="product-specification">
       <div className="product-specification-title">Specification</div>
       <table className="product-specification-table">
         <tbody>

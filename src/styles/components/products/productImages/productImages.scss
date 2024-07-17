@@ -4,7 +4,7 @@
   }
 
   .thumbnail-images {
-    @apply flex flex-wrap justify-center;
+    @apply hidden sm:flex flex-wrap justify-center;
 
     .thumbnail-image {
       @apply m-2 p-1 cursor-pointer flex border rounded-lg;
