@@ -1,0 +1,19 @@
+.product-specification {
+  @apply my-8;
+  .product-specification-title {
+    @apply text-2xl p-4;
+  }
+  .product-specification-table {
+    @apply table-fixed w-full;
+    .product-specification-table-row {
+      @apply border-b border-t odd:bg-white even:bg-gray-100;
+
+      .product-specification-table-header {
+        @apply flex p-4 font-semibold sm:ml-2 md:ml-20 lg:ml-40 xl:ml-60;
+      }
+      .product-specification-table-value {
+        @apply p-4;
+      }
+    }
+  }
+}

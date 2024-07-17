@@ -15,26 +15,57 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
   const [openImagesModal, setOpenImagesModal] = useState(false);
   const modalRef = useRef<HTMLDivElement | null>(null);
 
-  useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
-        setOpenImagesModal(false);
-      }
-    };
-    document.addEventListener("mousedown", handleClickOutside);
-    return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
-    };
-  }, [openImagesModal]);
-
   const handleThumbnailClick = (image: ProductImage) => {
     setSelectedImage(image);
   };
 
-  const maxVisibleThumbnails = 6;
+  const maxVisibleThumbnails = 5;
 
   const visibleThumbnails = images.slice(0, maxVisibleThumbnails);
   const hiddenThumbnails = images.slice(maxVisibleThumbnails);
+
+  const handlePreviousImage = () => {
+    const currentIndex = images.findIndex((image) => image._id === selectedImage._id);
+    const previousIndex = (currentIndex - 1 + images.length) % images.length;
+    setSelectedImage(images[previousIndex]);
+  };
+
+  const handleNextImage = () => {
+    const currentIndex = images.findIndex((image) => image._id === selectedImage._id);
+    const nextIndex = (currentIndex + 1) % images.length;
+    setSelectedImage(images[nextIndex]);
+  };
+
+  useEffect(() => {
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "ArrowLeft") {
+        handlePreviousImage();
+      } else if (event.key === "ArrowRight") {
+        handleNextImage();
+      } else if (event.key === "Escape") {
+        setOpenImagesModal(false);
+      }
+    };
+
+    if (openImagesModal) {
+      document.addEventListener("keydown", handleKeyDown);
+    } else {
+      document.removeEventListener("keydown", handleKeyDown);
+    }
+
+    return () => {
+      document.removeEventListener("keydown", handleKeyDown);
+    };
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [openImagesModal, selectedImage]);
+
+  useEffect(() => {
+    if (openImagesModal) {
+      document.body.classList.add("overflow-hidden");
+    } else {
+      document.body.classList.remove("overflow-hidden");
+    }
+  }, [openImagesModal]);
 
   return (
     <>
@@ -51,6 +82,7 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
               width={600}
               height={600}
               alt="Picture of the product"
+              className="w-full h-auto"
               priority
             />
           ) : null}
@@ -69,7 +101,7 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
                 height={60}
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => handleThumbnailClick(image)}
-                className="rounded-lg cursor-pointer"
+                className="rounded-lg w-full h-auto"
               />
             </div>
           ))}
@@ -100,17 +132,30 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
             className="h-8 w-auto"
           />
         </div>
-        <div className="modalproduct-name">{productName}</div>
+        <div className="modal-product-name">{productName}</div>
         <div className="modal-main-image">
-          {selectedImage && (
+          <button className="modal-change-photo-button" onClick={handlePreviousImage}>
+            <Image src="/assets/icons/arrow_left.svg" alt="Close logo" width={40} height={40} />
+          </button>
+          <div className="modal-main-image-wrapper">
+            {selectedImage && (
+              <Image
+                src={selectedImage.image}
+                width={600}
+                height={600}
+                alt="Picture of the product"
+              />
+            )}
+          </div>
+          <button className="modal-change-photo-button" onClick={handleNextImage}>
             <Image
-              src={selectedImage.image}
-              width={600}
-              height={600}
-              alt="Picture of the product"
-              className="max-w-full max-h-full"
+              src="/assets/icons/arrow_right.svg"
+              alt="Close logo"
+              width={40}
+              height={40}
+              className="w-10"
             />
-          )}
+          </button>
         </div>
         <div className="modal-thumbnail-images">
           {images.map((image, index) => (

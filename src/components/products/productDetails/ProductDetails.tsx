@@ -5,17 +5,16 @@ import Image from "next/image";
 import React from "react";
 import ProductImages from "../productImages/productImages";
 import SortImages from "@/utils/sortImages";
+import ProductSpecification from "../productSpecification/ProductSpecification";
 
 export default function ProductDetails({ product }: { product: Product }) {
   product.images = SortImages(product.images);
-  let extendedList = product.images;
-  extendedList = extendedList.concat(product.images);
-  extendedList = extendedList.concat(product.images);
+
   return (
     <div className="product">
       <div className="product-main">
         <div className="product-images-wrapper">
-          <ProductImages productName={product.name} images={extendedList} />
+          <ProductImages productName={product.name} images={product.images} />
         </div>
         <div className="product-info">
           <div className="product-info-name">{product.name}</div>
@@ -35,7 +34,7 @@ export default function ProductDetails({ product }: { product: Product }) {
                     alt="Add shopping cart icon"
                     width={22}
                     height={22}
-                    className="invert mr-1"
+                    className="invert mr-1 w-auto h-[22px]"
                   />
                   Add to cart
                 </Button>
@@ -44,6 +43,7 @@ export default function ProductDetails({ product }: { product: Product }) {
           </div>
         </div>
       </div>
+      <ProductSpecification productProperties={product.productProperties} />
     </div>
   );
 }

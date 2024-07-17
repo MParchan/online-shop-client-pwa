@@ -4,10 +4,10 @@
   }
 
   .thumbnail-images {
-    @apply flex justify-center;
+    @apply flex flex-wrap justify-center;
 
     .thumbnail-image {
-      @apply mx-2 p-1 cursor-pointer flex border rounded-lg;
+      @apply m-2 p-1 cursor-pointer flex border rounded-lg;
 
       &.selected {
         @apply ring-1 ring-zinc-700;
@@ -28,16 +28,22 @@
   .product-images-modal-close {
     @apply absolute top-4 right-4 cursor-pointer;
   }
-  .modalproduct-name {
+  .modal-product-name {
     @apply flex justify-center mt-8 p-4 text-3xl;
   }
   .modal-main-image {
-    @apply flex items-center justify-center p-4;
+    @apply flex items-center justify-center px-2 sm:px-4 py-4;
+    .modal-main-image-wrapper {
+      @apply mx-auto lg:mx-16;
+    }
+    .modal-change-photo-button {
+      @apply block border rounded-lg w-10;
+    }
   }
   .modal-thumbnail-images {
-    @apply flex justify-center space-x-2 mt-4;
+    @apply flex flex-wrap justify-center space-x-2 m-4;
     .modal-thumbnail-image {
-      @apply mx-2 p-1 cursor-pointer flex border rounded-lg;
+      @apply m-2 p-1 cursor-pointer flex border rounded-lg;
       &.selected {
         @apply ring-1 ring-zinc-700;
       }
