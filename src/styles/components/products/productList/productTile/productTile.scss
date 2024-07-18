@@ -7,8 +7,11 @@
   .product-tile-content {
     @apply px-4;
 
-    .product-tile-image {
-      @apply w-60 h-auto m-auto mb-2;
+    .product-tile-image-wrapper {
+      @apply sm:w-80 sm:h-[260px] xl:w-[256px] xl:h-[220px] m-auto my-8;
+      .product-tile-image {
+        @apply w-auto h-auto m-auto;
+      }
     }
     .product-tile-price {
       @apply py-3 text-lg;

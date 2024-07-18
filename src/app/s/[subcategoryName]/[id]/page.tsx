@@ -7,6 +7,8 @@ import ProductFilter from "@/components/products/productFilter/productFilter";
 import { redirect } from "next/navigation";
 import createSlug from "@/utils/createSlug";
 import { Metadata } from "next";
+import brandsService from "@/api/services/brandsService";
+import { sortPropertyTypes } from "@/utils/sortPropertyTypes";
 
 interface SubcategoryProps {
   params: { subcategoryName: string; id: string };
@@ -25,14 +27,14 @@ export default async function SubcategoryPage({ params }: SubcategoryProps) {
     redirect(`/p/${createSlug(subcategory.name)}/${params.id}`);
   }
 
+  const brands = await brandsService.getBrands({
+    subcategory: subcategory._id
+  });
   const products: Product[] = await productsService.getProducts({
     subcategory: subcategory._id
   });
 
-  let extendedList: Product[] = [];
-  if (products.length) {
-    extendedList = Array.from({ length: 10 }, () => products[0]);
-  }
+  sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
 
   return (
     <div>
@@ -40,8 +42,8 @@ export default async function SubcategoryPage({ params }: SubcategoryProps) {
         Subcategory properties: {subcategory.name} {products.length}
       </p>
       <div className="flex">
-        <ProductFilter propertyTypes={subcategory.propertyTypes} />
-        <ProductList products={extendedList} />
+        <ProductFilter brands={brands} propertyTypes={subcategory.propertyTypes} />
+        <ProductList products={products} />
       </div>
     </div>
   );

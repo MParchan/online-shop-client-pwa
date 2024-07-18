@@ -17,14 +17,16 @@ export default function ProductTile({ product }: ProductTileProps) {
       <Link href={`/p/${createSlug(product.name)}/${product._id}`}>
         <div className="product-tile-content">
           {mainImage ? (
-            <Image
-              src={mainImage.image}
-              width={300}
-              height={300}
-              alt="Picture of the product"
-              className="product-tile-image"
-              priority
-            />
+            <div className="product-tile-image-wrapper">
+              <Image
+                src={mainImage.image}
+                width={300}
+                height={300}
+                alt="Picture of the product"
+                className="product-tile-image"
+                priority
+              />
+            </div>
           ) : (
             <></>
           )}

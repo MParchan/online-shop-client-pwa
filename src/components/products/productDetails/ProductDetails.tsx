@@ -181,7 +181,10 @@ export default function ProductDetails({ product }: { product: Product }) {
         </div>
       </div>
       <div className="product-desciption">{product.description}</div>
-      <ProductSpecification productProperties={product.productProperties} />
+      <ProductSpecification
+        productProperties={product.productProperties}
+        subcategoryName={subcategory.name}
+      />
     </div>
   );
 }

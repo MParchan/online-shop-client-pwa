@@ -1,5 +1,8 @@
 .product-list {
   @apply flex flex-wrap pl-4 justify-between;
 
+  .product-list-filler {
+    @apply hidden xl:block xl:w-72;
+  }
   @import "./productTile/productTile.scss";
 }
