@@ -1,0 +1,33 @@
+.product-filters-modal-wrapper {
+  @apply fixed w-full h-full top-0 left-0 z-20 flex justify-center items-center;
+  &.open {
+    @apply pointer-events-auto;
+  }
+  &.close {
+    @apply pointer-events-none;
+  }
+  .product-filters-modal {
+    @apply fixed bg-white z-30 transition-all duration-300 ease-in-out transform;
+    @apply rounded-lg border;
+    &.open {
+      @apply opacity-100 translate-y-0;
+    }
+    &.close {
+      @apply opacity-0 translate-y-[200%];
+    }
+
+    .product-filters-modal-header {
+      @apply bg-gray-50;
+    }
+  }
+
+  .product-filters-modal-overlay {
+    @apply w-full h-full z-20 bg-black transition-opacity duration-300 ease-in-out;
+    &.open {
+      @apply opacity-50 pointer-events-auto;
+    }
+    &.close {
+      @apply opacity-0 pointer-events-none;
+    }
+  }
+}

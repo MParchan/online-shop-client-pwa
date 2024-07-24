@@ -22,7 +22,8 @@ body {
 
   .layout {
     @apply mx-3 sm:mx-6 my-6 max-w-screen-xl xl:mx-auto xl:px-6;
-    @import "./components/products//productFilter/productFilter.scss";
+    @import "./components/products//productFilters/productFilters.scss";
+    @import "./components/products//productFilters/productFiltersModal.scss";
     @import "./components/products/productList/productList.scss";
     @import "./components/products/productDetails/productDetails.scss";
     @import "./components/products/productImages/productImages.scss";

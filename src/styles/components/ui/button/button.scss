@@ -10,6 +10,13 @@
     }
   }
 
+  &.secondary {
+    @apply bg-zinc-300 text-black;
+    &:hover {
+      @apply bg-zinc-400;
+    }
+  }
+
   &.blue {
     @apply bg-blue-600 text-white;
     &:hover {

@@ -4,11 +4,12 @@ import { ButtonHTMLAttributes } from "react";
 interface ButtonProps extends ButtonHTMLAttributes<HTMLButtonElement> {
   children: React.ReactNode;
   className?: string;
-  variant?: "primary" | "blue" | "green" | "red";
+  variant?: "primary" | "secondary" | "blue" | "green" | "red";
 }
 
 const buttonVariants = {
   primary: "primary",
+  secondary: "secondary",
   blue: "blue",
   green: "green",
   red: "red"
@@ -21,6 +22,7 @@ const Button = ({ children, className, variant = "primary", ...rest }: ButtonPro
         "button",
         {
           [buttonVariants.primary]: variant === "primary",
+          [buttonVariants.secondary]: variant === "secondary",
           [buttonVariants.blue]: variant === "blue",
           [buttonVariants.green]: variant === "green",
           [buttonVariants.red]: variant === "red"

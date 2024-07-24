@@ -1,0 +1,50 @@
+.products-filter-wrapper {
+  @apply hidden lg:block;
+  .products-filter {
+    @apply border rounded-lg py-3 w-64;
+
+    .products-filter-header {
+      @apply text-2xl font-semibold px-2;
+    }
+    .products-filter-section {
+      @apply mt-4;
+
+      .products-filter-section-header {
+        @apply font-semibold px-2;
+      }
+      .products-filter-section-wrapper {
+        @apply p-2 flex items-start;
+        &:hover {
+          @apply bg-gray-100;
+          @apply cursor-pointer;
+        }
+        .products-filter-section-checkbox {
+          @apply mr-2 my-1 h-3 w-3;
+        }
+
+        .products-filter-section-value {
+          @apply flex-1 text-sm;
+          .products-filter-section-quantity {
+            @apply text-gray-500;
+          }
+        }
+      }
+      .products-filter-section-more {
+        @apply flex p-2 pl-1 text-sm;
+        .products-filter-section-more-icon {
+          @apply mr-1;
+        }
+        .products-filter-section-quantity {
+          @apply text-gray-500 ml-1;
+        }
+      }
+    }
+
+    .products-filter-more-wrapper {
+      @apply mx-2 mt-3;
+      .products-filter-more-button {
+        @apply text-sm;
+      }
+    }
+  }
+}

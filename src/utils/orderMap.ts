@@ -14,6 +14,15 @@ const orderMaps = {
         "Width",
         "Thickness",
         "Weight"
+    ],
+    "Bags and cases": [
+        "Type",
+        "Compatibility",
+        "Size",
+        "Weight",
+        "Color",
+        "Material",
+        "Type of fastener"
     ]
 };
 
