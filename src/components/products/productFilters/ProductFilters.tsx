@@ -6,15 +6,16 @@ import PropertySection from "./elements/PropertySection";
 import Image from "next/image";
 import { useState } from "react";
 import Button from "@/components/ui/button/Button";
-import ProductFiltersModal from "./elements/ProductFiltersModal";
+import ProductFiltersModal from "./ProductFiltersModal";
+import { cn } from "@/libs/twMerge.lib";
 
-interface BrandCount {
+export interface BrandCount {
   _id: string;
   count: number;
   brand: Brand;
 }
 
-interface PropertyCount {
+export interface PropertyCount {
   _id: string;
   count: number;
   property: Property;
@@ -25,6 +26,7 @@ interface ProductFilterProps {
   brandCount: BrandCount[];
   propertyCount: PropertyCount[];
   propertyTypes: PropertyType[];
+  productCount: number;
   selectedBrands: string[];
   setSelectedBrands: React.Dispatch<React.SetStateAction<string[]>>;
   selectedProperties: string[];
@@ -35,6 +37,7 @@ export default function ProductFilters({
   brands,
   brandCount,
   propertyCount,
+  productCount,
   propertyTypes,
   selectedBrands,
   setSelectedBrands,
@@ -91,11 +94,16 @@ export default function ProductFilters({
             {brandsToShow.map((brand) => (
               <div
                 key={brand._id}
-                className="products-filter-section-wrapper"
-                onClick={() => handleBrandClick(brand._id, selectedBrands.includes(brand._id))}
+                className={cn("products-filter-section-wrapper", { disabled: !brand.count })}
+                onClick={() => {
+                  if (brand.count) {
+                    handleBrandClick(brand._id, selectedBrands.includes(brand._id));
+                  }
+                }}
               >
                 <Input
                   type="checkbox"
+                  disabled={!brand.count}
                   className="products-filter-section-checkbox"
                   onClick={(e) => e.stopPropagation()}
                   onChange={(e) => handleSelectBrands(brand._id, e.target.checked)}
@@ -163,7 +171,15 @@ export default function ProductFilters({
       <ProductFiltersModal
         openModal={openModal}
         setOpenModal={setOpenModal}
+        brands={brands}
+        brandCount={brandCount}
         propertyTypes={propertyTypes}
+        productCount={productCount}
+        propertyCount={propertyCount}
+        selectedBrands={selectedBrands}
+        setSelectedBrands={setSelectedBrands}
+        selectedProperties={selectedProperties}
+        setSelectedProperties={setSelectedProperties}
       />
     </>
   );

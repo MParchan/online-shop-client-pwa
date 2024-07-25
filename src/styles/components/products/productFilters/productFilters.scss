@@ -18,6 +18,11 @@
           @apply bg-gray-100;
           @apply cursor-pointer;
         }
+        &.disabled {
+          &:hover {
+            @apply bg-white cursor-default;
+          }
+        }
         .products-filter-section-checkbox {
           @apply mr-2 my-1 h-3 w-3;
         }

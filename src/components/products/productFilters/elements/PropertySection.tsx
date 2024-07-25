@@ -1,5 +1,6 @@
 "use client";
 import Input from "@/components/ui/input/Input";
+import { cn } from "@/libs/twMerge.lib";
 import { Property } from "@/types/models/property.types";
 import { PropertyType } from "@/types/models/propertyType.types";
 import Image from "next/image";
@@ -35,7 +36,7 @@ export default function PropertySection({
       }
       return a.value.localeCompare(b.value);
     });
-  const propertiesToShow = showAll ? sortedProperties : sortedProperties.slice(0, 5);
+  const propertiesToShow = showAll ? sortedProperties : sortedProperties.slice(0, 4);
   const handlePropertyClick = (propertyId: string, checked: boolean) => {
     handleSelectProperties(propertyId, !checked);
   };
@@ -46,13 +47,16 @@ export default function PropertySection({
       {propertiesToShow.map((property) => (
         <div
           key={property._id}
-          className="products-filter-section-wrapper"
-          onClick={() =>
-            handlePropertyClick(property._id, selectedProperties.includes(property._id))
-          }
+          className={cn("products-filter-section-wrapper", { disabled: !property.count })}
+          onClick={() => {
+            if (property.count) {
+              handlePropertyClick(property._id, selectedProperties.includes(property._id));
+            }
+          }}
         >
           <Input
             type="checkbox"
+            disabled={!property.count}
             className="products-filter-section-checkbox"
             onClick={(e) => e.stopPropagation()}
             onChange={(e) => handleSelectProperties(property._id, e.target.checked)}
@@ -64,7 +68,7 @@ export default function PropertySection({
           </div>
         </div>
       ))}
-      {propertyType.properties.length > 5 && (
+      {propertyType.properties.length > 4 && (
         <button className="products-filter-section-more" onClick={() => setShowAll(!showAll)}>
           {showAll ? (
             <Image

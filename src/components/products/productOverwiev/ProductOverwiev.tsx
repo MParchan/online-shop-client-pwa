@@ -18,6 +18,7 @@ export default function ProductOverview({ subcategory }: ProductOverwievProps) {
   const [subcategoryBrands, setSubcategoryBrands] = useState<Brand[]>([]);
   const [brandCount, setBrandCount] = useState([]);
   const [propertyCount, setPropertyCount] = useState([]);
+  const [productCount, setProductCount] = useState(0);
   const [brands, setBrands] = useState<string[]>([]);
   const [properties, setProperties] = useState<string[]>([]);
   const [loader, setLoader] = useState(true);
@@ -38,6 +39,7 @@ export default function ProductOverview({ subcategory }: ProductOverwievProps) {
       setProducts(productRes.products);
       setBrandCount(productRes.brands);
       setPropertyCount(productRes.properties);
+      setProductCount(productRes.productCount);
       setLoader(false);
     };
 
@@ -65,6 +67,7 @@ export default function ProductOverview({ subcategory }: ProductOverwievProps) {
         brands={subcategoryBrands}
         brandCount={brandCount}
         propertyCount={propertyCount}
+        productCount={productCount}
         propertyTypes={subcategory.propertyTypes}
         selectedBrands={brands}
         setSelectedBrands={setBrands}
