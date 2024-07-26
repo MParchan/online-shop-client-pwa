@@ -8,9 +8,10 @@ interface SelectProps {
   options: string[];
   defaultValue: string;
   className?: string;
+  setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Select = ({ options, defaultValue, className }: SelectProps) => {
+const Select = ({ options, defaultValue, className, setValue }: SelectProps) => {
   const [selectedOption, setSelectedOption] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement | null>(null);
@@ -30,6 +31,7 @@ const Select = ({ options, defaultValue, className }: SelectProps) => {
   const handleSelect = (option: string) => {
     setSelectedOption(option);
     setIsOpen(false);
+    setValue(option);
   };
 
   return (

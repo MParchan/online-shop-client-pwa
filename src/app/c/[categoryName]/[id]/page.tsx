@@ -1,4 +1,5 @@
 import categoriesService from "@/api/services/categoriesService";
+import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
 import { Category } from "@/types/models/category.types";
 import createSlug from "@/utils/createSlug";
 import { Metadata } from "next";
@@ -21,5 +22,9 @@ export default async function CategoryPage({ params }: CategoryProps) {
   if (params.categoryName !== createSlug(category.name)) {
     redirect(`/p/${createSlug(category.name)}/${params.id}`);
   }
-  return <div>Category {params.id}</div>;
+  return (
+    <div>
+      <CategoryNavigation category={category} />
+    </div>
+  );
 }

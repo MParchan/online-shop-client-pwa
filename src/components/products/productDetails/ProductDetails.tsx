@@ -11,39 +11,14 @@ import { Property } from "@/types/models/property.types";
 import { PropertyType } from "@/types/models/propertyType.types";
 import ScrollToSection from "@/components/ui/scrollToSection/ScrollToSection";
 import { Subcategory } from "@/types/models/subcategory.types";
-import { Category } from "@/types/models/category.types";
-import Link from "next/link";
-import createSlug from "@/utils/createSlug";
 
 export default function ProductDetails({ product }: { product: Product }) {
   const sortedImages = SortImages(product.images);
   const brand = product.brand as Brand;
   const subcategory = product.subcategory as Subcategory;
-  const category = subcategory.category as Category;
 
   return (
     <div className="product">
-      <div className="product-category">
-        <Link href="/">OnlineShop</Link>
-        <Image
-          src="/assets/icons/arrow_right.svg"
-          alt="Arrow right icon"
-          width={20}
-          height={20}
-          className="w-auto h-[20px]"
-        />
-        <Link href={`/c/${createSlug(category.name)}/${category._id}`}>{category.name}</Link>
-        <Image
-          src="/assets/icons/arrow_right.svg"
-          alt="Arrow right icon"
-          width={20}
-          height={20}
-          className="w-auto h-[20px]"
-        />
-        <Link href={`/s/${createSlug(subcategory.name)}/${subcategory._id}`}>
-          {subcategory.name}
-        </Link>
-      </div>
       <div className="product-info-name-small">{product.name}</div>
       <div className="product-main">
         <div className="product-images-wrapper">
@@ -92,6 +67,7 @@ export default function ProductDetails({ product }: { product: Product }) {
                 <Select
                   options={["1", "2", "3", "4", "5", "6", "7", "8"]}
                   defaultValue="1"
+                  setValue={() => {}}
                   className="w-16"
                 />
                 <Button variant="green" className="ml-2">

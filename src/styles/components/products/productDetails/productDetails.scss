@@ -1,7 +1,4 @@
 .product {
-  .product-category {
-    @apply flex text-sm font-light flex-wrap;
-  }
   .product-info-name-small {
     @apply lg:hidden text-2xl my-3;
   }

@@ -1,0 +1,19 @@
+.product-overview {
+  .product-overview-subcategory {
+    @apply py-2 mb-2 text-2xl;
+    .product-overview-subcategory-quantity {
+      @apply text-gray-500 text-lg;
+    }
+  }
+
+  .product-overview-main {
+    @apply flex;
+    .product-overview-products-wrapper {
+      @apply w-full;
+      @import "../productList/productList.scss";
+      .product-overview-sorting {
+        @apply flex justify-end ml-4 mb-4 py-2 border-y;
+      }
+    }
+  }
+}

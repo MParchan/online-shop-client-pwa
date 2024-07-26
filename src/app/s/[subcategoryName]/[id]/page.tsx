@@ -4,6 +4,8 @@ import { redirect } from "next/navigation";
 import createSlug from "@/utils/createSlug";
 import { Metadata } from "next";
 import ProductOverview from "@/components/products/productOverwiev/ProductOverwiev";
+import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
+import { Category } from "@/types/models/category.types";
 
 interface SubcategoryProps {
   params: { subcategoryName: string; id: string };
@@ -22,9 +24,11 @@ export default async function SubcategoryPage({ params }: SubcategoryProps) {
     redirect(`/p/${createSlug(subcategory.name)}/${params.id}`);
   }
 
+  const category = subcategory.category as Category;
+
   return (
     <div>
-      <p>Subcategory properties: {subcategory.name}</p>
+      <CategoryNavigation category={category} subcategory={subcategory} />
       <ProductOverview subcategory={subcategory} />
     </div>
   );

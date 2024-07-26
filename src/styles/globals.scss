@@ -22,14 +22,17 @@ body {
 
   .layout {
     @apply mx-3 sm:mx-6 my-6 max-w-screen-xl xl:mx-auto xl:px-6;
+    @import "./components/categories/categoryNavigation/categoryNavigation.scss";
     @import "./components/products//productFilters/productFilters.scss";
     @import "./components/products//productFilters/productFiltersModal.scss";
     @import "./components/products/productList/productList.scss";
     @import "./components/products/productDetails/productDetails.scss";
     @import "./components/products/productImages/productImages.scss";
+    @import "./components/products/productOverwiev/productOverwiev.scss";
     @import "./components/products/productSpecification/productSpecification.scss";
     @import "./components/ui/select/select.scss";
     @import "./components/ui/button/button.scss";
+    @import "./components/ui/pagination/pagination.scss";
     @import "./components/ui/input/input.scss";
   }
   .overlay {

@@ -9,6 +9,7 @@ import { Product } from "@/types/models/product.types";
 import { sortPropertyTypes } from "@/utils/sortPropertyTypes";
 import brandsService from "@/api/services/brandsService";
 import { Brand } from "@/types/models/brand.types";
+import Pagination from "@/components/ui/pagination/Pagination";
 
 interface ProductOverwievProps {
   subcategory: Subcategory;
@@ -22,11 +23,16 @@ export default function ProductOverview({ subcategory }: ProductOverwievProps) {
   const [brands, setBrands] = useState<string[]>([]);
   const [properties, setProperties] = useState<string[]>([]);
   const [loader, setLoader] = useState(true);
+  const [page, setPage] = useState(1);
+  const [limit, setLimit] = useState(9);
+  const allPages = Math.ceil(productCount / limit);
 
   useEffect(() => {
     const fetchProducts = async () => {
-      const query: { [key: string]: string } = {
-        subcategory: subcategory._id
+      const query: { [key: string]: string | number } = {
+        subcategory: subcategory._id,
+        page: page,
+        limit: limit
       };
       if (brands.length > 0) {
         query.brands = brands.join(",");
@@ -45,7 +51,7 @@ export default function ProductOverview({ subcategory }: ProductOverwievProps) {
 
     setLoader(true);
     fetchProducts();
-  }, [brands, properties, subcategory]);
+  }, [brands, limit, page, properties, subcategory]);
 
   useEffect(() => {
     const fetchSubcategoryBrands = async () => {
@@ -56,25 +62,52 @@ export default function ProductOverview({ subcategory }: ProductOverwievProps) {
       setLoader(false);
     };
 
+    setLoader(true);
     fetchSubcategoryBrands();
   }, [subcategory]);
 
   sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
 
   return (
-    <div className="flex">
-      <ProductFilters
-        brands={subcategoryBrands}
-        brandCount={brandCount}
-        propertyCount={propertyCount}
-        productCount={productCount}
-        propertyTypes={subcategory.propertyTypes}
-        selectedBrands={brands}
-        setSelectedBrands={setBrands}
-        selectedProperties={properties}
-        setSelectedProperties={setProperties}
-      />
-      {loader ? <div>Loading</div> : <ProductList products={products} />}
+    <div className="product-overview">
+      <div className="product-overview-subcategory">
+        {subcategory.name + " "}
+        <span className="product-overview-subcategory-quantity">
+          ({productCount} {productCount === 1 ? "result" : "results"})
+        </span>
+      </div>
+      <div className="product-overview-main">
+        <ProductFilters
+          brands={subcategoryBrands}
+          brandCount={brandCount}
+          propertyCount={propertyCount}
+          productCount={productCount}
+          propertyTypes={subcategory.propertyTypes}
+          selectedBrands={brands}
+          setSelectedBrands={setBrands}
+          selectedProperties={properties}
+          setSelectedProperties={setProperties}
+        />
+        <div className="product-overview-products-wrapper">
+          <div className="product-overview-sorting">
+            <Pagination
+              currentPage={page}
+              allPages={allPages}
+              setPage={setPage}
+              setLimit={setLimit}
+            />
+          </div>
+          {loader ? <div>Loading</div> : <ProductList products={products} />}
+          <div className="product-overview-sorting">
+            <Pagination
+              currentPage={page}
+              allPages={allPages}
+              setPage={setPage}
+              setLimit={setLimit}
+            />
+          </div>
+        </div>
+      </div>
     </div>
   );
 }

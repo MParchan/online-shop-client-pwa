@@ -1,0 +1,19 @@
+.pagination {
+  @apply flex items-center;
+
+  .pagination-select {
+    @apply w-14;
+  }
+
+  .pagination-button {
+    @apply rounded-lg bg-gray-200 p-2 mx-2;
+
+    &.disabled {
+      @apply bg-gray-50;
+    }
+  }
+
+  .pagination-input {
+    @apply border p-2 mr-1 w-10 text-center;
+  }
+}

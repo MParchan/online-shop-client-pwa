@@ -1,8 +1,8 @@
 .product-tile {
-  @apply w-full sm:w-1/2 xl:w-72 mb-4;
+  @apply w-full sm:w-1/2 xl:w-72 mb-4 border border-white;
 
   &:hover {
-    @apply rounded-lg shadow-lg border;
+    @apply rounded-lg shadow-lg border-gray-100;
   }
   .product-tile-content {
     @apply px-4;
