@@ -8,10 +8,17 @@ interface SelectProps {
   options: string[];
   defaultValue: string;
   className?: string;
+  textAlignment?: "left" | "center" | "right";
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Select = ({ options, defaultValue, className, setValue }: SelectProps) => {
+const Select = ({
+  options,
+  defaultValue,
+  className,
+  textAlignment = "center",
+  setValue
+}: SelectProps) => {
   const [selectedOption, setSelectedOption] = useState(defaultValue);
   const [isOpen, setIsOpen] = useState(false);
   const selectRef = useRef<HTMLDivElement | null>(null);
@@ -37,7 +44,15 @@ const Select = ({ options, defaultValue, className, setValue }: SelectProps) => 
   return (
     <div className={cn("select", className)} ref={selectRef}>
       <button onClick={() => setIsOpen(!isOpen)} className="select-button">
-        <div className="select-button-option">{selectedOption}</div>
+        <div
+          className={cn("select-button-option", {
+            left: textAlignment === "left",
+            center: textAlignment === "center",
+            right: textAlignment === "right"
+          })}
+        >
+          {selectedOption}
+        </div>
         <span className="select-button-span">
           {isOpen ? (
             <Image
@@ -59,7 +74,15 @@ const Select = ({ options, defaultValue, className, setValue }: SelectProps) => 
       {isOpen && (
         <ul className="select-list">
           {options.map((option, index) => (
-            <li key={index} className="select-list-item" onClick={() => handleSelect(option)}>
+            <li
+              key={index}
+              className={cn("select-list-item", {
+                left: textAlignment === "left",
+                center: textAlignment === "center",
+                right: textAlignment === "right"
+              })}
+              onClick={() => handleSelect(option)}
+            >
               {option}
             </li>
           ))}

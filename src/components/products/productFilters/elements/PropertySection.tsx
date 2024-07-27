@@ -10,7 +10,7 @@ interface PropertySectionProps {
   propertyType: PropertyType;
   propertyCount: PropertyCount[];
   selectedProperties: string[];
-  handleSelectProperties: (propertyId: string, checked: boolean) => void;
+  handleSelectProperties: (property: Property, propertyId: string, checked: boolean) => void;
 }
 interface PropertyCount {
   _id: string;
@@ -37,8 +37,8 @@ export default function PropertySection({
       return a.value.localeCompare(b.value);
     });
   const propertiesToShow = showAll ? sortedProperties : sortedProperties.slice(0, 4);
-  const handlePropertyClick = (propertyId: string, checked: boolean) => {
-    handleSelectProperties(propertyId, !checked);
+  const handlePropertyClick = (property: Property, propertyId: string, checked: boolean) => {
+    handleSelectProperties(property, propertyId, !checked);
   };
 
   return (
@@ -50,7 +50,11 @@ export default function PropertySection({
           className={cn("products-filter-section-wrapper", { disabled: !property.count })}
           onClick={() => {
             if (property.count) {
-              handlePropertyClick(property._id, selectedProperties.includes(property._id));
+              handlePropertyClick(
+                property,
+                property._id,
+                selectedProperties.includes(property._id)
+              );
             }
           }}
         >
@@ -59,7 +63,7 @@ export default function PropertySection({
             disabled={!property.count}
             className="products-filter-section-checkbox"
             onClick={(e) => e.stopPropagation()}
-            onChange={(e) => handleSelectProperties(property._id, e.target.checked)}
+            onChange={(e) => handleSelectProperties(property, property._id, e.target.checked)}
             checked={selectedProperties.includes(property._id)}
           />
           <div className="products-filter-section-value">

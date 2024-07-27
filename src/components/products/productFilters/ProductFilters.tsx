@@ -28,9 +28,11 @@ interface ProductFilterProps {
   propertyTypes: PropertyType[];
   productCount: number;
   selectedBrands: string[];
-  setSelectedBrands: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedBrands: React.Dispatch<React.SetStateAction<Brand[]>>;
+  setSelectedBrandsIds: React.Dispatch<React.SetStateAction<string[]>>;
   selectedProperties: string[];
-  setSelectedProperties: React.Dispatch<React.SetStateAction<string[]>>;
+  setSelectedProperties: React.Dispatch<React.SetStateAction<Property[]>>;
+  setSelectedPropertiesIds: React.Dispatch<React.SetStateAction<string[]>>;
 }
 
 export default function ProductFilters({
@@ -41,8 +43,10 @@ export default function ProductFilters({
   propertyTypes,
   selectedBrands,
   setSelectedBrands,
+  setSelectedBrandsIds,
   selectedProperties,
-  setSelectedProperties
+  setSelectedProperties,
+  setSelectedPropertiesIds
 }: ProductFilterProps) {
   const [openModal, setOpenModal] = useState(false);
   const [showAllBrands, setShowAllBrands] = useState(false);
@@ -60,28 +64,42 @@ export default function ProductFilters({
 
   const brandsToShow = showAllBrands ? sortedBrands : sortedBrands.slice(0, 5);
 
-  const handleSelectBrands = (brandId: string, checked: boolean) => {
-    setSelectedBrands((prevBrands) => {
+  const handleSelectBrands = (brand: Brand, brandId: string, checked: boolean) => {
+    setSelectedBrandsIds((prevBrands) => {
       if (checked) {
         return [...prevBrands, brandId];
       } else {
         return prevBrands.filter((id) => id !== brandId);
       }
     });
+    setSelectedBrands((prevBrands) => {
+      if (checked) {
+        return [...prevBrands, brand];
+      } else {
+        return prevBrands.filter((b) => b._id !== brand._id);
+      }
+    });
   };
 
-  const handleSelectProperties = (propertyId: string, checked: boolean) => {
-    setSelectedProperties((prevProperties) => {
+  const handleSelectProperties = (property: Property, propertyId: string, checked: boolean) => {
+    setSelectedPropertiesIds((prevProperties) => {
       if (checked) {
         return [...prevProperties, propertyId];
       } else {
         return prevProperties.filter((id) => id !== propertyId);
       }
     });
+    setSelectedProperties((prevProperties) => {
+      if (checked) {
+        return [...prevProperties, property];
+      } else {
+        return prevProperties.filter((p) => p._id !== property._id);
+      }
+    });
   };
 
-  const handleBrandClick = (brandId: string, checked: boolean) => {
-    handleSelectBrands(brandId, !checked);
+  const handleBrandClick = (brand: Brand, brandId: string, checked: boolean) => {
+    handleSelectBrands(brand, brandId, !checked);
   };
 
   return (
@@ -97,7 +115,7 @@ export default function ProductFilters({
                 className={cn("products-filter-section-wrapper", { disabled: !brand.count })}
                 onClick={() => {
                   if (brand.count) {
-                    handleBrandClick(brand._id, selectedBrands.includes(brand._id));
+                    handleBrandClick(brand, brand._id, selectedBrands.includes(brand._id));
                   }
                 }}
               >
@@ -106,7 +124,7 @@ export default function ProductFilters({
                   disabled={!brand.count}
                   className="products-filter-section-checkbox"
                   onClick={(e) => e.stopPropagation()}
-                  onChange={(e) => handleSelectBrands(brand._id, e.target.checked)}
+                  onChange={(e) => handleSelectBrands(brand, brand._id, e.target.checked)}
                   checked={selectedBrands.includes(brand._id)}
                 />
                 <div className="products-filter-section-value">
@@ -178,8 +196,10 @@ export default function ProductFilters({
         propertyCount={propertyCount}
         selectedBrands={selectedBrands}
         setSelectedBrands={setSelectedBrands}
+        setSelectedBrandsIds={setSelectedBrandsIds}
         selectedProperties={selectedProperties}
         setSelectedProperties={setSelectedProperties}
+        setSelectedPropertiesIds={setSelectedPropertiesIds}
       />
     </>
   );

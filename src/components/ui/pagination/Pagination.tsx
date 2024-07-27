@@ -3,34 +3,37 @@
 import Image from "next/image";
 import Input from "../input/Input";
 import { cn } from "@/libs/twMerge.lib";
-import { ChangeEvent, useEffect, useState } from "react";
+import { ChangeEvent, useState } from "react";
 import Select from "../select/Select";
 
 interface PaginationProps {
   currentPage: number;
   allPages: number;
   setPage: React.Dispatch<React.SetStateAction<number>>;
-  setLimit: React.Dispatch<React.SetStateAction<number>>;
+  setLimit?: React.Dispatch<React.SetStateAction<string>>;
 }
 
 export default function Pagination({ currentPage, allPages, setPage, setLimit }: PaginationProps) {
   const [inputValue, setInputValue] = useState("1");
-  const [limitValue, setLimitValue] = useState("9");
-
-  useEffect(() => {
-    setLimit(Number(limitValue));
-  }, [limitValue, setLimit]);
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     if (/^\d*$/.test(value)) {
-      setInputValue(value);
+      if (Number(value) > allPages) {
+        setInputValue(allPages.toString());
+        setPage(allPages);
+      } else if (!value.length) {
+        setInputValue("");
+      } else {
+        setInputValue(value);
+        setPage(Number(value));
+      }
     }
   };
 
   const handleBlur = () => {
     if (inputValue === "" || Number(inputValue) < 1) {
-      setInputValue("1");
+      setInputValue("");
       setPage(1);
     } else if (Number(inputValue) > allPages) {
       setInputValue(allPages.toString());
@@ -56,16 +59,21 @@ export default function Pagination({ currentPage, allPages, setPage, setLimit }:
 
   return (
     <div className="pagination">
-      <Select
-        options={["6", "9", "12", "24"]}
-        defaultValue="9"
-        className="pagination-select"
-        setValue={setLimitValue}
-      />
+      {setLimit && (
+        <Select
+          options={["6", "9", "12", "24"]}
+          defaultValue="9"
+          className="pagination-select"
+          setValue={setLimit}
+        />
+      )}
       <button
         className={cn("pagination-button", { disabled: currentPage === 1 })}
         disabled={currentPage === 1}
-        onClick={() => setPage(currentPage - 1)}
+        onClick={() => {
+          setPage(currentPage - 1);
+          setInputValue((Number(inputValue) - 1).toString());
+        }}
       >
         <Image
           src="/assets/icons/arrow_left.svg"
@@ -76,7 +84,7 @@ export default function Pagination({ currentPage, allPages, setPage, setLimit }:
         />
       </button>
       <Input
-        value={inputValue}
+        value={inputValue.length ? currentPage : ""}
         onChange={handleChange}
         onBlur={handleBlur}
         onKeyDown={handleKeyDown}
@@ -86,7 +94,10 @@ export default function Pagination({ currentPage, allPages, setPage, setLimit }:
       <button
         className={cn("pagination-button", { disabled: currentPage === allPages })}
         disabled={currentPage === allPages}
-        onClick={() => setPage(currentPage + 1)}
+        onClick={() => {
+          setPage(currentPage + 1);
+          setInputValue((Number(inputValue) + 1).toString());
+        }}
       >
         <Image
           src="/assets/icons/arrow_right.svg"

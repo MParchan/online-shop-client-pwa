@@ -6,6 +6,7 @@ import { Metadata } from "next";
 import ProductOverview from "@/components/products/productOverwiev/ProductOverwiev";
 import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
 import { Category } from "@/types/models/category.types";
+import brandsService from "@/api/services/brandsService";
 
 interface SubcategoryProps {
   params: { subcategoryName: string; id: string };
@@ -24,12 +25,15 @@ export default async function SubcategoryPage({ params }: SubcategoryProps) {
     redirect(`/p/${createSlug(subcategory.name)}/${params.id}`);
   }
 
+  const subcategoryBrands = await brandsService.getBrands({
+    subcategory: subcategory._id
+  });
   const category = subcategory.category as Category;
 
   return (
     <div>
       <CategoryNavigation category={category} subcategory={subcategory} />
-      <ProductOverview subcategory={subcategory} />
+      <ProductOverview subcategory={subcategory} subcategoryBrands={subcategoryBrands} />
     </div>
   );
 }

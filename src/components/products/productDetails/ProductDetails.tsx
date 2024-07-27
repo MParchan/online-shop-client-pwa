@@ -1,5 +1,3 @@
-import Button from "@/components/ui/button/Button";
-import Select from "@/components/ui/select/Select";
 import Image from "next/image";
 import React from "react";
 import ProductImages from "../productImages/productImages";
@@ -11,6 +9,7 @@ import { Property } from "@/types/models/property.types";
 import { PropertyType } from "@/types/models/propertyType.types";
 import ScrollToSection from "@/components/ui/scrollToSection/ScrollToSection";
 import { Subcategory } from "@/types/models/subcategory.types";
+import AddToCart from "@/components/shoppingCart/addToCart/AddToCart";
 
 export default function ProductDetails({ product }: { product: Product }) {
   const sortedImages = SortImages(product.images);
@@ -64,22 +63,7 @@ export default function ProductDetails({ product }: { product: Product }) {
             <div className="product-info-order">
               <div className="product-info-order-price">${product.price.toFixed(2)}</div>
               <div className="product-info-order-cart">
-                <Select
-                  options={["1", "2", "3", "4", "5", "6", "7", "8"]}
-                  defaultValue="1"
-                  setValue={() => {}}
-                  className="w-16"
-                />
-                <Button variant="green" className="ml-2">
-                  <Image
-                    src="/assets/icons/add_shopping_cart.svg"
-                    alt="Add shopping cart icon"
-                    width={22}
-                    height={22}
-                    className="invert mr-1 w-auto h-[22px]"
-                  />
-                  Add to cart
-                </Button>
+                <AddToCart product={product} />
               </div>
               {product.quantity > 0 ? (
                 <div className="product-info-order-available">

@@ -32,11 +32,12 @@ body {
     @import "./components/products/productSpecification/productSpecification.scss";
     @import "./components/ui/select/select.scss";
     @import "./components/ui/button/button.scss";
-    @import "./components/ui/pagination/pagination.scss";
     @import "./components/ui/input/input.scss";
+    @import "./components/ui/loader/loader.scss";
+    @import "./components/ui/pagination/pagination.scss";
   }
   .overlay {
-    @apply w-full h-full bg-black opacity-0 transition-opacity duration-500 ease-in-out;
+    @apply w-full h-full bg-black opacity-0 transition-opacity z-40 duration-500 ease-in-out;
   }
   .overlay-block {
     @apply fixed top-[129px];

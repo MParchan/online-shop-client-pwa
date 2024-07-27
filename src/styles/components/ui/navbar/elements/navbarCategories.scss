@@ -19,7 +19,7 @@
       }
 
       .navbar-category-dropdown {
-        @apply hidden absolute z-10 top-[55px] w-[280px] bg-white shadow-lg;
+        @apply hidden absolute z-50 top-[55px] w-[280px] bg-white shadow-lg;
         &.left {
           @apply left-0 rounded-b-lg rounded-tr-lg;
         }

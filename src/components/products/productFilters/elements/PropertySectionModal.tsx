@@ -8,7 +8,7 @@ interface PropertySectionModalProps {
   propertyType: PropertyType;
   propertyCount: PropertyCount[];
   selectedProperties: string[];
-  handleSelectProperties: (propertyId: string, checked: boolean) => void;
+  handleSelectProperties: (property: Property, propertyId: string, checked: boolean) => void;
 }
 interface PropertyCount {
   _id: string;
@@ -33,8 +33,8 @@ export default function PropertySectionModal({
       }
       return a.value.localeCompare(b.value);
     });
-  const handlePropertyClick = (propertyId: string, checked: boolean) => {
-    handleSelectProperties(propertyId, !checked);
+  const handlePropertyClick = (property: Property, propertyId: string, checked: boolean) => {
+    handleSelectProperties(property, propertyId, !checked);
   };
 
   return (
@@ -49,7 +49,11 @@ export default function PropertySectionModal({
             })}
             onClick={() => {
               if (property.count) {
-                handlePropertyClick(property._id, selectedProperties.includes(property._id));
+                handlePropertyClick(
+                  property,
+                  property._id,
+                  selectedProperties.includes(property._id)
+                );
               }
             }}
           >
@@ -58,7 +62,7 @@ export default function PropertySectionModal({
               disabled={!property.count}
               className="product-filters-modal-properties-checkbox"
               onClick={(e) => e.stopPropagation()}
-              onChange={(e) => handleSelectProperties(property._id, e.target.checked)}
+              onChange={(e) => handleSelectProperties(property, property._id, e.target.checked)}
               checked={selectedProperties.includes(property._id)}
             />
             <div className="product-filters-modal-properties-value">
