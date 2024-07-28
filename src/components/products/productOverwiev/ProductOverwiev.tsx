@@ -13,6 +13,7 @@ import Pagination from "@/components/ui/pagination/Pagination";
 import Loader from "@/components/ui/loader/Loader";
 import Select from "@/components/ui/select/Select";
 import { Property } from "@/types/models/property.types";
+import ProductFiltersModal from "../productFilters/ProductFiltersModal";
 
 interface ProductOverwievProps {
   subcategory: Subcategory;
@@ -32,6 +33,7 @@ export default function ProductOverview({ subcategory, subcategoryBrands }: Prod
   const [limit, setLimit] = useState("9");
   const [sorting, setSorting] = useState("From the latest");
   const allPages = Math.ceil(productCount / Number(limit));
+  const [openFilterModal, setOpenFilterModal] = useState(false);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -181,6 +183,27 @@ export default function ProductOverview({ subcategory, subcategoryBrands }: Prod
           )}
           <div className="product-overview-sorting">
             <div className="product-overview-sorting-select-wrapper">
+              <button
+                className="product-overview-filter-button"
+                onClick={() => setOpenFilterModal(true)}
+              >
+                <Image src="/assets/icons/filter.svg" alt="Close logo" width={32} height={32} />
+              </button>
+              <ProductFiltersModal
+                openModal={openFilterModal}
+                setOpenModal={setOpenFilterModal}
+                brands={subcategoryBrands}
+                brandCount={brandCount}
+                propertyCount={propertyCount}
+                productCount={productCount}
+                propertyTypes={subcategory.propertyTypes}
+                selectedBrands={brands}
+                setSelectedBrands={setSelectedBrands}
+                setSelectedBrandsIds={setBrands}
+                selectedProperties={properties}
+                setSelectedPropertiesIds={setProperties}
+                setSelectedProperties={setSelectedProperties}
+              />
               <Select
                 options={[
                   "From the latest",
@@ -195,9 +218,10 @@ export default function ProductOverview({ subcategory, subcategoryBrands }: Prod
                 className="product-overview-sorting-select"
                 textAlignment="left"
               />
-              <span className="product-overview-sorting-select-title">Sorting</span>
             </div>
-            <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
+            <div className="product-overview-pagination-wrapper">
+              <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
+            </div>
           </div>
           {loader ? (
             <div className="product-overview-loading">

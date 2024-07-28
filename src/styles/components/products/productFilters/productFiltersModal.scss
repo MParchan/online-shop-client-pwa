@@ -1,4 +1,4 @@
-.product-filters-modal-wrapper {
+.product-filters-modal-area {
   @apply fixed w-full h-full top-0 left-0 z-20 flex justify-center items-center;
   &.open {
     @apply pointer-events-auto;
@@ -6,76 +6,80 @@
   &.close {
     @apply pointer-events-none;
   }
-  .product-filters-modal {
-    @apply fixed bg-white z-30 transition-all duration-300 ease-in-out transform w-[1200px] h-[500px] mx-2;
-    @apply rounded-lg border flex flex-col;
+  .product-filters-modal-wrapper {
+    @apply fixed z-30 transition-all duration-300 ease-in-out transform w-full h-dvh xl:w-[1260px] sm:max-h-[600px] sm:px-4;
     &.open {
       @apply opacity-100 translate-y-0;
     }
     &.close {
       @apply opacity-0 translate-y-[200%];
     }
-
-    .product-filters-modal-header {
-      @apply bg-gray-200 p-3 text-2xl font-semibold rounded-t-lg;
-      .product-filters-modal-close {
-        @apply absolute top-3 right-3 cursor-pointer;
-      }
-    }
-    .product-filters-modal-body {
-      @apply flex flex-1 border-y;
-
-      .product-filters-modal-property-types {
-        @apply w-60 max-h-[382px] overflow-y-auto;
-        .product-filters-modal-property-type-item {
-          @apply p-3 text-sm;
-          &:hover {
-            @apply bg-gray-100;
-            @apply cursor-pointer;
-          }
-          &.selected {
-            @apply bg-gray-100 text-blue-500;
-          }
+    .product-filters-modal {
+      @apply bg-white sm:rounded-lg sm:border flex flex-col;
+      .product-filters-modal-header {
+        @apply bg-gray-200 p-3 text-2xl font-semibold sm:rounded-t-lg;
+        .product-filters-modal-close {
+          @apply absolute top-3 right-3 sm:right-7 cursor-pointer;
         }
       }
-      .product-filters-modal-properties {
-        @apply flex-1 p-4 max-h-[382px] overflow-y-auto;
+      .product-filters-modal-body {
+        @apply flex flex-1 border-y;
 
-        .product-filters-modal-properties-header {
-          @apply text-xl font-semibold;
-        }
-
-        .product-filters-modal-properties-wrapper {
-          @apply flex flex-wrap justify-between mt-4;
-
-          .product-filters-modal-properties-item {
-            @apply flex w-[280px] p-3;
+        .product-filters-modal-property-types {
+          @apply w-full sm:w-60 h-[calc(100dvh-140px)] sm:max-h-[482px] overflow-y-auto border-r;
+          .product-filters-modal-property-type-item {
+            @apply p-4 sm:p-3 text-sm border-b sm:border-0;
             &:hover {
-              @apply bg-gray-100 cursor-pointer;
+              @apply bg-gray-100;
+              @apply cursor-pointer;
             }
-            &.disabled {
-              &:hover {
-                @apply bg-white cursor-default;
-              }
+            &.selected {
+              @apply sm:bg-gray-100 sm:text-blue-500;
             }
-            .product-filters-modal-properties-checkbox {
-              @apply mr-2 my-1 h-3 w-3;
+            .product-filters-modal-property-type-item-wrapper {
+              @apply flex justify-between;
             }
+          }
+        }
+        .product-filters-modal-properties {
+          @apply hidden sm:block flex-1 p-4 sm:max-h-[482px] overflow-y-auto;
 
-            .product-filters-modal-properties-value {
-              @apply flex-1 text-sm;
-              .product-filters-modal-properties-quantity {
-                @apply text-gray-500;
+          .product-filters-modal-properties-header {
+            @apply text-xl font-semibold;
+          }
+
+          .product-filters-modal-properties-wrapper {
+            @apply flex flex-wrap justify-between mt-4;
+
+            .product-filters-modal-properties-item {
+              @apply flex w-[280px] p-3;
+              &:hover {
+                @apply bg-gray-100 cursor-pointer;
+              }
+              &.disabled {
+                &:hover {
+                  @apply bg-white cursor-default;
+                }
+              }
+              .product-filters-modal-properties-checkbox {
+                @apply mr-2 my-1 h-3 w-3;
+              }
+
+              .product-filters-modal-properties-value {
+                @apply flex-1 text-sm;
+                .product-filters-modal-properties-quantity {
+                  @apply text-gray-500;
+                }
               }
             }
           }
         }
       }
-    }
-    .product-filters-modal-footer {
-      @apply flex p-3 justify-end;
-      .product-filters-modal-footer-button {
-        @apply w-60 mx-3 text-sm;
+      .product-filters-modal-footer {
+        @apply flex px-3 py-6 sm:py-3 justify-end;
+        .product-filters-modal-footer-button {
+          @apply sm:w-60 mx-1 sm:mx-3 text-sm;
+        }
       }
     }
   }

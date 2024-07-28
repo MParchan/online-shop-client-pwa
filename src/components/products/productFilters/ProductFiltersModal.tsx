@@ -45,6 +45,7 @@ export default function ProductFiltersModal({
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [selectBrands, setSelectBrands] = useState<boolean>(true);
   const [selectedProps, setSelectedProps] = useState<PropertyType | null>(null);
+
   const sortedBrands = brands
     .map((brand) => {
       const count = brandCount.find((b) => b._id === brand._id)?.count ?? 0;
@@ -120,104 +121,121 @@ export default function ProductFiltersModal({
   };
 
   return (
-    <div className={cn("product-filters-modal-wrapper", { open: openModal, close: !openModal })}>
-      <div
-        className={cn("product-filters-modal", { open: openModal, close: !openModal })}
-        ref={modalRef}
-      >
-        <div className="product-filters-modal-header">
-          Filters ({selectedBrands.length + selectedProperties.length})
-          <div onClick={() => setOpenModal(false)}>
-            <Image
-              src="/assets/icons/close.svg"
-              alt="Close logo"
-              width={32}
-              height={32}
-              className="product-filters-modal-close"
-            />
-          </div>
-        </div>
-        <div className="product-filters-modal-body">
-          <div className="product-filters-modal-property-types">
-            <div
-              className={cn("product-filters-modal-property-type-item", { selected: selectBrands })}
-              onClick={() => {
-                setSelectBrands(true);
-                setSelectedProps(null);
-              }}
-            >
-              Brands
+    <div className={cn("product-filters-modal-area", { open: openModal, close: !openModal })}>
+      <div className={cn("product-filters-modal-wrapper", { open: openModal, close: !openModal })}>
+        <div className="product-filters-modal" ref={modalRef}>
+          <div className="product-filters-modal-header">
+            Filters ({selectedBrands.length + selectedProperties.length})
+            <div onClick={() => setOpenModal(false)}>
+              <Image
+                src="/assets/icons/close.svg"
+                alt="Close logo"
+                width={32}
+                height={32}
+                className="product-filters-modal-close"
+              />
             </div>
-            {propertyTypes.map((propertyType: PropertyType) => (
+          </div>
+          <div className="product-filters-modal-body">
+            <div className="product-filters-modal-property-types">
               <div
-                key={propertyType._id}
                 className={cn("product-filters-modal-property-type-item", {
-                  selected: selectedProps?._id === propertyType._id
+                  selected: selectBrands
                 })}
                 onClick={() => {
-                  setSelectBrands(false);
-                  setSelectedProps(propertyType);
+                  setSelectBrands(true);
+                  setSelectedProps(null);
                 }}
               >
-                {propertyType.name}
-              </div>
-            ))}
-          </div>
-          <div className="product-filters-modal-properties">
-            {selectBrands && (
-              <>
-                <header className="product-filters-modal-properties-header">Brands</header>
-                <div className="product-filters-modal-properties-wrapper">
-                  {sortedBrands.map((brand) => (
-                    <div
-                      key={brand._id}
-                      className={cn("product-filters-modal-properties-item", {
-                        disabled: !brand.count
-                      })}
-                      onClick={() => {
-                        if (brand.count) {
-                          handleBrandClick(brand, brand._id, selectedBrands.includes(brand._id));
-                        }
-                      }}
-                    >
-                      <Input
-                        type="checkbox"
-                        disabled={!brand.count}
-                        className="product-filters-modal-properties-checkbox"
-                        onClick={(e) => e.stopPropagation()}
-                        onChange={(e) => handleSelectBrands(brand, brand._id, e.target.checked)}
-                        checked={selectedBrands.includes(brand._id)}
-                      />
-                      <div className="product-filters-modal-properties-value">
-                        <span>{brand.name + " "}</span>
-                        <span className="product-filters-modal-properties-quantity">
-                          ({brand.count})
-                        </span>
-                      </div>
-                    </div>
-                  ))}
+                <div className="product-filters-modal-property-type-item-wrapper">
+                  <span>Brands</span>
+                  <Image
+                    src="/assets/icons/arrow_right.svg"
+                    alt="Arrow right logo"
+                    width={20}
+                    height={20}
+                  />
                 </div>
-              </>
-            )}
-            {selectedProps !== null && (
-              <PropertySectionModal
-                key={selectedProps._id}
-                propertyType={selectedProps}
-                propertyCount={propertyCount}
-                selectedProperties={selectedProperties}
-                handleSelectProperties={handleSelectProperties}
-              />
-            )}
+              </div>
+              {propertyTypes.map((propertyType: PropertyType) => (
+                <div
+                  key={propertyType._id}
+                  className={cn("product-filters-modal-property-type-item", {
+                    selected: selectedProps?._id === propertyType._id
+                  })}
+                  onClick={() => {
+                    setSelectBrands(false);
+                    setSelectedProps(propertyType);
+                  }}
+                >
+                  <div className="product-filters-modal-property-type-item-wrapper">
+                    <span>{propertyType.name}</span>
+                    <Image
+                      src="/assets/icons/arrow_right.svg"
+                      alt="Arrow right logo"
+                      width={20}
+                      height={20}
+                    />
+                  </div>
+                </div>
+              ))}
+            </div>
+            <div className="product-filters-modal-properties">
+              {selectBrands && (
+                <>
+                  <header className="product-filters-modal-properties-header">Brands</header>
+                  <div className="product-filters-modal-properties-wrapper">
+                    {sortedBrands.map((brand) => (
+                      <div
+                        key={brand._id}
+                        className={cn("product-filters-modal-properties-item", {
+                          disabled: !brand.count
+                        })}
+                        onClick={() => {
+                          if (brand.count) {
+                            handleBrandClick(brand, brand._id, selectedBrands.includes(brand._id));
+                          }
+                        }}
+                      >
+                        <Input
+                          type="checkbox"
+                          disabled={!brand.count}
+                          className="product-filters-modal-properties-checkbox"
+                          onClick={(e) => e.stopPropagation()}
+                          onChange={(e) => handleSelectBrands(brand, brand._id, e.target.checked)}
+                          checked={selectedBrands.includes(brand._id)}
+                        />
+                        <div className="product-filters-modal-properties-value">
+                          <span>{brand.name + " "}</span>
+                          <span className="product-filters-modal-properties-quantity">
+                            ({brand.count})
+                          </span>
+                        </div>
+                      </div>
+                    ))}
+                  </div>
+                </>
+              )}
+              {selectedProps !== null && (
+                <PropertySectionModal
+                  key={selectedProps._id}
+                  propertyType={selectedProps}
+                  propertyCount={propertyCount}
+                  selectedProperties={selectedProperties}
+                  handleSelectProperties={handleSelectProperties}
+                />
+              )}
+            </div>
           </div>
-        </div>
-        <div className="product-filters-modal-footer">
-          <div className="product-filters-modal-footer-button">
-            <Button variant="secondary" onClick={clearFiltersHandler}>
-              Clear filters
-            </Button>
-          </div>
-          <div className="product-filters-modal-footer-button">
-            <Button onClick={() => setOpenModal(false)}>Show results ({productCount})</Button>
+          <div className="product-filters-modal-footer">
+            <div className="product-filters-modal-footer-button">
+              <Button variant="secondary" onClick={clearFiltersHandler}>
+                Clear filters
+              </Button>
+            </div>
+            <div className="product-filters-modal-footer-button">
+              <Button onClick={() => setOpenModal(false)}>Show results ({productCount})</Button>
+            </div>
           </div>
         </div>
       </div>
