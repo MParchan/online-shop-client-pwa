@@ -9,11 +9,18 @@ import Select from "../select/Select";
 interface PaginationProps {
   currentPage: number;
   allPages: number;
+  limit?: string;
   setPage: React.Dispatch<React.SetStateAction<number>>;
   setLimit?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-export default function Pagination({ currentPage, allPages, setPage, setLimit }: PaginationProps) {
+export default function Pagination({
+  currentPage,
+  allPages,
+  limit,
+  setPage,
+  setLimit
+}: PaginationProps) {
   const [inputValue, setInputValue] = useState("1");
 
   const handleChange = (e: ChangeEvent<HTMLInputElement>) => {
@@ -59,10 +66,10 @@ export default function Pagination({ currentPage, allPages, setPage, setLimit }:
 
   return (
     <div className="pagination">
-      {setLimit && (
+      {setLimit && limit && (
         <Select
           options={["6", "9", "12", "24"]}
-          defaultValue="9"
+          defaultValue={limit}
           className="pagination-select"
           setValue={setLimit}
         />

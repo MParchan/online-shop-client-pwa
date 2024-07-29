@@ -14,26 +14,77 @@ import Loader from "@/components/ui/loader/Loader";
 import Select from "@/components/ui/select/Select";
 import { Property } from "@/types/models/property.types";
 import ProductFiltersModal from "../productFilters/ProductFiltersModal";
+import { usePathname, useRouter, useSearchParams } from "next/navigation";
 
 interface ProductOverwievProps {
   subcategory: Subcategory;
   subcategoryBrands: Brand[];
+  urlSelectedBrands: Brand[];
+  urlSelectedProperties: Property[];
+  urlParamPage?: string;
+  urlParamLimit?: string;
+  urlParamSorting?: string;
+  urlParamBrands?: string[];
+  urlParamProperties?: string[];
 }
-export default function ProductOverview({ subcategory, subcategoryBrands }: ProductOverwievProps) {
+export default function ProductOverview({
+  subcategory,
+  subcategoryBrands,
+  urlSelectedBrands,
+  urlSelectedProperties,
+  urlParamPage,
+  urlParamLimit,
+  urlParamSorting,
+  urlParamBrands,
+  urlParamProperties
+}: ProductOverwievProps) {
   const [products, setProducts] = useState<Product[]>([]);
   const [brandCount, setBrandCount] = useState([]);
   const [propertyCount, setPropertyCount] = useState([]);
   const [productCount, setProductCount] = useState(0);
-  const [brands, setBrands] = useState<string[]>([]);
-  const [properties, setProperties] = useState<string[]>([]);
-  const [selectedBrands, setSelectedBrands] = useState<Brand[]>([]);
-  const [selectedProperties, setSelectedProperties] = useState<Property[]>([]);
+  const [brands, setBrands] = useState<string[]>(urlParamBrands ?? []);
+  const [properties, setProperties] = useState<string[]>(urlParamProperties ?? []);
+  const [selectedBrands, setSelectedBrands] = useState<Brand[]>(urlSelectedBrands);
+  const [selectedProperties, setSelectedProperties] = useState<Property[]>(urlSelectedProperties);
   const [loader, setLoader] = useState(true);
-  const [page, setPage] = useState(1);
-  const [limit, setLimit] = useState("9");
-  const [sorting, setSorting] = useState("From the latest");
+  const [page, setPage] = useState<number>(urlParamPage ? Number(urlParamPage) : 1);
+  const [limit, setLimit] = useState(urlParamLimit ?? "9");
+  const [sorting, setSorting] = useState(urlParamSorting ?? "From the latest");
   const allPages = Math.ceil(productCount / Number(limit));
   const [openFilterModal, setOpenFilterModal] = useState(false);
+  const searchParams = useSearchParams();
+  const pathname = usePathname();
+  const { replace } = useRouter();
+
+  useEffect(() => {
+    const params = new URLSearchParams(searchParams);
+    if (page > 1) {
+      params.set("page", page.toString());
+    } else {
+      params.delete("page");
+    }
+    if (limit !== "9") {
+      params.set("limit", limit);
+    } else {
+      params.delete("limit");
+    }
+    if (sorting !== "From the latest") {
+      params.set("sorting", sorting);
+    } else {
+      params.delete("sorting");
+    }
+    if (brands.length) {
+      params.set("brands", brands.toString());
+    } else {
+      params.delete("brands");
+    }
+    if (properties.length) {
+      params.set("properties", properties.toString());
+    } else {
+      params.delete("properties");
+    }
+    replace(`${pathname}?${params.toString()}`);
+  }, [brands, limit, page, pathname, properties, replace, searchParams, sorting]);
 
   useEffect(() => {
     const fetchProducts = async () => {
@@ -82,7 +133,11 @@ export default function ProductOverview({ subcategory, subcategoryBrands }: Prod
 
     setLoader(true);
     fetchProducts();
-  }, [brands, limit, page, properties, sorting, subcategory]);
+  }, [brands, limit, page, properties, sorting, subcategory._id]);
+
+  useEffect(() => {
+    setPage(1);
+  }, [brands, properties, sorting, limit]);
 
   sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
 
@@ -181,65 +236,69 @@ export default function ProductOverview({ subcategory, subcategoryBrands }: Prod
               ))}
             </div>
           )}
-          <div className="product-overview-sorting">
-            <div className="product-overview-sorting-select-wrapper">
-              <button
-                className="product-overview-filter-button"
-                onClick={() => setOpenFilterModal(true)}
-              >
-                <Image src="/assets/icons/filter.svg" alt="Close logo" width={32} height={32} />
-              </button>
-              <ProductFiltersModal
-                openModal={openFilterModal}
-                setOpenModal={setOpenFilterModal}
-                brands={subcategoryBrands}
-                brandCount={brandCount}
-                propertyCount={propertyCount}
-                productCount={productCount}
-                propertyTypes={subcategory.propertyTypes}
-                selectedBrands={brands}
-                setSelectedBrands={setSelectedBrands}
-                setSelectedBrandsIds={setBrands}
-                selectedProperties={properties}
-                setSelectedPropertiesIds={setProperties}
-                setSelectedProperties={setSelectedProperties}
-              />
-              <Select
-                options={[
-                  "From the latest",
-                  "From the oldest",
-                  "Alphabetically: from A to Z",
-                  "Alphabetically: from Z to A",
-                  "Price: from the cheapest",
-                  "Price: from the most expensive"
-                ]}
-                defaultValue="From the latest"
-                setValue={setSorting}
-                className="product-overview-sorting-select"
-                textAlignment="left"
-              />
-            </div>
-            <div className="product-overview-pagination-wrapper">
-              <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
-            </div>
-          </div>
+
           {loader ? (
             <div className="product-overview-loading">
               <Loader />
             </div>
           ) : productCount > 0 ? (
-            <ProductList products={products} />
+            <>
+              <div className="product-overview-sorting">
+                <div className="product-overview-sorting-select-wrapper">
+                  <button
+                    className="product-overview-filter-button"
+                    onClick={() => setOpenFilterModal(true)}
+                  >
+                    <Image src="/assets/icons/filter.svg" alt="Close logo" width={32} height={32} />
+                  </button>
+                  <ProductFiltersModal
+                    openModal={openFilterModal}
+                    setOpenModal={setOpenFilterModal}
+                    brands={subcategoryBrands}
+                    brandCount={brandCount}
+                    propertyCount={propertyCount}
+                    productCount={productCount}
+                    propertyTypes={subcategory.propertyTypes}
+                    selectedBrands={brands}
+                    setSelectedBrands={setSelectedBrands}
+                    setSelectedBrandsIds={setBrands}
+                    selectedProperties={properties}
+                    setSelectedPropertiesIds={setProperties}
+                    setSelectedProperties={setSelectedProperties}
+                  />
+                  <Select
+                    options={[
+                      "From the latest",
+                      "From the oldest",
+                      "Alphabetically: from A to Z",
+                      "Alphabetically: from Z to A",
+                      "Price: from the cheapest",
+                      "Price: from the most expensive"
+                    ]}
+                    defaultValue={sorting}
+                    setValue={setSorting}
+                    className="product-overview-sorting-select"
+                    textAlignment="left"
+                  />
+                </div>
+                <div className="product-overview-pagination-wrapper">
+                  <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
+                </div>
+              </div>
+              <ProductList products={products} />
+              <div className="product-overview-pagination">
+                <Pagination
+                  currentPage={page}
+                  allPages={allPages}
+                  limit={limit}
+                  setPage={setPage}
+                  setLimit={setLimit}
+                />
+              </div>
+            </>
           ) : (
             <div className="product-overview-no-products">No products available</div>
           )}
-          <div className="product-overview-sorting">
-            <Pagination
-              currentPage={page}
-              allPages={allPages}
-              setPage={setPage}
-              setLimit={setLimit}
-            />
-          </div>
         </div>
       </div>
     </div>

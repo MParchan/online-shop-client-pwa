@@ -52,6 +52,11 @@
       .product-overview-pagination-wrapper {
         @apply hidden sm:block;
       }
+
+      .product-overview-pagination {
+        @apply flex justify-end border-y lg:ml-4 py-2;
+      }
+
       .product-overview-no-products {
         @apply text-2xl text-center mt-12;
       }
