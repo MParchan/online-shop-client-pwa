@@ -78,7 +78,77 @@
       .product-filters-modal-footer {
         @apply flex px-3 py-6 sm:py-3 justify-end;
         .product-filters-modal-footer-button {
-          @apply sm:w-60 mx-1 sm:mx-3 text-sm;
+          @apply w-1/2 sm:w-60 mx-1 sm:mx-3 text-sm;
+        }
+      }
+
+      .product-filters-modal-submenu {
+        @apply fixed sm:hidden z-30 top-0 left-0 w-full h-full;
+        @apply bg-white;
+        @apply transform transition-transform duration-300 ease-in-out;
+        &.open-submenu {
+          @apply translate-x-0;
+        }
+        &.close-submenu {
+          @apply -translate-x-full;
+        }
+        .product-filters-modal-submenu-header {
+          @apply bg-gray-200 pl-16 p-3 text-2xl font-semibold;
+          .product-filters-modal-submenu-close {
+            @apply absolute top-3 left-3 cursor-pointer;
+          }
+        }
+
+        .product-filters-modal-submenu-values {
+          @apply w-full h-[calc(100dvh-140px)] overflow-y-auto;
+          .product-filters-modal-submenu-values-item {
+            @apply flex p-4 border-b;
+            &:hover {
+              @apply bg-gray-100 cursor-pointer;
+            }
+            &.disabled {
+              &:hover {
+                @apply bg-white cursor-default;
+              }
+            }
+            .product-filters-modal-submenu-values-checkbox {
+              @apply mr-2 my-1 h-3 w-3;
+            }
+            .product-filters-modal-submenu-value {
+              @apply text-sm;
+              .product-filters-modal-submenu-value-quantity {
+                @apply text-gray-500;
+              }
+            }
+          }
+          .product-filters-modal-properties-header {
+            @apply hidden;
+          }
+          .product-filters-modal-properties-wrapper {
+            @apply w-full h-[calc(100dvh-140px)] overflow-y-auto;
+
+            .product-filters-modal-properties-item {
+              @apply flex p-4 border-b;
+              &:hover {
+                @apply bg-gray-100 cursor-pointer;
+              }
+              &.disabled {
+                &:hover {
+                  @apply bg-white cursor-default;
+                }
+              }
+              .product-filters-modal-properties-checkbox {
+                @apply mr-2 my-1 h-3 w-3;
+              }
+
+              .product-filters-modal-properties-value {
+                @apply flex-1 text-sm;
+                .product-filters-modal-properties-quantity {
+                  @apply text-gray-500;
+                }
+              }
+            }
+          }
         }
       }
     }

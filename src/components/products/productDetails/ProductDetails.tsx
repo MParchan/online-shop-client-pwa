@@ -10,11 +10,16 @@ import { PropertyType } from "@/types/models/propertyType.types";
 import ScrollToSection from "@/components/ui/scrollToSection/ScrollToSection";
 import { Subcategory } from "@/types/models/subcategory.types";
 import AddToCart from "@/components/shoppingCart/addToCart/AddToCart";
+import { sortProductProperties } from "@/utils/sortProductProperties";
 
 export default function ProductDetails({ product }: { product: Product }) {
   const sortedImages = SortImages(product.images);
   const brand = product.brand as Brand;
   const subcategory = product.subcategory as Subcategory;
+  const sortedProductProperties = sortProductProperties(
+    product.productProperties,
+    subcategory.name
+  );
 
   return (
     <div className="product">
@@ -33,7 +38,7 @@ export default function ProductDetails({ product }: { product: Product }) {
                     <span className="product-info-specification-header">Brand: </span>
                     <span className="product-info-specification-value">{brand.name}</span>
                   </li>
-                  {product.productProperties.slice(0, 4).map((productProperty) => {
+                  {sortedProductProperties.slice(0, 4).map((productProperty) => {
                     const property = productProperty.property as Property;
                     const propertyType = property.propertyType as PropertyType;
                     return (

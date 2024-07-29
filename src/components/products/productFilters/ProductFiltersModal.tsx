@@ -45,6 +45,7 @@ export default function ProductFiltersModal({
   const modalRef = useRef<HTMLDivElement | null>(null);
   const [selectBrands, setSelectBrands] = useState<boolean>(true);
   const [selectedProps, setSelectedProps] = useState<PropertyType | null>(null);
+  const [isSubmenuOpen, setIsSubmenuOpen] = useState<boolean>(false);
 
   const sortedBrands = brands
     .map((brand) => {
@@ -61,6 +62,7 @@ export default function ProductFiltersModal({
     const handleClickOutside = (event: MouseEvent) => {
       if (modalRef.current && !modalRef.current.contains(event.target as Node)) {
         setOpenModal(false);
+        setIsSubmenuOpen(false);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
@@ -126,7 +128,12 @@ export default function ProductFiltersModal({
         <div className="product-filters-modal" ref={modalRef}>
           <div className="product-filters-modal-header">
             Filters ({selectedBrands.length + selectedProperties.length})
-            <div onClick={() => setOpenModal(false)}>
+            <div
+              onClick={() => {
+                setOpenModal(false);
+                setIsSubmenuOpen(false);
+              }}
+            >
               <Image
                 src="/assets/icons/close.svg"
                 alt="Close logo"
@@ -144,6 +151,7 @@ export default function ProductFiltersModal({
                 })}
                 onClick={() => {
                   setSelectBrands(true);
+                  setIsSubmenuOpen(true);
                   setSelectedProps(null);
                 }}
               >
@@ -165,6 +173,7 @@ export default function ProductFiltersModal({
                   })}
                   onClick={() => {
                     setSelectBrands(false);
+                    setIsSubmenuOpen(true);
                     setSelectedProps(propertyType);
                   }}
                 >
@@ -234,11 +243,90 @@ export default function ProductFiltersModal({
               </Button>
             </div>
             <div className="product-filters-modal-footer-button">
-              <Button onClick={() => setOpenModal(false)}>Show results ({productCount})</Button>
+              <Button
+                onClick={() => {
+                  setOpenModal(false);
+                  setIsSubmenuOpen(false);
+                }}
+              >
+                Show results ({productCount})
+              </Button>
+            </div>
+          </div>
+
+          <div
+            className={`product-filters-modal-submenu ${isSubmenuOpen ? "open-submenu" : "close-submenu"}`}
+          >
+            <div className="product-filters-modal-submenu-header">
+              <div onClick={() => setIsSubmenuOpen(false)}>
+                <Image
+                  src="/assets/icons/arrow_back.svg"
+                  alt="Arrow back logo"
+                  width={32}
+                  height={32}
+                  className="product-filters-modal-submenu-close"
+                />
+              </div>
+              {selectBrands ? "Brands" : <span>{selectedProps?.name}</span>}
+            </div>
+            <div className="product-filters-modal-submenu-values">
+              {selectBrands && (
+                <>
+                  {sortedBrands.map((brand) => (
+                    <div
+                      key={brand._id}
+                      className={cn("product-filters-modal-submenu-values-item", {
+                        disabled: !brand.count
+                      })}
+                      onClick={() => {
+                        if (brand.count) {
+                          handleBrandClick(brand, brand._id, selectedBrands.includes(brand._id));
+                        }
+                      }}
+                    >
+                      <Input
+                        type="checkbox"
+                        disabled={!brand.count}
+                        className="product-filters-modal-submenu-values-checkbox"
+                        onClick={(e) => e.stopPropagation()}
+                        onChange={(e) => handleSelectBrands(brand, brand._id, e.target.checked)}
+                        checked={selectedBrands.includes(brand._id)}
+                      />
+                      <div className="product-filters-modal-submenu-value">
+                        <span>{brand.name + " "}</span>
+                        <span className="product-filters-modal-submenu-value-quantity">
+                          ({brand.count})
+                        </span>
+                      </div>
+                    </div>
+                  ))}
+                </>
+              )}
+              {selectedProps !== null && (
+                <PropertySectionModal
+                  key={selectedProps._id}
+                  propertyType={selectedProps}
+                  propertyCount={propertyCount}
+                  selectedProperties={selectedProperties}
+                  handleSelectProperties={handleSelectProperties}
+                />
+              )}
+            </div>
+            <div className="product-filters-modal-footer">
+              <div className="product-filters-modal-footer-button">
+                <Button
+                  onClick={() => {
+                    setIsSubmenuOpen(false);
+                  }}
+                >
+                  Apply
+                </Button>
+              </div>
             </div>
           </div>
         </div>
       </div>
+
       <div
         className={cn("product-filters-modal-overlay", { open: openModal, close: !openModal })}
       ></div>
