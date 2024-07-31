@@ -13,7 +13,12 @@ interface ProductParams {
   category?: string | null;
 }
 
-export default function NavbarSearchBar({ categories }: { categories: Category[] }) {
+interface NavbarSearchBarProps {
+  categories: Category[];
+  isHidden?: boolean;
+}
+
+export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBarProps) {
   const [categoryOpened, setCategoryOpened] = useState(false);
   const [productQuery, setProductQuery] = useState("");
   const [productData, setProductData] = useState<Product[] | null>(null);
@@ -25,6 +30,8 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
   const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const productDropdownRef = useRef<HTMLDivElement | null>(null);
+
+  console.log(isLoading);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -74,9 +81,10 @@ export default function NavbarSearchBar({ categories }: { categories: Category[]
   }, [productQuery, selectedCategoryId]);
 
   useEffect(() => {
-    console.log("products: ", productData);
-    console.log("Loader: ", isLoading);
-  }, [isLoading, productData]);
+    if (isHidden) {
+      setCategoryOpened(false);
+    }
+  }, [isHidden]);
 
   async function onSubmit(event: FormEvent<HTMLFormElement>) {
     event.preventDefault();

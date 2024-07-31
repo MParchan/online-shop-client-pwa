@@ -1,5 +1,5 @@
 .navbar-categories {
-  @apply hidden lg:block bg-gray-100;
+  @apply hidden lg:block bg-gray-100 z-40;
   .navbar-category-list {
     @apply max-w-screen-xl mx-auto flex flex-wrap items-center justify-between;
 
@@ -42,6 +42,16 @@
           }
         }
       }
+    }
+  }
+  .navbar-categories-overlay {
+    @apply fixed w-full h-dvh bg-black  transition-opacity duration-500 ease-in-out;
+
+    &.vis {
+      @apply opacity-50 pointer-events-auto;
+    }
+    &.hid {
+      @apply opacity-0 pointer-events-none;
     }
   }
 }

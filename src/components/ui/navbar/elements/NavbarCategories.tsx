@@ -6,21 +6,33 @@ import { Subcategory } from "@/types/models/subcategory.types";
 import createSlug from "@/utils/createSlug";
 import Image from "next/image";
 import Link from "next/link";
-import React from "react";
+import React, { useEffect } from "react";
 import { useState } from "react";
 
-export default function NavbarCategories({ categories }: { categories: Category[] }) {
+interface NavbarCategoriesProps {
+  categories: Category[];
+  isHidden: boolean;
+}
+
+export default function NavbarCategories({ categories, isHidden }: NavbarCategoriesProps) {
   const [categorySelected, setCategorySelected] = useState<string | null>(null);
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
+
+  useEffect(() => {
+    if (isHidden) {
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+      setCategorySelected(null);
+    }
+  }, [isHidden, timeoutId]);
 
   const handleMouseEnter = (categoryId: string) => {
     if (categorySelected) {
       setCategorySelected(categoryId);
-      document.getElementById("overlay")?.classList.add("overlay-block");
     } else {
       const id = setTimeout(() => {
         setCategorySelected(categoryId);
-        document.getElementById("overlay")?.classList.add("overlay-block");
       }, 200);
       setTimeoutId(id);
     }
@@ -31,7 +43,6 @@ export default function NavbarCategories({ categories }: { categories: Category[
       clearTimeout(timeoutId);
     }
     setCategorySelected(null);
-    document.getElementById("overlay")?.classList.remove("overlay-block");
   };
 
   return (
@@ -89,6 +100,10 @@ export default function NavbarCategories({ categories }: { categories: Category[
           </li>
         ))}
       </ul>
+
+      <div
+        className={`navbar-categories-overlay ${categorySelected !== null ? "vis" : "hid"}`}
+      ></div>
     </div>
   );
 }

@@ -4,7 +4,7 @@ import { Category } from "@/types/models/category.types";
 const SRERVICE_URL = "/categories";
 
 const categoriesService = {
-    getSubcategories: async (params = {}) => {
+    getCategories: async (params = {}) => {
         try {
             const response = await axiosInstance.get(SRERVICE_URL, { params });
             return response.data;

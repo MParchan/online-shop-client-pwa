@@ -34,7 +34,7 @@
   }
 
   .select-category-dropdown {
-    @apply hidden bg-white z-30;
+    @apply hidden bg-white;
     @apply rounded-lg shadow-lg border absolute top-[42px] w-[200px] right-0 translate-x-[-55px];
     &.active {
       @apply block;
@@ -63,7 +63,7 @@
   }
 
   .search-product-dropdown {
-    @apply hidden bg-white z-20;
+    @apply hidden bg-white;
     @apply rounded-b-lg shadow-lg border border-t-0 absolute top-[40px] left-[-1px] w-[calc(100%+2px)];
     &.active {
       @apply block;

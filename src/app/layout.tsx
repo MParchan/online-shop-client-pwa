@@ -5,6 +5,8 @@ import Head from "next/head";
 import Navbar from "@/components/ui/navbar/Navbar";
 import { Suspense } from "react";
 import Loading from "./loading";
+import { Category } from "@/types/models/category.types";
+import categoriesService from "@/api/services/categoriesService";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -13,11 +15,12 @@ export const metadata: Metadata = {
   description: "Online shop app"
 };
 
-export default function RootLayout({
+export default async function RootLayout({
   children
 }: Readonly<{
   children: React.ReactNode;
 }>) {
+  const categories: Category[] = await categoriesService.getCategories();
   return (
     <html lang="en">
       <Head>
@@ -25,11 +28,10 @@ export default function RootLayout({
         <link rel="icon" href="/favicon.ico" sizes="any" />
       </Head>
       <body className={inter.className}>
-        <Navbar />
+        <Navbar categories={categories} />
         <Suspense fallback={<Loading />}>
           <main className="layout">{children}</main>
         </Suspense>
-        <div className="overlay" id="overlay"></div>
       </body>
     </html>
   );

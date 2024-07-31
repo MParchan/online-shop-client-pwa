@@ -21,7 +21,7 @@ body {
   @import "./components/ui/navbar/navbar.scss";
 
   .layout {
-    @apply mx-3 sm:mx-6 my-6 max-w-screen-xl xl:mx-auto xl:px-6;
+    @apply mx-3 sm:mx-6 mb-6 mt-[72px] lg:mt-20 max-w-screen-xl xl:mx-auto xl:px-6;
     @import "./components/categories/categoryNavigation/categoryNavigation.scss";
     @import "./components/products//productFilters/productFilters.scss";
     @import "./components/products//productFilters/productFiltersModal.scss";
@@ -35,13 +35,6 @@ body {
     @import "./components/ui/input/input.scss";
     @import "./components/ui/loader/loader.scss";
     @import "./components/ui/pagination/pagination.scss";
-  }
-  .overlay {
-    @apply w-full h-full bg-black opacity-0 transition-opacity z-40 duration-500 ease-in-out;
-  }
-  .overlay-block {
-    @apply fixed top-[129px];
-    @apply opacity-50;
   }
 }
 

@@ -7,21 +7,30 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
-export default function NavbarHamburgerMenu({ categories }: { categories: Category[] }) {
-  const [isMenuOpen, setIsMenuOpen] = useState(false);
+interface NavbarHamburgerMenuProps {
+  categories: Category[];
+  hamburgerMenuOpen: boolean;
+  setHamburgerMenuOpen: React.Dispatch<React.SetStateAction<boolean>>;
+}
+
+export default function NavbarHamburgerMenu({
+  categories,
+  hamburgerMenuOpen,
+  setHamburgerMenuOpen
+}: NavbarHamburgerMenuProps) {
   const [selectedCategory, setSelectedCategory] = useState<Category | null>(null);
 
   useEffect(() => {
-    if (isMenuOpen) {
+    if (hamburgerMenuOpen) {
       document.body.classList.add("overflow-hidden");
     } else {
       document.body.classList.remove("overflow-hidden");
     }
-  }, [isMenuOpen]);
+  }, [hamburgerMenuOpen]);
 
   return (
     <>
-      <div className="hamburger-menu-icon" onClick={() => setIsMenuOpen(!isMenuOpen)}>
+      <div className="hamburger-menu-icon" onClick={() => setHamburgerMenuOpen(!hamburgerMenuOpen)}>
         <Image
           src="/assets/icons/menu.svg"
           alt="Menu logo"
@@ -30,10 +39,10 @@ export default function NavbarHamburgerMenu({ categories }: { categories: Catego
           className="h-8 w-auto"
         />
       </div>
-      <div className={`hamburger-menu ${isMenuOpen ? "open" : "close"}`}>
+      <div className={`hamburger-menu ${hamburgerMenuOpen ? "open" : "close"}`}>
         <div className="hamburger-menu-header">
           <span className="hamburger-menu-header-span">Menu</span>
-          <div className="hamburger-menu-close-icon" onClick={() => setIsMenuOpen(false)}>
+          <div className="hamburger-menu-close-icon" onClick={() => setHamburgerMenuOpen(false)}>
             <Image
               src="/assets/icons/close.svg"
               alt="Close logo"
@@ -89,7 +98,7 @@ export default function NavbarHamburgerMenu({ categories }: { categories: Catego
               <Link
                 href={`/c/${createSlug(selectedCategory.name)}/${selectedCategory._id}`}
                 onClick={() => {
-                  setIsMenuOpen(!isMenuOpen);
+                  setHamburgerMenuOpen(!hamburgerMenuOpen);
                   setSelectedCategory(null);
                 }}
                 className="hamburger-menu-categoru-button"
@@ -103,7 +112,7 @@ export default function NavbarHamburgerMenu({ categories }: { categories: Catego
                   <Link
                     href={`/s/${createSlug(subcategory.name)}/${subcategory._id}`}
                     onClick={() => {
-                      setIsMenuOpen(!isMenuOpen);
+                      setHamburgerMenuOpen(!hamburgerMenuOpen);
                       setSelectedCategory(null);
                     }}
                     className="hamburger-menu-category-name"
@@ -116,8 +125,8 @@ export default function NavbarHamburgerMenu({ categories }: { categories: Catego
           </div>
         </div>
       </div>
-      {isMenuOpen && (
-        <div className="hamburger-menu-overlay" onClick={() => setIsMenuOpen(false)}></div>
+      {hamburgerMenuOpen && (
+        <div className="hamburger-menu-overlay" onClick={() => setHamburgerMenuOpen(false)}></div>
       )}
     </>
   );
