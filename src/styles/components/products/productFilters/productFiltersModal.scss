@@ -1,5 +1,5 @@
 .product-filters-modal-area {
-  @apply fixed w-full h-full top-0 left-0 z-20 flex justify-center items-center;
+  @apply fixed w-full h-full top-0 left-0 flex justify-center items-center z-50;
   &.open {
     @apply pointer-events-auto;
   }
@@ -71,6 +71,10 @@
                   @apply text-gray-500;
                 }
               }
+            }
+
+            .product-filters-modal-properties-item-filler {
+              @apply hidden lg:flex w-[280px] p-3;
             }
           }
         }

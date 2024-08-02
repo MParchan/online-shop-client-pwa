@@ -22,7 +22,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   const [categoryOpened, setCategoryOpened] = useState(false);
   const [productQuery, setProductQuery] = useState("");
   const [productData, setProductData] = useState<Product[] | null>(null);
-  const [isLoading, setLoading] = useState(false);
+  const [, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
   const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
@@ -30,8 +30,6 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
   const productDropdownRef = useRef<HTMLDivElement | null>(null);
-
-  console.log(isLoading);
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {

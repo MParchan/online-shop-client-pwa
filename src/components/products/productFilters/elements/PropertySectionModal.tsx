@@ -71,6 +71,14 @@ export default function PropertySectionModal({
             </div>
           </div>
         ))}
+        {Array(3 - (sortedProperties.length % 3))
+          .fill(null)
+          .map((_, index) => (
+            <div
+              key={`spacer-${index}`}
+              className="product-filters-modal-properties-item-filler"
+            ></div>
+          ))}
       </div>
     </>
   );

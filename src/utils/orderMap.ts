@@ -15,6 +15,20 @@ const orderMaps = {
         "Thickness",
         "Weight"
     ],
+    Tablets: [
+        "Screen diagonal",
+        "Screen resolution",
+        "Rear camera",
+        "Front camera",
+        "Processor",
+        "Graphics chip",
+        "RAM",
+        "Built-in memory",
+        "Screen refresh rate",
+        "Operating system",
+        "Fingerprint reader",
+        "Battery"
+    ],
     "Bags and cases": [
         "Type",
         "Compatibility",
@@ -23,6 +37,27 @@ const orderMaps = {
         "Color",
         "Material",
         "Type of fastener"
+    ],
+    "Smartphones and phones": [
+        "Processor",
+        "RAM",
+        "Built-in memory",
+        "Screen diagonal",
+        "Screen type",
+        "Screen resolution",
+        "Screen refresh rate",
+        "Pixel density",
+        "Rear camera",
+        "Front camera",
+        "Operating system",
+        "Fingerprint reader",
+        "Battery capacity",
+        "Fast charging",
+        "Color",
+        "Height",
+        "Width",
+        "Thickness",
+        "Weight"
     ]
 };
 

@@ -97,7 +97,7 @@ export default function PropertySection({
             <>
               <span>More</span>
               <span className="products-filter-section-quantity">
-                ({propertyType.properties.length - 5})
+                ({propertyType.properties.length - 4})
               </span>
             </>
           )}
