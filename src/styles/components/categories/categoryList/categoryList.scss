@@ -1,0 +1,19 @@
+.category-list-wrapper {
+  @apply w-72 rounded-lg border p-3;
+
+  .category-list-item {
+    @apply py-2;
+    &.bold {
+      @apply font-bold;
+    }
+  }
+  .category-list-subcategories {
+    @apply pl-6;
+    .category-list-subcategories-item {
+      @apply py-2;
+      .category-list-subcategories-item-quantity {
+        @apply text-gray-500;
+      }
+    }
+  }
+}

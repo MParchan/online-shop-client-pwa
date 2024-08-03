@@ -8,4 +8,5 @@ export type Subcategory = {
     propertyTypes: PropertyType[];
     createdAt: Date;
     updatedAt: Date;
+    productCount?: number;
 };

@@ -35,9 +35,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     const handleClickOutside = (event: MouseEvent) => {
       if (
         categoryDropdownRef.current &&
-        !categoryDropdownRef.current.contains(event.target as Node) &&
-        categoryContainerRef.current &&
-        !categoryContainerRef.current.contains(event.target as Node)
+        !categoryDropdownRef.current.contains(event.target as Node)
       ) {
         setCategoryOpened(false);
       }
