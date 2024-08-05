@@ -19,9 +19,11 @@
 body {
   @apply bg-white min-h-screen;
   @import "./components/ui/navbar/navbar.scss";
+  @import "./components/ui/footer/footer.scss";
 
   .layout {
     @apply mx-3 sm:mx-6 mb-6 mt-[72px] lg:mt-20 max-w-screen-xl xl:mx-auto xl:px-6;
+    @apply min-h-[calc(100dvh-208px)] sm:min-h-[calc(100dvh-216px)] lg:min-h-[calc(100dvh-224px)];
 
     @import "./components/categories/categoryNavigation/categoryNavigation.scss";
     @import "./components/categories/categoryList/categoryList.scss";

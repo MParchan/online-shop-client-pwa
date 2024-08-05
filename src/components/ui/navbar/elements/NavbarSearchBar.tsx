@@ -64,8 +64,8 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     const id = setTimeout(async () => {
       setLoading(true);
       try {
-        const products = await productsService.getProducts(params);
-        setProductData(products);
+        const productsRes = await productsService.getProducts(params);
+        setProductData(productsRes.products);
         setLoading(false);
       } catch (error) {
         setLoading(false);

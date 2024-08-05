@@ -7,6 +7,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import { Category } from "@/types/models/category.types";
 import categoriesService from "@/api/services/categoriesService";
+import Footer from "@/components/ui/footer/Footer";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -32,6 +33,7 @@ export default async function RootLayout({
         <Suspense fallback={<Loading />}>
           <main className="layout">{children}</main>
         </Suspense>
+        <Footer />
       </body>
     </html>
   );
