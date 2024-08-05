@@ -2,4 +2,49 @@
   .category-overview-name {
     @apply py-2 mb-2 text-2xl;
   }
+
+  .category-overview-main {
+    @apply flex;
+
+    .category-overview-subcategories-wrapper {
+      @apply flex-1 md:ml-8;
+      .category-overview-subcategories-pretitle {
+        @apply text-2xl font-semibold;
+      }
+      .category-overview-subcategories-title {
+        @apply text-gray-600 text-xl;
+      }
+
+      .category-overview-subcategories-list {
+        @apply flex flex-wrap justify-between py-8;
+        .category-overview-subcategory-item {
+          @apply flex justify-between border-t sm:border-t-0 sm:block w-full sm:w-1/2 lg:w-1/3 sm:rounded-lg p-2;
+          &:last-of-type {
+            @apply border-b sm:border-b-0;
+          }
+          &:hover {
+            @apply sm:border sm:shadow-lg cursor-pointer;
+          }
+          .category-overview-subcategory-wrapper {
+            @apply flex sm:block;
+            .category-overview-subcategory-image-wrapper {
+              @apply h-24 w-32 mr-4 sm:mr-0 sm:w-auto sm:h-auto sm:mb-4 sm:p-4;
+            }
+            .category-overview-subcategory-name {
+              @apply flex flex-1 items-center sm:block mr-2 sm:mr-0 sm:text-center sm:text-lg sm:font-semibold text-wrap;
+            }
+            .category-overview-subcategory-quantity {
+              @apply flex items-center sm:block sm:text-center sm:text-lg sm:font-semibold text-gray-500;
+            }
+          }
+          .category-overview-subcategory-arrow {
+            @apply flex w-6 sm:hidden justify-end items-center;
+          }
+        }
+        .category-overview-subcategories-filler {
+          @apply hidden lg:block w-1/3;
+        }
+      }
+    }
+  }
 }

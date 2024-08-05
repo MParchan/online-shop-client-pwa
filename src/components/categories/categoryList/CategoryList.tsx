@@ -9,15 +9,16 @@ interface CategoryListProps {
 export default function CategoryList({ categories, selectedCategory }: CategoryListProps) {
   return (
     <div className="category-list-wrapper">
-      <ul>
+      <ul className="category-list">
         {categories.map((category: Category) => (
-          <>
-            <li
-              key={category._id}
-              className={`category-list-item ${category._id === selectedCategory._id ? "bold" : ""}`}
+          <li key={category._id} className="category-list-item">
+            <Link
+              href={`/c/${createSlug(category.name)}/${category._id}`}
+              className={`category-list-item-name ${category._id === selectedCategory._id ? "bold" : ""}`}
             >
-              <Link href={`/c/${createSlug(category.name)}/${category._id}`}>{category.name}</Link>
-            </li>
+              {category.name}
+            </Link>
+
             {category._id === selectedCategory._id && (
               <ul className="category-list-subcategories">
                 {selectedCategory.subcategories.map((subcategory) => (
@@ -32,7 +33,7 @@ export default function CategoryList({ categories, selectedCategory }: CategoryL
                 ))}
               </ul>
             )}
-          </>
+          </li>
         ))}
       </ul>
     </div>

@@ -38,7 +38,13 @@ export default function Navbar({ categories }: NavbarProps) {
       >
         <div className="navbar-wrapper">
           <Link href="/" className="navbar-logo">
-            <Image src="/assets/icons/logo.svg" alt="Online shop logo" width={48} height={48} />
+            <Image
+              src="/assets/icons/logo.svg"
+              alt="Online shop logo"
+              width={48}
+              height={48}
+              priority={true}
+            />
             <span className="navbar-logo-text">Online shop</span>
           </Link>
           <div className="navbar-search-bar-wrapper">
