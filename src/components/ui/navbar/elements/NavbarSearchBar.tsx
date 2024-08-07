@@ -4,7 +4,9 @@ import productsService from "@/api/services/productsService";
 import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
 import { Product } from "@/types/models/product.types";
+import createSlug from "@/utils/createSlug";
 import Image from "next/image";
+import Link from "next/link";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 interface ProductParams {
@@ -35,16 +37,25 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     const handleClickOutside = (event: MouseEvent) => {
       if (
         categoryDropdownRef.current &&
-        !categoryDropdownRef.current.contains(event.target as Node)
+        !categoryDropdownRef.current.contains(event.target as Node) &&
+        categoryContainerRef.current &&
+        !categoryContainerRef.current.contains(event.target as Node)
       ) {
         setCategoryOpened(false);
+      }
+
+      if (
+        productDropdownRef.current &&
+        !productDropdownRef.current.contains(event.target as Node)
+      ) {
+        setProductData(null);
       }
     };
     document.addEventListener("mousedown", handleClickOutside);
     return () => {
       document.removeEventListener("mousedown", handleClickOutside);
     };
-  }, [categoryOpened]);
+  }, []);
 
   useEffect(() => {
     const fetchProductData = async () => {
@@ -183,9 +194,16 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
       >
         <ul className="search-product-dropdown-list">
           {productData?.map((product: Product) => (
-            <li className="search-product-dropdown-item" key={product._id}>
-              {product.name}
-            </li>
+            <Link
+              href={`/p/${createSlug(product.name)}/${product._id}`}
+              key={product._id}
+              onClick={() => {
+                setProductQuery("");
+                setProductData(null);
+              }}
+            >
+              <li className="search-product-dropdown-item">{product.name}</li>
+            </Link>
           ))}
         </ul>
       </div>

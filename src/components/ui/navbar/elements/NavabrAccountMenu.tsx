@@ -25,7 +25,7 @@ export default function NavbarAccountMenu() {
       <Link href="/" className="navbar-tile">
         <Image
           src="/assets/icons/user.svg"
-          alt="Account"
+          alt="Account icon"
           width={32}
           height={32}
           className="navbar-tile-logo"

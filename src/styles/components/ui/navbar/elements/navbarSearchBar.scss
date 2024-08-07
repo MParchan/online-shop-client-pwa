@@ -10,7 +10,7 @@
   }
 
   .navbar-search-bar-input {
-    @apply p-2 w-full rounded-lg;
+    @apply px-3 py-2 w-full rounded-lg;
     &:focus {
       @apply outline-none ring-0;
     }
@@ -73,7 +73,13 @@
       @apply flex flex-col w-full;
 
       .search-product-dropdown-item {
-        @apply w-full p-2 py-3 mx-2 cursor-pointer rounded-lg;
+        @apply w-full p-3 cursor-pointer;
+        &:hover {
+          @apply bg-gray-100;
+        }
+        &:last-child {
+          @apply rounded-b-lg;
+        }
       }
     }
   }

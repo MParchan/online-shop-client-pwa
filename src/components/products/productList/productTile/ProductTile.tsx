@@ -20,8 +20,8 @@ export default function ProductTile({ product }: ProductTileProps) {
             <div className="product-tile-image-wrapper">
               <Image
                 src={mainImage.image}
-                width={300}
-                height={300}
+                width={256}
+                height={192}
                 alt="Picture of the product"
                 className="product-tile-image"
                 priority
