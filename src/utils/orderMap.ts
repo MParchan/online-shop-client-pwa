@@ -58,6 +58,43 @@ const orderMaps = {
         "Width",
         "Thickness",
         "Weight"
+    ],
+    Smartwatches: [
+        "Connectivity",
+        "Display diagonal",
+        "Display resolution",
+        "Satellite navigation",
+        "Display type",
+        "Types of activity",
+        "Color"
+    ],
+    Processors: [
+        "Processor socket",
+        "Architecture",
+        "Number of cores",
+        "Number of threads",
+        "Core clock",
+        "Core clock in turbo mode",
+        "Unlocked core multiplier",
+        "Cache memory",
+        "Integrated graphics chip",
+        "Lithographic process",
+        "TDP",
+        "Cooling included"
+    ],
+    "Graphic cards": [
+        "Graphics card series",
+        "Graphics chip",
+        "Memory",
+        "Type of memory",
+        "Memory bus",
+        "Memory clocking",
+        "Core clocking",
+        "CUDA cores",
+        "Ray tracing support",
+        "Type of connector",
+        "Power connector",
+        "Recommended power supply power"
     ]
 };
 

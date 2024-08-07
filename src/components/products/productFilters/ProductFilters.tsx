@@ -121,6 +121,7 @@ export default function ProductFilters({
               >
                 <Input
                   type="checkbox"
+                  name={brand.name}
                   disabled={!brand.count}
                   className="products-filter-section-checkbox"
                   onClick={(e) => e.stopPropagation()}

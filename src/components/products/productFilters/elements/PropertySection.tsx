@@ -60,6 +60,7 @@ export default function PropertySection({
         >
           <Input
             type="checkbox"
+            name={property.value}
             disabled={!property.count}
             className="products-filter-section-checkbox"
             onClick={(e) => e.stopPropagation()}

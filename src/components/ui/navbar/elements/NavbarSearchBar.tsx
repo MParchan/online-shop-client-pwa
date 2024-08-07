@@ -47,32 +47,42 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   }, [categoryOpened]);
 
   useEffect(() => {
-    if (productQuery === "") {
-      setProductData(null);
-      return;
-    }
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
-    const params: ProductParams = {
-      limit: 5,
-      name: productQuery
-    };
-    if (selectedCategoryId !== null) {
-      params.category = selectedCategoryId;
-    }
-    const id = setTimeout(async () => {
-      setLoading(true);
-      try {
-        const productsRes = await productsService.getProducts(params);
-        setProductData(productsRes.products);
-        setLoading(false);
-      } catch (error) {
-        setLoading(false);
+    const fetchProductData = async () => {
+      if (productQuery === "") {
+        setProductData(null);
+        return;
       }
-    }, 1000);
-    setTimeoutId(id);
-    return () => clearTimeout(id);
+      if (timeoutId) {
+        clearTimeout(timeoutId);
+      }
+
+      const params: ProductParams = {
+        limit: 5,
+        name: productQuery
+      };
+
+      if (selectedCategoryId !== null) {
+        params.category = selectedCategoryId;
+      }
+
+      const id = setTimeout(async () => {
+        setLoading(true);
+        try {
+          const productsRes = await productsService.getProducts(params);
+          setProductData(productsRes.products);
+        } catch (error) {
+          // Obsługa błędu
+        } finally {
+          setLoading(false);
+        }
+      }, 1000);
+
+      setTimeoutId(id);
+
+      return () => clearTimeout(id);
+    };
+
+    fetchProductData();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productQuery, selectedCategoryId]);
 
@@ -103,6 +113,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     >
       <input
         type="text"
+        name="navbar-search-bar-input"
         placeholder="Search..."
         className="navbar-search-bar-input"
         onChange={(e) => setProductQuery(e.target.value)}

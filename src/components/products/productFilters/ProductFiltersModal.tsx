@@ -208,6 +208,7 @@ export default function ProductFiltersModal({
                       >
                         <Input
                           type="checkbox"
+                          name={brand.name}
                           disabled={!brand.count}
                           className="product-filters-modal-properties-checkbox"
                           onClick={(e) => e.stopPropagation()}
@@ -286,6 +287,7 @@ export default function ProductFiltersModal({
                     >
                       <Input
                         type="checkbox"
+                        name={brand.name}
                         disabled={!brand.count}
                         className="product-filters-modal-submenu-values-checkbox"
                         onClick={(e) => e.stopPropagation()}

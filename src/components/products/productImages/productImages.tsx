@@ -144,6 +144,7 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
                 width={600}
                 height={600}
                 alt="Picture of the product"
+                className="w-full h-auto"
               />
             )}
           </div>
@@ -153,7 +154,7 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
               alt="Close logo"
               width={40}
               height={40}
-              className="w-10"
+              className="w-10 h-auto"
             />
           </button>
         </div>
@@ -171,7 +172,7 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
                 height={60}
                 alt={`Thumbnail ${index + 1}`}
                 onClick={() => handleThumbnailClick(image)}
-                className="rounded-lg cursor-pointer"
+                className="rounded-lg cursor-pointer w-16 h-auto"
               />
             </div>
           ))}

@@ -59,6 +59,7 @@ export default function PropertySectionModal({
           >
             <Input
               type="checkbox"
+              name={property.value}
               disabled={!property.count}
               className="product-filters-modal-properties-checkbox"
               onClick={(e) => e.stopPropagation()}

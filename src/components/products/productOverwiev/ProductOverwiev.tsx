@@ -48,7 +48,7 @@ export default function ProductOverview({
   const [selectedProperties, setSelectedProperties] = useState<Property[]>(urlSelectedProperties);
   const [loader, setLoader] = useState(true);
   const [page, setPage] = useState<number>(urlParamPage ? Number(urlParamPage) : 1);
-  const [limit, setLimit] = useState(urlParamLimit ?? "9");
+  const [limit, setLimit] = useState(urlParamLimit ?? "12");
   const [sorting, setSorting] = useState(urlParamSorting ?? "From the latest");
   const allPages = Math.ceil(productCount / Number(limit));
   const [openFilterModal, setOpenFilterModal] = useState(false);
@@ -63,7 +63,7 @@ export default function ProductOverview({
     } else {
       params.delete("page");
     }
-    if (limit !== "9") {
+    if (limit !== "12") {
       params.set("limit", limit);
     } else {
       params.delete("limit");

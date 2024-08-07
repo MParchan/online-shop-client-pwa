@@ -20,7 +20,7 @@
 }
 
 .product-images-modal {
-  @apply fixed left-1/2 top-1/2 z-30 h-full w-full bg-white duration-300;
+  @apply fixed left-1/2 top-1/2 h-full w-full z-50 bg-white duration-300;
   transform: translate(-50%, -50%) scale(0);
   &.open {
     transform: translate(-50%, -50%) scale(1);

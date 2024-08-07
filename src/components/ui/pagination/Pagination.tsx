@@ -68,7 +68,7 @@ export default function Pagination({
     <div className="pagination">
       {setLimit && limit && (
         <Select
-          options={["6", "9", "12", "24"]}
+          options={["6", "12", "24"]}
           defaultValue={limit}
           className="pagination-select"
           setValue={setLimit}
@@ -91,6 +91,7 @@ export default function Pagination({
         />
       </button>
       <Input
+        name="pagintaion-page"
         value={inputValue.length ? currentPage : ""}
         onChange={handleChange}
         onBlur={handleBlur}
