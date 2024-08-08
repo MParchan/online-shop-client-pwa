@@ -1,3 +1,16 @@
 {
-  "rewrites": [{ "source": "/(.*)", "destination": "/" }]
+  "rewrites": [
+    {
+      "source": "/c/:categoryName/:id",
+      "destination": "/c/[categoryName]/[id]"
+    },
+    {
+      "source": "/s/:subcategoryName/:id",
+      "destination": "/c/[subcategoryName]/[id]"
+    },
+    {
+      "source": "/p/:productName/:id",
+      "destination": "/c/[productName]/[id]"
+    }
+  ]
 }
