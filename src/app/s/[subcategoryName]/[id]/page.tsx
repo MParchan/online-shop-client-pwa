@@ -17,6 +17,9 @@ interface SubcategoryProps {
 }
 export async function generateMetadata({ params }: SubcategoryProps): Promise<Metadata> {
   const subcategory: Subcategory = await subcategoriesService.getSubcategoryById(params.id);
+  if (params.subcategoryName !== createSlug(subcategory.name)) {
+    redirect(`/p/${createSlug(subcategory.name)}/${params.id}`);
+  }
   return {
     title: `${subcategory.name}`
   };
@@ -24,10 +27,6 @@ export async function generateMetadata({ params }: SubcategoryProps): Promise<Me
 
 export default async function SubcategoryPage({ params, searchParams }: SubcategoryProps) {
   const subcategory: Subcategory = await subcategoriesService.getSubcategoryById(params.id);
-
-  if (params.subcategoryName !== createSlug(subcategory.name)) {
-    redirect(`/p/${createSlug(subcategory.name)}/${params.id}`);
-  }
 
   const subcategoryBrands = await brandsService.getBrands({
     subcategory: subcategory._id
