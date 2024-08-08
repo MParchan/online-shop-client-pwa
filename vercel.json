@@ -6,11 +6,11 @@
     },
     {
       "source": "/s/:subcategoryName/:id",
-      "destination": "/c/[subcategoryName]/[id]"
+      "destination": "/s/[subcategoryName]/[id]"
     },
     {
       "source": "/p/:productName/:id",
-      "destination": "/c/[productName]/[id]"
+      "destination": "/p/[productName]/[id]"
     }
   ]
 }
