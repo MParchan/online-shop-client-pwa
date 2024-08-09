@@ -11,6 +11,7 @@ const withPWA = require("next-pwa")({
 const nextConfig = {
     // next.js config
     reactStrictMode: true,
+    trailingSlash: true,
     images: {
         remotePatterns: [
             {
