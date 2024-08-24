@@ -237,54 +237,54 @@ export default function ProductOverview({
             </div>
           )}
 
+          <div className="product-overview-sorting">
+            <div className="product-overview-sorting-select-wrapper">
+              <button
+                className="product-overview-filter-button"
+                onClick={() => setOpenFilterModal(true)}
+              >
+                <Image src="/assets/icons/filter.svg" alt="Close logo" width={32} height={32} />
+              </button>
+              <ProductFiltersModal
+                openModal={openFilterModal}
+                setOpenModal={setOpenFilterModal}
+                brands={subcategoryBrands}
+                brandCount={brandCount}
+                propertyCount={propertyCount}
+                productCount={productCount}
+                propertyTypes={subcategory.propertyTypes}
+                selectedBrands={brands}
+                setSelectedBrands={setSelectedBrands}
+                setSelectedBrandsIds={setBrands}
+                selectedProperties={properties}
+                setSelectedPropertiesIds={setProperties}
+                setSelectedProperties={setSelectedProperties}
+              />
+              <Select
+                options={[
+                  "From the latest",
+                  "From the oldest",
+                  "Alphabetically: from A to Z",
+                  "Alphabetically: from Z to A",
+                  "Price: from the cheapest",
+                  "Price: from the most expensive"
+                ]}
+                defaultValue={sorting}
+                setValue={setSorting}
+                className="product-overview-sorting-select"
+                textAlignment="left"
+              />
+            </div>
+            <div className="product-overview-pagination-wrapper">
+              <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
+            </div>
+          </div>
           {loader ? (
             <div className="product-overview-loading">
               <Loader />
             </div>
           ) : productCount > 0 ? (
             <>
-              <div className="product-overview-sorting">
-                <div className="product-overview-sorting-select-wrapper">
-                  <button
-                    className="product-overview-filter-button"
-                    onClick={() => setOpenFilterModal(true)}
-                  >
-                    <Image src="/assets/icons/filter.svg" alt="Close logo" width={32} height={32} />
-                  </button>
-                  <ProductFiltersModal
-                    openModal={openFilterModal}
-                    setOpenModal={setOpenFilterModal}
-                    brands={subcategoryBrands}
-                    brandCount={brandCount}
-                    propertyCount={propertyCount}
-                    productCount={productCount}
-                    propertyTypes={subcategory.propertyTypes}
-                    selectedBrands={brands}
-                    setSelectedBrands={setSelectedBrands}
-                    setSelectedBrandsIds={setBrands}
-                    selectedProperties={properties}
-                    setSelectedPropertiesIds={setProperties}
-                    setSelectedProperties={setSelectedProperties}
-                  />
-                  <Select
-                    options={[
-                      "From the latest",
-                      "From the oldest",
-                      "Alphabetically: from A to Z",
-                      "Alphabetically: from Z to A",
-                      "Price: from the cheapest",
-                      "Price: from the most expensive"
-                    ]}
-                    defaultValue={sorting}
-                    setValue={setSorting}
-                    className="product-overview-sorting-select"
-                    textAlignment="left"
-                  />
-                </div>
-                <div className="product-overview-pagination-wrapper">
-                  <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
-                </div>
-              </div>
               <ProductList products={products} />
               <div className="product-overview-pagination">
                 <Pagination

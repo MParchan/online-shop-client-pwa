@@ -61,7 +61,7 @@ export default async function SubcategoryPage({ params, searchParams }: Subcateg
   }
 
   return (
-    <div>
+    <div className="w-full">
       <CategoryNavigation category={category} subcategory={subcategory} />
       <ProductOverview
         subcategory={subcategory}
