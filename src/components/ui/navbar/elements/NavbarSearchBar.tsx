@@ -3,10 +3,12 @@
 import productsService from "@/api/services/productsService";
 import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
+import { ProductImage } from "@/types/models/image.types";
 import { Product } from "@/types/models/product.types";
 import createSlug from "@/utils/createSlug";
 import Image from "next/image";
 import Link from "next/link";
+import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
 interface ProductParams {
@@ -31,10 +33,12 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   const categoryContainerRef = useRef<HTMLDivElement | null>(null);
   const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
+  const submitButtonRef = useRef<HTMLButtonElement | null>(null);
   const productDropdownRef = useRef<HTMLDivElement | null>(null);
+  const router = useRouter();
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
+    const handleClick = (event: MouseEvent) => {
       if (
         categoryDropdownRef.current &&
         !categoryDropdownRef.current.contains(event.target as Node) &&
@@ -46,14 +50,27 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
 
       if (
         productDropdownRef.current &&
-        !productDropdownRef.current.contains(event.target as Node)
+        !productDropdownRef.current.contains(event.target as Node) &&
+        inputRef.current &&
+        !inputRef.current.contains(event.target as Node)
       ) {
         setProductData(null);
       }
     };
-    document.addEventListener("mousedown", handleClickOutside);
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === "Escape") {
+        inputRef.current?.blur();
+        setCategoryOpened(false);
+        setProductData(null);
+      }
+    };
+
+    document.addEventListener("mousedown", handleClick);
+    document.addEventListener("keydown", handleKeyDown);
     return () => {
-      document.removeEventListener("mousedown", handleClickOutside);
+      document.removeEventListener("mousedown", handleClick);
+      document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
 
@@ -82,11 +99,11 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
           const productsRes = await productsService.getProducts(params);
           setProductData(productsRes.products);
         } catch (error) {
-          // Obsługa błędu
+          console.log(error);
         } finally {
           setLoading(false);
         }
-      }, 1000);
+      }, 500);
 
       setTimeoutId(id);
 
@@ -103,10 +120,19 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     }
   }, [isHidden]);
 
-  async function onSubmit(event: FormEvent<HTMLFormElement>) {
+  const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
-    console.log(inputRef.current?.value);
-  }
+    inputRef.current?.blur();
+    if (timeoutId) {
+      clearTimeout(timeoutId);
+    }
+    setCategoryOpened(false);
+    setProductData(null);
+    const query = inputRef.current?.value;
+    if (query) {
+      router.push(`/search?q=${query}`);
+    }
+  };
 
   const handleSelectCategory = (categoryName: string, categoryId: null | string) => {
     setSelectedCategoryId(categoryId);
@@ -125,6 +151,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
       <input
         type="text"
         name="navbar-search-bar-input"
+        autoComplete="off"
         placeholder="Search..."
         className="navbar-search-bar-input"
         onChange={(e) => setProductQuery(e.target.value)}
@@ -177,7 +204,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
           ))}
         </ul>
       </div>
-      <button type="submit" className="navbar-search-bar-button ">
+      <button type="submit" className="navbar-search-bar-button " ref={submitButtonRef}>
         <Image
           src="/assets/icons/search.svg"
           alt="Search logo"
@@ -202,7 +229,19 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
                 setProductData(null);
               }}
             >
-              <li className="search-product-dropdown-item">{product.name}</li>
+              <li className="search-product-dropdown-item">
+                <Image
+                  src={
+                    product.images.find((image: ProductImage) => image.main)?.image ||
+                    "/assets/icons/no-photography.svg"
+                  }
+                  alt={`${product.name} image`}
+                  width={80}
+                  height={60}
+                  className="search-product-image"
+                />
+                <span className="search-product-name">{product.name}</span>
+              </li>
             </Link>
           ))}
         </ul>

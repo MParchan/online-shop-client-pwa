@@ -8,9 +8,9 @@
     @apply px-4;
 
     .product-tile-image-wrapper {
-      @apply md:w-80 md:h-[260px] xl:w-[256px] xl:h-[220px] m-auto my-8;
+      @apply md:w-80 md:h-[260px] xl:w-64 xl:h-[220px] m-auto my-8;
       .product-tile-image {
-        @apply w-auto h-auto m-auto;
+        @apply w-auto md:w-80 xl:w-64 h-auto m-auto;
       }
     }
     .product-tile-price {
