@@ -79,8 +79,8 @@ const ProductImages = ({ productName, images }: ProductImagesProps) => {
           {selectedImage ? (
             <Image
               src={selectedImage.image}
-              width={600}
-              height={600}
+              width={640}
+              height={480}
               alt="Picture of the product"
               className="w-full h-auto"
               priority

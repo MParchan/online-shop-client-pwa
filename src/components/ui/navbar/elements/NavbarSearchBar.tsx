@@ -130,7 +130,13 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     setProductData(null);
     const query = inputRef.current?.value;
     if (query) {
-      router.push(`/search?q=${query}`);
+      if (!selectedCategoryId) {
+        router.push(`/search?q=${query}`);
+      } else {
+        router.push(
+          `/search?q=${query}&category=${selectedCategoryId}-${createSlug(selectedCategory)}`
+        );
+      }
     }
   };
 

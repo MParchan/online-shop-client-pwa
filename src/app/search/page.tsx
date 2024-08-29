@@ -1,3 +1,7 @@
+import categoriesService from "@/api/services/categoriesService";
+import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
+import ProductSearchOverview from "@/components/products/productSearchOverview/ProductSearchOverview";
+import { Category } from "@/types/models/category.types";
 import { Metadata } from "next";
 import { redirect } from "next/navigation";
 
@@ -9,11 +13,28 @@ export async function generateMetadata({ searchParams }: SearchProps): Promise<M
   if (!searchParams?.q || searchParams?.q === "") {
     redirect("/");
   }
+
   return {
     title: `Searching - ${searchParams?.q}`
   };
 }
 
-export default function SearchPage({ searchParams }: SearchProps) {
-  return <div>{searchParams?.q}</div>;
+export default async function SearchPage({ searchParams }: SearchProps) {
+  const query = searchParams?.q || "";
+  const categoryId = searchParams?.category?.split("-")[0];
+  let category: Category | undefined = undefined;
+  if (categoryId) {
+    category = await categoriesService.getCategoryById(categoryId);
+  }
+  return (
+    <div>
+      <CategoryNavigation category={category} query={query} />
+      <ProductSearchOverview
+        searchQuery={query}
+        category={category}
+        urlParamPage={searchParams?.page?.toString()}
+        urlParamLimit={searchParams?.limit?.toString()}
+      />
+    </div>
+  );
 }
