@@ -24,6 +24,7 @@ interface NavbarSearchBarProps {
 
 export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBarProps) {
   const [categoryOpened, setCategoryOpened] = useState(false);
+  const [productsOpened, setProductsOpened] = useState(false);
   const [productQuery, setProductQuery] = useState("");
   const [productData, setProductData] = useState<Product[] | null>(null);
   const [, setLoading] = useState(false);
@@ -54,6 +55,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
         inputRef.current &&
         !inputRef.current.contains(event.target as Node)
       ) {
+        setProductsOpened(false);
         setProductData(null);
       }
     };
@@ -62,6 +64,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
       if (event.key === "Escape") {
         inputRef.current?.blur();
         setCategoryOpened(false);
+        setProductsOpened(false);
         setProductData(null);
       }
     };
@@ -78,6 +81,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     const fetchProductData = async () => {
       if (productQuery === "") {
         setProductData(null);
+        setProductsOpened(false);
         return;
       }
       if (timeoutId) {
@@ -103,14 +107,16 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
         } finally {
           setLoading(false);
         }
-      }, 500);
+      }, 300);
 
       setTimeoutId(id);
 
       return () => clearTimeout(id);
     };
 
+    setProductsOpened(true);
     fetchProductData();
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [productQuery, selectedCategoryId]);
 
@@ -123,10 +129,8 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   const onSubmit = (event: FormEvent<HTMLFormElement>) => {
     event.preventDefault();
     inputRef.current?.blur();
-    if (timeoutId) {
-      clearTimeout(timeoutId);
-    }
     setCategoryOpened(false);
+    setProductsOpened(false);
     setProductData(null);
     const query = inputRef.current?.value;
     if (query) {
@@ -221,7 +225,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
       </button>
       <div
         className={cn("search-product-dropdown", {
-          active: productData !== null && productData.length
+          active: productData !== null && productData.length && productsOpened === true
         })}
         ref={productDropdownRef}
       >

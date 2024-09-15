@@ -10,6 +10,10 @@
 
   .product-overview-main {
     @apply flex;
+
+    .product-overview-categories-filters {
+      @apply flex-col space-y-3;
+    }
     .product-overview-products-wrapper {
       @apply w-full;
 
