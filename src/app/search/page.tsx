@@ -1,3 +1,5 @@
+export const dynamic = "force-dynamic";
+
 import brandsService from "@/api/services/brandsService";
 import categoriesService from "@/api/services/categoriesService";
 import propertiesService from "@/api/services/propertiesService";

@@ -12,7 +12,10 @@
     @apply flex;
 
     .product-overview-categories-filters {
-      @apply flex-col space-y-3;
+      @apply flex-col space-y-3 w-64 hidden lg:block;
+      .product-overview-categories-filters-loader {
+        @apply flex justify-center pt-8;
+      }
     }
     .product-overview-products-wrapper {
       @apply w-full;

@@ -62,7 +62,7 @@ export default function ProductSearchOverview({
   const [loader, setLoader] = useState(true);
   const [sorting, setSorting] = useState(urlParamSorting ?? "From the latest");
   const [page, setPage] = useState<number>(!urlParamPage ? 1 : Number(urlParamPage));
-  const [limit, setLimit] = useState(urlParamLimit ?? "12");
+  const [limit, setLimit] = useState<string>(urlParamLimit ?? "12");
   const allPages = Math.ceil(productCount / Number(limit));
 
   const searchParams = useSearchParams();
@@ -70,7 +70,16 @@ export default function ProductSearchOverview({
   const { replace } = useRouter();
 
   useEffect(() => {
+    setSelectedCategory(category);
+    setSelectedCSubcategory(subcategory);
+    if (subcategory) {
+      sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
+    }
+  }, [category, subcategory]);
+
+  useEffect(() => {
     const params = new URLSearchParams(searchParams);
+    setLoader(true);
     if (page > 1) {
       params.set("page", page.toString());
     } else {
@@ -96,11 +105,14 @@ export default function ProductSearchOverview({
     } else {
       params.delete("properties");
     }
+
     if (selectedCategory) {
       params.set("category", `${selectedCategory._id}-${createSlug(selectedCategory.name)}`);
     } else {
       params.delete("category");
+      params.delete("subcategory");
     }
+
     if (selectedSubcategory) {
       params.set(
         "subcategory",
@@ -160,11 +172,11 @@ export default function ProductSearchOverview({
         query.sortField = "price";
         query.sortOrder = "desc";
       }
-      if (selectedCategory) {
-        if (selectedSubcategory) {
-          query.subcategory = selectedSubcategory._id;
+      if (category) {
+        if (subcategory) {
+          query.subcategory = subcategory._id;
         } else {
-          query.category = selectedCategory._id;
+          query.category = category._id;
         }
       }
       const productRes = await productsService.getProducts(query);
@@ -174,27 +186,13 @@ export default function ProductSearchOverview({
       setBrandCount(productRes.brands);
       setLoader(false);
     };
-    console.log(selectedSubcategory);
     setLoader(true);
     fetchProducts();
-  }, [
-    selectedCategory,
-    limit,
-    page,
-    searchQuery,
-    selectedSubcategory,
-    brands,
-    properties,
-    sorting
-  ]);
+  }, [category, limit, page, searchQuery, subcategory, brands, properties, sorting]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     setPage(1);
-  }, [brands, properties, sorting, limit]);
-
-  if (subcategory) {
-    sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
-  }
+  }, [brands, properties, sorting, limit]);*/
 
   const clearFiltersHandler = () => {
     setSelectedBrands([]);
@@ -238,20 +236,28 @@ export default function ProductSearchOverview({
             selectedSubcategory={selectedSubcategory}
             setSelectedSubcategory={setSelectedCSubcategory}
           />
-          {subcategoryBrands && subcategory && (
-            <ProductFilters
-              brands={subcategoryBrands}
-              brandCount={brandCount}
-              propertyCount={propertyCount}
-              productCount={productCount}
-              propertyTypes={subcategory.propertyTypes}
-              selectedBrands={brands}
-              setSelectedBrands={setSelectedBrands}
-              setSelectedBrandsIds={setBrands}
-              selectedProperties={properties}
-              setSelectedPropertiesIds={setProperties}
-              setSelectedProperties={setSelectedProperties}
-            />
+          {selectedSubcategory && (
+            <>
+              {subcategoryBrands && subcategory ? (
+                <ProductFilters
+                  brands={subcategoryBrands}
+                  brandCount={brandCount}
+                  propertyCount={propertyCount}
+                  productCount={productCount}
+                  propertyTypes={subcategory.propertyTypes}
+                  selectedBrands={brands}
+                  setSelectedBrands={setSelectedBrands}
+                  setSelectedBrandsIds={setBrands}
+                  selectedProperties={properties}
+                  setSelectedPropertiesIds={setProperties}
+                  setSelectedProperties={setSelectedProperties}
+                />
+              ) : (
+                <div className="product-overview-categories-filters-loader">
+                  <Loader />
+                </div>
+              )}
+            </>
           )}
         </div>
         <div className="product-overview-products-wrapper">

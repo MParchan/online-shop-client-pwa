@@ -134,13 +134,12 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     setProductData(null);
     const query = inputRef.current?.value;
     if (query) {
-      if (!selectedCategoryId) {
-        router.push(`/search?q=${query}`);
-      } else {
-        router.push(
-          `/search?q=${query}&category=${selectedCategoryId}-${createSlug(selectedCategory)}`
-        );
+      const params = new URLSearchParams();
+      params.set("q", query);
+      if (selectedCategoryId) {
+        params.set("category", `${selectedCategoryId}-${createSlug(selectedCategory)}`);
       }
+      router.push(`/search?${params.toString()}`);
     }
   };
 
