@@ -76,7 +76,7 @@ export default async function SearchPage({ searchParams }: SearchProps) {
   }
 
   return (
-    <div>
+    <div className="w-full">
       <CategoryNavigation category={category} subcategory={subcategory} query={query} />
       <ProductSearchOverview
         searchQuery={query}

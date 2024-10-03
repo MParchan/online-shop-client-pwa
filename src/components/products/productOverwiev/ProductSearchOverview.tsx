@@ -17,6 +17,8 @@ import { Brand } from "@/types/models/brand.types";
 import { Property } from "@/types/models/property.types";
 import { sortPropertyTypes } from "@/utils/sortPropertyTypes";
 import ProductFilters from "../productFilters/ProductFilters";
+import ProductFiltersModal from "../productFilters/ProductFiltersModal";
+import CategoryFilterModal from "@/components/categories/categoryFilter/CategoryFilterModal";
 
 interface ProductSearchOverviewProps {
   searchQuery: string;
@@ -64,6 +66,8 @@ export default function ProductSearchOverview({
   const [page, setPage] = useState<number>(!urlParamPage ? 1 : Number(urlParamPage));
   const [limit, setLimit] = useState<string>(urlParamLimit ?? "12");
   const allPages = Math.ceil(productCount / Number(limit));
+  const [openCategoryModal, setOpenCategoryModal] = useState(false);
+  const [openFilterModal, setOpenFilterModal] = useState(false);
 
   const searchParams = useSearchParams();
   const pathname = usePathname();
@@ -77,6 +81,7 @@ export default function ProductSearchOverview({
         clearFiltersHandler();
       }
     }
+    setPage(1);
   }, [category, selectedCategory]);
 
   useEffect(() => {
@@ -206,9 +211,9 @@ export default function ProductSearchOverview({
     selectedSubcategory
   ]);
 
-  /*useEffect(() => {
+  useEffect(() => {
     setPage(1);
-  }, [brands, properties, sorting, limit]);*/
+  }, [brands, properties, sorting, limit]);
 
   const clearFiltersHandler = () => {
     setSelectedBrands([]);
@@ -328,6 +333,59 @@ export default function ProductSearchOverview({
 
           <div className="product-overview-sorting">
             <div className="product-overview-sorting-select-wrapper">
+              <div className="flex">
+                <button
+                  className="product-overview-filter-button"
+                  onClick={() => setOpenCategoryModal(true)}
+                >
+                  <Image
+                    src="/assets/icons/category.svg"
+                    alt="Category icon"
+                    width={32}
+                    height={32}
+                  />
+                </button>
+                <CategoryFilterModal
+                  openModal={openCategoryModal}
+                  setOpenModal={setOpenCategoryModal}
+                  categories={categories}
+                  selectedCategory={selectedCategory}
+                  setSelectedCategory={setSelectedCategory}
+                  selectedSubcategory={selectedSubcategory}
+                  setSelectedSubcategory={setSelectedCSubcategory}
+                  clearFiltersHandler={clearFiltersHandler}
+                />
+                {subcategory && subcategoryBrands && (
+                  <>
+                    <button
+                      className="product-overview-filter-button"
+                      onClick={() => setOpenFilterModal(true)}
+                    >
+                      <Image
+                        src="/assets/icons/filter.svg"
+                        alt="Filter icon"
+                        width={32}
+                        height={32}
+                      />
+                    </button>
+                    <ProductFiltersModal
+                      openModal={openFilterModal}
+                      setOpenModal={setOpenFilterModal}
+                      brands={subcategoryBrands}
+                      brandCount={brandCount}
+                      propertyCount={propertyCount}
+                      productCount={productCount}
+                      propertyTypes={subcategory.propertyTypes}
+                      selectedBrands={brands}
+                      setSelectedBrands={setSelectedBrands}
+                      setSelectedBrandsIds={setBrands}
+                      selectedProperties={properties}
+                      setSelectedPropertiesIds={setProperties}
+                      setSelectedProperties={setSelectedProperties}
+                    />
+                  </>
+                )}
+              </div>
               <Select
                 options={[
                   "From the latest",
