@@ -1,0 +1,87 @@
+.category-filters-modal-area {
+  @apply fixed w-full h-full top-0 left-0 flex justify-center items-center z-50;
+  &.open {
+    @apply pointer-events-auto;
+  }
+  &.close {
+    @apply pointer-events-none;
+  }
+  .category-filters-modal-wrapper {
+    @apply fixed z-30 transition-all duration-300 ease-in-out transform px-4;
+    &.open {
+      @apply opacity-100 translate-y-0;
+    }
+    &.close {
+      @apply opacity-0 translate-y-[200%];
+    }
+
+    .category-filter-modal {
+      @apply bg-white rounded-lg border flex flex-col;
+
+      .category-filters-modal-header {
+        @apply bg-gray-200 p-3 text-2xl font-semibold rounded-t-lg;
+        .category-filters-modal-close {
+          @apply absolute top-3 right-7 cursor-pointer;
+        }
+      }
+
+      .category-filter-list {
+        @apply p-6;
+        @apply text-sm;
+        .category-filter-back-wrapper {
+          @apply my-1.5 flex;
+          .category-filter-back {
+            @apply flex;
+            &:hover {
+              @apply cursor-pointer;
+            }
+            .category-filter-back-icon {
+              @apply w-5 h-auto mr-2;
+            }
+          }
+        }
+        .category-filter-item {
+          .category-filter-category-wrapper {
+            @apply my-1.5;
+            .category-filter-category-name {
+              @apply mr-1;
+              &:hover {
+                @apply cursor-pointer;
+              }
+              &.bold {
+                @apply font-bold;
+              }
+            }
+            .category-filter-category-quantity {
+              @apply text-gray-500;
+            }
+          }
+          .category-filter-subcategory-wrapper {
+            @apply ml-3 my-1.5;
+            .category-filter-subcategory-name {
+              @apply mr-1;
+              &:hover {
+                @apply cursor-pointer;
+              }
+              &.bold {
+                @apply font-bold;
+              }
+            }
+            .category-filter-subcategory-quantity {
+              @apply text-gray-500;
+            }
+          }
+        }
+      }
+    }
+  }
+  .category-filters-modal-overlay {
+    @apply w-full h-full z-20 bg-black transition-opacity duration-300 ease-in-out;
+    &.open {
+      @apply opacity-50 pointer-events-auto;
+    }
+    &.close {
+      @apply opacity-0 pointer-events-none;
+    }
+  }
+}

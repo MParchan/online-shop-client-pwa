@@ -73,12 +73,20 @@
       @apply flex flex-col w-full;
 
       .search-product-dropdown-item {
-        @apply w-full p-3 cursor-pointer;
+        @apply w-full p-3 cursor-pointer flex;
         &:hover {
           @apply bg-gray-100;
         }
         &:last-child {
           @apply rounded-b-lg;
+        }
+
+        .search-product-image {
+          @apply h-[60px] w-auto;
+        }
+
+        .search-product-name {
+          @apply flex items-center ml-4;
         }
       }
     }

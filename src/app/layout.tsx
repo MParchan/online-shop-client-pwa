@@ -1,7 +1,6 @@
 import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.scss";
-import Head from "next/head";
 import Navbar from "@/components/ui/navbar/Navbar";
 import { Category } from "@/types/models/category.types";
 import categoriesService from "@/api/services/categoriesService";
@@ -11,7 +10,11 @@ const inter = Inter({ subsets: ["latin"] });
 
 export const metadata: Metadata = {
   title: "Online shop",
-  description: "Online shop app"
+  description: "Online shop app",
+  manifest: "/manifest.json",
+  icons: {
+    icon: "/favicon.ico"
+  }
 };
 
 export default async function RootLayout({
@@ -22,10 +25,6 @@ export default async function RootLayout({
   const categories: Category[] = await categoriesService.getCategories();
   return (
     <html lang="en">
-      <Head>
-        <link rel="manifest" href="/manifest.json" />
-        <link rel="icon" href="/favicon.ico" sizes="any" />
-      </Head>
       <body className={inter.className}>
         <Navbar categories={categories} />
         <main className="layout">{children}</main>

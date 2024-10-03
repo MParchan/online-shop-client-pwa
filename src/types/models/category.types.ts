@@ -6,4 +6,5 @@ export type Category = {
     subcategories: Subcategory[];
     createdAt: Date;
     updatedAt: Date;
+    productCount?: number;
 };
