@@ -70,16 +70,23 @@ export default function ProductSearchOverview({
   const { replace } = useRouter();
 
   useEffect(() => {
-    setSelectedCategory(category);
-    setSelectedCSubcategory(subcategory);
+    if (category && selectedCategory) {
+      if (category._id !== selectedCategory?._id) {
+        setSelectedCategory(category);
+        setSelectedCSubcategory(undefined);
+        clearFiltersHandler();
+      }
+    }
+  }, [category, selectedCategory]);
+
+  useEffect(() => {
     if (subcategory) {
       sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
     }
-  }, [category, subcategory]);
+  }, [subcategory]);
 
   useEffect(() => {
     const params = new URLSearchParams(searchParams);
-    setLoader(true);
     if (page > 1) {
       params.set("page", page.toString());
     } else {
@@ -172,11 +179,11 @@ export default function ProductSearchOverview({
         query.sortField = "price";
         query.sortOrder = "desc";
       }
-      if (category) {
-        if (subcategory) {
-          query.subcategory = subcategory._id;
+      if (selectedCategory) {
+        if (selectedSubcategory) {
+          query.subcategory = selectedSubcategory._id;
         } else {
-          query.category = category._id;
+          query.category = selectedCategory._id;
         }
       }
       const productRes = await productsService.getProducts(query);
@@ -188,7 +195,16 @@ export default function ProductSearchOverview({
     };
     setLoader(true);
     fetchProducts();
-  }, [category, limit, page, searchQuery, subcategory, brands, properties, sorting]);
+  }, [
+    limit,
+    page,
+    searchQuery,
+    brands,
+    properties,
+    sorting,
+    selectedCategory,
+    selectedSubcategory
+  ]);
 
   /*useEffect(() => {
     setPage(1);
@@ -235,6 +251,7 @@ export default function ProductSearchOverview({
             setSelectedCategory={setSelectedCategory}
             selectedSubcategory={selectedSubcategory}
             setSelectedSubcategory={setSelectedCSubcategory}
+            clearFiltersHandler={clearFiltersHandler}
           />
           {selectedSubcategory && (
             <>

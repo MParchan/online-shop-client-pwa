@@ -8,6 +8,7 @@ interface CategoryFilterProps {
   setSelectedCategory: React.Dispatch<React.SetStateAction<Category | undefined>>;
   selectedSubcategory: Subcategory | undefined;
   setSelectedSubcategory: React.Dispatch<React.SetStateAction<Subcategory | undefined>>;
+  clearFiltersHandler: () => void;
 }
 
 export default function CategoryFilter({
@@ -15,7 +16,8 @@ export default function CategoryFilter({
   selectedCategory,
   setSelectedCategory,
   selectedSubcategory,
-  setSelectedSubcategory
+  setSelectedSubcategory,
+  clearFiltersHandler
 }: CategoryFilterProps) {
   const sortCategories = categories
     .sort((a, b) => (b.productCount || 0) - (a.productCount || 0))
@@ -37,6 +39,7 @@ export default function CategoryFilter({
                 onClick={() => {
                   setSelectedCategory(undefined);
                   setSelectedSubcategory(undefined);
+                  clearFiltersHandler();
                 }}
               >
                 <span>
@@ -63,6 +66,7 @@ export default function CategoryFilter({
                   onClick={() => {
                     setSelectedCategory(category);
                     setSelectedSubcategory(undefined);
+                    clearFiltersHandler();
                   }}
                 >
                   {category.name}
@@ -76,6 +80,7 @@ export default function CategoryFilter({
                     onClick={() => {
                       setSelectedCategory(category);
                       setSelectedSubcategory(subcategory);
+                      clearFiltersHandler();
                     }}
                   >
                     {subcategory.name}
