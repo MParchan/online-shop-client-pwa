@@ -3,10 +3,11 @@ import Image from "next/image";
 import NavbarCategories from "./elements/NavbarCategories";
 import { Category } from "@/types/models/category.types";
 import NavbarSearchBar from "./elements/NavbarSearchBar";
-import NavbarAccountMenu from "./elements/NavabrAccountMenu";
+import NavbarAccountMenu from "./elements/NavbarAccountMenu";
 import Link from "next/link";
 import NavbarHamburgerMenu from "./elements/NavbarHamburgerMenu";
 import { useEffect, useState } from "react";
+import NavbarCart from "./elements/NavbarCart";
 
 interface NavbarProps {
   categories: Category[];
@@ -64,18 +65,7 @@ export default function Navbar({ categories }: NavbarProps) {
               </a>
             </li>
             <NavbarAccountMenu />
-            <li className="navbar-tile-list-item">
-              <a className="navbar-tile">
-                <Image
-                  src="/assets/icons/cart.svg"
-                  alt="Cart logo"
-                  width={32}
-                  height={32}
-                  className="navbar-tile-logo"
-                />
-                <p className="navbar-tile-text">Cart</p>
-              </a>
-            </li>
+            <NavbarCart />
           </ul>
         </div>
       </nav>

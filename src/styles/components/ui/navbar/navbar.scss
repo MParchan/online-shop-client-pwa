@@ -23,7 +23,7 @@
     .navbar-tile-list {
       @apply flex items-center;
       .navbar-tile-list-item {
-        @apply w-12 sm:w-20 relative rounded-lg xl:mx-2;
+        @apply w-12 h-12 items-center flex sm:w-20 sm:h-auto relative rounded-lg xl:mx-2;
         .navbar-tile {
           @apply flex flex-col m-auto items-center justify-center text-sm cursor-pointer sm:py-0.5;
           .navbar-tile-logo {
@@ -34,10 +34,11 @@
           }
         }
         &:hover {
-          @apply rounded-t-lg shadow-[0_10px_15px_3px_rgba(0,0,0,0.1),0_4px_6px_4px_rgba(0,0,0,0.1)];
+          @apply sm:rounded-t-lg sm:shadow-[0_10px_15px_3px_rgba(0,0,0,0.1),0_4px_6px_4px_rgba(0,0,0,0.1)];
         }
 
         @import "./elements/navbarAccountMenu.scss";
+        @import "./elements/navbarCart.scss";
       }
     }
   }
