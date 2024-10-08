@@ -1,0 +1,26 @@
+.cart-overview {
+  @apply w-full py-8;
+
+  .cart-overview-empty {
+    @apply text-center;
+    .cart-overview-empty-icon-wrapper {
+      @apply flex justify-center mb-4;
+      .cart-overview-empty-icon-inner-wrapper {
+        @apply bg-gray-200 w-16 h-16 flex justify-center items-center rounded-full;
+
+        .cart-overview-empty-icon {
+          @apply w-10 h-auto;
+        }
+      }
+    }
+    .cart-overview-empty-text {
+      @apply text-3xl font-light;
+    }
+    .cart-overview-empty-button-wrapper {
+      @apply mt-6 flex justify-center;
+      .cart-overview-empty-button {
+        @apply w-60 rounded-lg;
+      }
+    }
+  }
+}
