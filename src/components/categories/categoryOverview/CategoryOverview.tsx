@@ -32,6 +32,7 @@ export default function CategoryOverview({ categories, selectedCategory }: Categ
                       alt={`${subcategory.name} thumbnail`}
                       width={600}
                       height={600}
+                      priority
                     />
                   </div>
 

@@ -1,16 +1,53 @@
 "use client";
 
 import Image from "next/image";
-import { useAppSelector } from "@/libs/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/libs/redux/hooks";
 import Button from "@/components/ui/button/Button";
 import Link from "next/link";
+import CartProductList from "../cartProductList/CartProductList";
+import { useEffect } from "react";
+import { clearCart } from "@/libs/redux/features/cart/cartSlice";
 
 export default function CartOverview() {
   const products = useAppSelector((state) => state.cart.items);
+  const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
+  const dispatch = useAppDispatch();
+
+  useEffect(() => {
+    document.body.style.backgroundColor = "#f5f5f5";
+    return () => {
+      document.body.style.backgroundColor = "white";
+    };
+  }, []);
+
+  const handleClearCart = () => {
+    dispatch(clearCart());
+  };
+
   return (
     <div className="cart-overview">
       {products.length > 0 ? (
-        <></>
+        <div>
+          <div className="cart-overview-header">
+            <span>
+              Shopping cart{" "}
+              <span className="cart-overview-header-quantity">
+                ({totalQuantity} {totalQuantity > 1 ? "products" : "product"})
+              </span>
+            </span>
+            <span className="cart-overview-clear-cart" onClick={handleClearCart}>
+              <Image
+                src="/assets/icons/delete.svg"
+                alt="delete icon"
+                width={32}
+                height={32}
+                className="cart-overview-clear-cart-icon"
+              />
+              <span>Clear cart</span>
+            </span>
+          </div>
+          <CartProductList products={products} totalQuantity={totalQuantity} />
+        </div>
       ) : (
         <div className="cart-overview-empty">
           <div className="cart-overview-empty-icon-wrapper">

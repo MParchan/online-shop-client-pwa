@@ -17,7 +17,7 @@
 }
 
 body {
-  @apply bg-white min-h-screen;
+  @apply min-h-screen;
   @import "./components/ui/navbar/navbar.scss";
   @import "./components/ui/footer/footer.scss";
 
@@ -37,7 +37,8 @@ body {
     @import "./components/products/productImages/productImages.scss";
     @import "./components/products/productOverwiev/productOverwiev.scss";
     @import "./components/products/productSpecification/productSpecification.scss";
-    @import "./components/shoppingCart/schoppingCart.scss";
+    @import "./components/shoppingCart/cartOverview/cartOverview.scss";
+    @import "./components/shoppingCart/cartProductList/cartProductList.scss";
     @import "./components/ui/select/select.scss";
     @import "./components/ui/button/button.scss";
     @import "./components/ui/input/input.scss";
@@ -49,5 +50,16 @@ body {
 @layer utilities {
   .text-balance {
     text-wrap: balance;
+  }
+}
+
+@layer base {
+  input[type="number"]::-webkit-outer-spin-button,
+  input[type="number"]::-webkit-inner-spin-button {
+    appearance: none;
+    margin: 0;
+  }
+  input[type="number"] {
+    appearance: textfield;
   }
 }
