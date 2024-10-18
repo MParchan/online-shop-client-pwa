@@ -11,6 +11,7 @@ import { clearCart } from "@/libs/redux/features/cart/cartSlice";
 export default function CartOverview() {
   const products = useAppSelector((state) => state.cart.items);
   const totalQuantity = useAppSelector((state) => state.cart.totalQuantity);
+  const totalPrice = useAppSelector((state) => state.cart.totalPrice);
   const dispatch = useAppDispatch();
 
   useEffect(() => {
@@ -27,26 +28,48 @@ export default function CartOverview() {
   return (
     <div className="cart-overview">
       {products.length > 0 ? (
-        <div>
-          <div className="cart-overview-header">
-            <span>
-              Shopping cart{" "}
-              <span className="cart-overview-header-quantity">
-                ({totalQuantity} {totalQuantity > 1 ? "products" : "product"})
+        <div className="cart-overview-cart-content-wrapper">
+          <div className="cart-overview-cart-content">
+            <div className="cart-overview-header">
+              <span>
+                Shopping cart{" "}
+                <span className="cart-overview-header-quantity">
+                  ({totalQuantity} {totalQuantity > 1 ? "products" : "product"})
+                </span>
               </span>
-            </span>
-            <span className="cart-overview-clear-cart" onClick={handleClearCart}>
-              <Image
-                src="/assets/icons/delete.svg"
-                alt="delete icon"
-                width={32}
-                height={32}
-                className="cart-overview-clear-cart-icon"
-              />
-              <span>Clear cart</span>
-            </span>
+              <span className="cart-overview-clear-cart" onClick={handleClearCart}>
+                <Image
+                  src="/assets/icons/delete.svg"
+                  alt="delete icon"
+                  width={32}
+                  height={32}
+                  className="cart-overview-clear-cart-icon"
+                />
+                <span>Clear cart</span>
+              </span>
+            </div>
+            <CartProductList products={products} totalQuantity={totalQuantity} />
           </div>
-          <CartProductList products={products} totalQuantity={totalQuantity} />
+          <div className="cart-overview-summary-wrapper">
+            <div className="cart-overview-summary">
+              <div className="cart-overview-summary-price">
+                <span className="cart-overview-summary-price-header">Total price</span>
+                <span className="cart-overview-summary-price-value">${totalPrice.toFixed(2)}</span>
+              </div>
+              <div className="cart-overview-summary-button-wrapper">
+                <Button variant="green">
+                  Go to delivery
+                  <Image
+                    src="/assets/icons/arrow_right.svg"
+                    alt="delete icon"
+                    width={24}
+                    height={24}
+                    className="cart-overview-summary-button-icon"
+                  />
+                </Button>
+              </div>
+            </div>
+          </div>
         </div>
       ) : (
         <div className="cart-overview-empty">

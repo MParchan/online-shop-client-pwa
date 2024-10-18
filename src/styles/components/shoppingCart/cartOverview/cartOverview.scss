@@ -1,18 +1,45 @@
 .cart-overview {
-  @apply w-full py-8;
-
-  .cart-overview-header {
-    @apply mx-4 text-2xl flex justify-between items-center;
-    .cart-overview-header-quantity {
-      @apply text-gray-500 text-xl;
-    }
-    .cart-overview-clear-cart {
-      @apply flex text-sm items-center rounded-lg p-1 pr-2;
-      &:hover {
-        @apply cursor-pointer bg-gray-200;
+  @apply w-full lg:pt-6;
+  .cart-overview-cart-content-wrapper {
+    @apply lg:flex;
+    .cart-overview-cart-content {
+      @apply flex-1;
+      .cart-overview-header {
+        @apply mx-4 text-2xl sm:flex justify-between items-center;
+        .cart-overview-header-quantity {
+          @apply text-gray-500 text-xl;
+        }
+        .cart-overview-clear-cart {
+          @apply flex text-sm items-center rounded-lg p-1 pr-3 mt-3 sm:mt-0 w-fit;
+          &:hover {
+            @apply cursor-pointer bg-gray-200;
+          }
+          .cart-overview-clear-cart-icon {
+            @apply w-8 h-auto p-1;
+          }
+        }
       }
-      .cart-overview-clear-cart-icon {
-        @apply w-8 h-auto p-1;
+    }
+  }
+
+  .cart-overview-summary-wrapper {
+    @apply lg:w-80 p-4;
+    .cart-overview-summary {
+      @apply bg-white rounded-lg lg:mt-10 p-4 lg:sticky lg:top-32;
+      .cart-overview-summary-price {
+        @apply flex justify-between mb-4;
+        .cart-overview-summary-price-header {
+          @apply flex items-center;
+        }
+        .cart-overview-summary-price-value {
+          @apply text-xl font-semibold;
+        }
+      }
+      .cart-overview-summary-button-wrapper {
+        @apply w-full;
+        .cart-overview-summary-button-icon {
+          @apply w-6 h-auto invert;
+        }
       }
     }
   }

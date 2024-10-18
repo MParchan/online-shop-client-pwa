@@ -1,7 +1,7 @@
 .cart-quantity {
-  @apply flex  rounded-full w-5 justify-center;
-  @apply absolute right-0 sm:right-3 top-0;
-  @apply bg-zinc-700 text-white text-sm;
+  @apply flex  rounded-md w-6 h-4 justify-center items-center;
+  @apply absolute right-0 sm:right-3 top-[1px];
+  @apply bg-zinc-700 text-white text-xs;
 }
 
 .cart-menu-wrapper {

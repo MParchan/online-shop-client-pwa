@@ -28,7 +28,9 @@ export default function NavbarCart() {
         />
         <p className="navbar-tile-text">Cart</p>
       </Link>
-      {totalQuantity > 0 && <div className="cart-quantity">{totalQuantity}</div>}
+      {totalQuantity > 0 && (
+        <div className="cart-quantity">{totalQuantity < 99 ? totalQuantity : "99+"}</div>
+      )}
       <div
         className={cn("cart-menu-wrapper", {
           active: cartMenu

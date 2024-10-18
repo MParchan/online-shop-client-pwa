@@ -45,65 +45,72 @@ export default function CartProductItem({ product }: CartProductItemProps) {
 
   return (
     <div className="cart-product-item-wrapper">
-      <Link
-        href={`/p/${createSlug(product.name)}/${product._id}`}
-        className="cart-menu-product-image-wrapper"
-      >
-        <Image
-          src={product.image || "/assets/icons/no-photography.svg"}
-          alt={`${product.name} image`}
-          width={160}
-          height={120}
-          priority
-          className="cart-product-item-image"
-        />
-      </Link>
-      <div className="cart-product-item-name-wrapper">
+      <div className="cart-product-item-image-wrapper">
         <Link
           href={`/p/${createSlug(product.name)}/${product._id}`}
-          className="cart-product-item-name"
+          className="cart-menu-product-image-wrapper"
         >
-          {product.name}
+          <Image
+            src={product.image || "/assets/icons/no-photography.svg"}
+            alt={`${product.name} image`}
+            width={160}
+            height={120}
+            priority
+            className="cart-product-item-image"
+          />
         </Link>
       </div>
-      <div className="cart-product-item-price-wrapper">${product.price.toFixed(2)}</div>
-      <div className="cart-product-item-quantity-wrapper">
-        {["1", "2", "3", "4", "5", "6", "7", "8"].includes(quantity) ? (
-          <Select
-            options={["1", "2", "3", "4", "5", "6", "7", "8", "9+"]}
-            defaultValue={quantity}
-            setValue={setQuantity}
-            className="w-16"
-          />
-        ) : (
-          <Input
-            type="number"
-            min={0}
-            max={999}
-            onInput={(e) => {
-              let value = (e.target as HTMLInputElement).value;
-              if (value.length > 3) {
-                value = value.slice(0, 3);
-              }
-              (e.target as HTMLInputElement).value = value;
-            }}
-            autoFocus
-            onKeyDown={handleChangeQuantity}
-            onBlur={handleChangeQuantity}
-            className="cart-product-item-quantity-input"
-          />
-        )}
-      </div>
-      <div className="cart-product-item-delete">
-        <Image
-          src="/assets/icons/delete.svg"
-          alt="delete icon"
-          width={32}
-          height={32}
-          className="cart-product-item-delete-icon"
-          onClick={handleDeleteProduct}
-        />
-      </div>
+      <span className="cart-product-item-responsive-wrapper">
+        <div className="cart-product-item-name-wrapper">
+          <Link
+            href={`/p/${createSlug(product.name)}/${product._id}`}
+            className="cart-product-item-name"
+          >
+            {product.name}
+          </Link>
+        </div>
+        <div className="cart-product-item-responsive2-wrapper">
+          <div className="cart-product-item-price-wrapper">${product.price.toFixed(2)}</div>
+          <div className="cart-product-item-quantity-wrapper">
+            {["1", "2", "3", "4", "5", "6", "7", "8"].includes(quantity) ? (
+              <Select
+                options={["1", "2", "3", "4", "5", "6", "7", "8", "9+"]}
+                defaultValue={quantity}
+                setValue={setQuantity}
+                className="w-16"
+              />
+            ) : (
+              <Input
+                type="number"
+                min={0}
+                max={999}
+                defaultValue={quantity}
+                onInput={(e) => {
+                  let value = (e.target as HTMLInputElement).value;
+                  if (value.length > 3) {
+                    value = value.slice(0, 3);
+                  }
+                  (e.target as HTMLInputElement).value = value;
+                }}
+                autoFocus={quantity === "9+"}
+                onKeyDown={handleChangeQuantity}
+                onBlur={handleChangeQuantity}
+                className="cart-product-item-quantity-input"
+              />
+            )}
+          </div>
+          <div className="cart-product-item-delete">
+            <Image
+              src="/assets/icons/delete.svg"
+              alt="delete icon"
+              width={32}
+              height={32}
+              className="cart-product-item-delete-icon"
+              onClick={handleDeleteProduct}
+            />
+          </div>
+        </div>
+      </span>
     </div>
   );
 }

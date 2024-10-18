@@ -8,6 +8,7 @@ import { useState } from "react";
 import { useAppDispatch } from "@/libs/redux/hooks";
 import { addToCart } from "@/libs/redux/features/cart/cartSlice";
 import { ProductImage } from "@/types/models/image.types";
+import Input from "@/components/ui/input/Input";
 
 interface AddToCartProps {
   product: Product;
@@ -31,14 +32,53 @@ export default function AddToCart({ product }: AddToCartProps) {
     );
   };
 
+  const handleChangeQuantity = (
+    e: React.KeyboardEvent<HTMLInputElement> | React.FocusEvent<HTMLInputElement>
+  ) => {
+    const value = (e.target as HTMLInputElement).value;
+    if (e.type === "keydown" && (e as React.KeyboardEvent<HTMLInputElement>).key === "Enter") {
+      if (/^\d*$/.test(value) && value !== "") {
+        setQuantity(value);
+      } else {
+        setQuantity("1");
+      }
+    }
+    if (e.type === "blur") {
+      if (/^\d*$/.test(value) && value !== "") {
+        setQuantity(value);
+      } else {
+        setQuantity("1");
+      }
+    }
+  };
+
   return (
     <>
-      <Select
-        options={["1", "2", "3", "4", "5", "6", "7", "8"]}
-        defaultValue={quantity}
-        setValue={setQuantity}
-        className="w-16"
-      />
+      {["1", "2", "3", "4", "5", "6", "7", "8"].includes(quantity) ? (
+        <Select
+          options={["1", "2", "3", "4", "5", "6", "7", "8", "9+"]}
+          defaultValue={quantity}
+          setValue={setQuantity}
+          className="w-16"
+        />
+      ) : (
+        <Input
+          type="number"
+          min={0}
+          max={999}
+          onInput={(e) => {
+            let value = (e.target as HTMLInputElement).value;
+            if (value.length > 3) {
+              value = value.slice(0, 3);
+            }
+            (e.target as HTMLInputElement).value = value;
+          }}
+          autoFocus
+          onKeyDown={handleChangeQuantity}
+          onBlur={handleChangeQuantity}
+          className="w-[48px] h-[42px] !px-2 border border-gray-300"
+        />
+      )}
       <Button variant="green" className="ml-2" onClick={handleAddToCart}>
         <Image
           src="/assets/icons/add_shopping_cart.svg"
