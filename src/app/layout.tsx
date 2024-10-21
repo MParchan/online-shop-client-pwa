@@ -5,6 +5,7 @@ import Navbar from "@/components/ui/navbar/Navbar";
 import { Category } from "@/types/models/category.types";
 import categoriesService from "@/api/services/categoriesService";
 import Footer from "@/components/ui/footer/Footer";
+import StoreProvider from "./StoreProvider";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -26,9 +27,11 @@ export default async function RootLayout({
   return (
     <html lang="en">
       <body className={inter.className}>
-        <Navbar categories={categories} />
-        <main className="layout">{children}</main>
-        <Footer />
+        <StoreProvider>
+          <Navbar categories={categories} />
+          <main className="layout">{children}</main>
+          <Footer />
+        </StoreProvider>
       </body>
     </html>
   );

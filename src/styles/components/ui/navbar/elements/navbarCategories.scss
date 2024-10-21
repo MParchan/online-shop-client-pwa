@@ -1,5 +1,5 @@
 .navbar-categories {
-  @apply hidden lg:block bg-gray-100 z-40;
+  @apply hidden lg:block z-40;
   .navbar-category-list {
     @apply max-w-screen-xl mx-auto flex flex-wrap items-center justify-between;
 

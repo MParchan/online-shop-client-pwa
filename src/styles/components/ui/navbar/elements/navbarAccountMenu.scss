@@ -1,7 +1,7 @@
 .account-menu-wrapper {
   @apply hidden absolute rounded-lg bg-inherit w-[250px] top-full z-20 right-0 pt-1;
   &.active {
-    @apply block;
+    @apply sm:block;
   }
   .account-menu {
     @apply bg-white rounded-lg px-4 py-5 border;

@@ -8,19 +8,11 @@ import { useState } from "react";
 export default function NavbarAccountMenu() {
   const [accountMenu, setAccountMenu] = useState(false);
 
-  const handleMouseEnter = () => {
-    setAccountMenu(true);
-  };
-
-  const handleMouseLeave = () => {
-    setAccountMenu(false);
-  };
-
   return (
     <li
       className="navbar-tile-list-item"
-      onMouseEnter={() => handleMouseEnter()}
-      onMouseLeave={() => handleMouseLeave()}
+      onMouseEnter={() => setAccountMenu(true)}
+      onMouseLeave={() => setAccountMenu(false)}
     >
       <Link href="/" className="navbar-tile">
         <Image

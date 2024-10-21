@@ -1,0 +1,4 @@
+.cart-product-list-wrapper {
+  @apply p-4 bg-gray-100;
+  @import "./cartProductItem.scss/cartProductItem.scss";
+}
