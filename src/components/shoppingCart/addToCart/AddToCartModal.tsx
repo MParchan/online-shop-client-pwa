@@ -84,7 +84,7 @@ export default function AddToCartModal({ openModal, setOpenModal, product }: Add
             </div>
             <div className="add-to-cart-footer-button-wrapper">
               <Link href="/cart">
-                <Button variant="green">
+                <Button variant="green" onClick={() => setOpenModal(false)}>
                   Go to cart
                   <Image
                     src="/assets/icons/arrow_right.svg"
