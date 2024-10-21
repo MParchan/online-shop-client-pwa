@@ -61,7 +61,7 @@ export default function CartOverview() {
                   Go to delivery
                   <Image
                     src="/assets/icons/arrow_right.svg"
-                    alt="delete icon"
+                    alt="Arrow right icon"
                     width={24}
                     height={24}
                     className="cart-overview-summary-button-icon"

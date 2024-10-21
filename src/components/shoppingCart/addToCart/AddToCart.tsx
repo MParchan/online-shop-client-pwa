@@ -9,12 +9,14 @@ import { useAppDispatch } from "@/libs/redux/hooks";
 import { addToCart } from "@/libs/redux/features/cart/cartSlice";
 import { ProductImage } from "@/types/models/image.types";
 import Input from "@/components/ui/input/Input";
+import AddToCartModal from "./AddToCartModal";
 
 interface AddToCartProps {
   product: Product;
 }
 export default function AddToCart({ product }: AddToCartProps) {
   const [quantity, setQuantity] = useState("1");
+  const [openModal, setOpenModal] = useState(false);
   const dispatch = useAppDispatch();
 
   const mainImage: ProductImage | undefined = product.images.find(
@@ -30,6 +32,7 @@ export default function AddToCart({ product }: AddToCartProps) {
         quantity: Number(quantity)
       })
     );
+    setOpenModal(true);
   };
 
   const handleChangeQuantity = (
@@ -53,7 +56,7 @@ export default function AddToCart({ product }: AddToCartProps) {
   };
 
   return (
-    <>
+    <div className="add-to-cart">
       {["1", "2", "3", "4", "5", "6", "7", "8"].includes(quantity) ? (
         <Select
           options={["1", "2", "3", "4", "5", "6", "7", "8", "9+"]}
@@ -79,7 +82,12 @@ export default function AddToCart({ product }: AddToCartProps) {
           className="w-[48px] h-[42px] !px-2 border border-gray-300"
         />
       )}
-      <Button variant="green" className="ml-2" onClick={handleAddToCart}>
+      <Button
+        variant="green"
+        className="ml-2"
+        onClick={handleAddToCart}
+        disabled={Number(quantity) > product.quantity}
+      >
         <Image
           src="/assets/icons/add_shopping_cart.svg"
           alt="Add shopping cart icon"
@@ -89,6 +97,7 @@ export default function AddToCart({ product }: AddToCartProps) {
         />
         Add to cart
       </Button>
-    </>
+      <AddToCartModal openModal={openModal} setOpenModal={setOpenModal} product={product} />
+    </div>
   );
 }

@@ -37,4 +37,8 @@
       @apply bg-red-700;
     }
   }
+
+  &:disabled {
+    @apply cursor-not-allowed;
+  }
 }

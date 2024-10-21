@@ -1,0 +1,62 @@
+.add-to-cart-modal-area {
+  @apply fixed w-full h-full top-0 left-0 flex justify-center items-center z-50;
+  &.open {
+    @apply pointer-events-auto;
+  }
+  &.close {
+    @apply pointer-events-none;
+  }
+  .add-to-cart-modal-wrapper {
+    @apply fixed z-30 w-full sm:w-[600px] px-2;
+    @apply ease-in-out duration-300;
+    &.open {
+      @apply opacity-100 translate-y-0 sm:scale-100;
+    }
+    &.close {
+      @apply opacity-0 translate-y-4 sm:translate-y-0 sm:scale-95;
+    }
+    .add-to-cart-modal {
+      @apply bg-white rounded-lg p-4;
+      .add-to-cart-modal-header {
+        @apply text-xl sm:text-2xl pr-10 truncate;
+        .add-to-cart-modal-close {
+          @apply absolute top-4 right-4  cursor-pointer;
+        }
+      }
+
+      .add-to-cart-modal-product {
+        @apply my-8 flex items-center;
+        .add-to-cart-modal-product-image {
+          @apply w-20 h-auto;
+        }
+        .add-to-cart-modal-product {
+          @apply flex-1 justify-between;
+        }
+      }
+
+      .add-to-cart-modal-footer {
+        @apply flex justify-between space-x-1;
+
+        .add-to-cart-footer-button-wrapper {
+          @apply w-40;
+          .add-to-cart-footer-button-icon-return {
+            @apply w-6 h-auto;
+          }
+          .add-to-cart-footer-button-icon-cart {
+            @apply w-6 h-auto invert;
+          }
+        }
+      }
+    }
+  }
+
+  .add-to-cart-modal-overlay {
+    @apply w-full h-full z-20 bg-black transition-opacity duration-300 ease-in-out;
+    &.open {
+      @apply opacity-50 pointer-events-auto;
+    }
+    &.close {
+      @apply opacity-0 pointer-events-none;
+    }
+  }
+}
