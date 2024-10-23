@@ -1,6 +1,6 @@
 "use client";
 
-import productsService from "@/api/services/productsService";
+import { useGetProductsQuery } from "@/libs/redux/features/api/services/productsService";
 import { cn } from "@/libs/twMerge.lib";
 import { Category } from "@/types/models/category.types";
 import { ProductImage } from "@/types/models/image.types";
@@ -11,12 +11,6 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { FormEvent, useEffect, useRef, useState } from "react";
 
-interface ProductParams {
-  limit: number;
-  name: string;
-  category?: string | null;
-}
-
 interface NavbarSearchBarProps {
   categories: Category[];
   isHidden?: boolean;
@@ -26,15 +20,11 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   const [categoryOpened, setCategoryOpened] = useState(false);
   const [productsOpened, setProductsOpened] = useState(false);
   const [productQuery, setProductQuery] = useState("");
-  const [productData, setProductData] = useState<Product[] | null>(null);
-  const [, setLoading] = useState(false);
   const [selectedCategory, setSelectedCategory] = useState("All categories");
   const [selectedCategoryId, setSelectedCategoryId] = useState<string | null>(null);
-  const [timeoutId, setTimeoutId] = useState<ReturnType<typeof setTimeout> | null>(null);
   const categoryContainerRef = useRef<HTMLDivElement | null>(null);
   const categoryDropdownRef = useRef<HTMLDivElement | null>(null);
   const inputRef = useRef<HTMLInputElement | null>(null);
-  const submitButtonRef = useRef<HTMLButtonElement | null>(null);
   const productDropdownRef = useRef<HTMLDivElement | null>(null);
   const router = useRouter();
 
@@ -56,7 +46,6 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
         !inputRef.current.contains(event.target as Node)
       ) {
         setProductsOpened(false);
-        setProductData(null);
       }
     };
 
@@ -65,7 +54,6 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
         inputRef.current?.blur();
         setCategoryOpened(false);
         setProductsOpened(false);
-        setProductData(null);
       }
     };
 
@@ -76,49 +64,21 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
       document.removeEventListener("keydown", handleKeyDown);
     };
   }, []);
-
+  const buildQuery = () => {
+    const queryParams = new URLSearchParams();
+    queryParams.set("limit", "5");
+    queryParams.set("name", productQuery);
+    if (selectedCategoryId) {
+      queryParams.set("category", selectedCategoryId);
+    }
+    return queryParams.toString();
+  };
+  const { data: productRes } = useGetProductsQuery(buildQuery());
   useEffect(() => {
-    const fetchProductData = async () => {
-      if (productQuery === "") {
-        setProductData(null);
-        setProductsOpened(false);
-        return;
-      }
-      if (timeoutId) {
-        clearTimeout(timeoutId);
-      }
-
-      const params: ProductParams = {
-        limit: 5,
-        name: productQuery
-      };
-
-      if (selectedCategoryId !== null) {
-        params.category = selectedCategoryId;
-      }
-
-      const id = setTimeout(async () => {
-        setLoading(true);
-        try {
-          const productsRes = await productsService.getProducts(params);
-          setProductData(productsRes.products);
-        } catch (error) {
-          console.log(error);
-        } finally {
-          setLoading(false);
-        }
-      }, 300);
-
-      setTimeoutId(id);
-
-      return () => clearTimeout(id);
-    };
-
-    setProductsOpened(true);
-    fetchProductData();
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, [productQuery, selectedCategoryId]);
+    if (productRes?.products.length) {
+      setProductsOpened(true);
+    }
+  }, [productRes]);
 
   useEffect(() => {
     if (isHidden) {
@@ -131,7 +91,6 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
     inputRef.current?.blur();
     setCategoryOpened(false);
     setProductsOpened(false);
-    setProductData(null);
     const query = inputRef.current?.value;
     if (query) {
       const params = new URLSearchParams();
@@ -153,7 +112,8 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
   return (
     <form
       className={cn("navbar-search-bar", {
-        dropdown_active: productData !== null && productData.length
+        dropdown_active:
+          productRes && productRes.products.length && productQuery.length && productsOpened
       })}
       onSubmit={onSubmit}
     >
@@ -164,6 +124,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
         placeholder="Search..."
         className="navbar-search-bar-input"
         onChange={(e) => setProductQuery(e.target.value)}
+        onClick={() => setProductsOpened(true)}
         ref={inputRef}
       />
       <div className="separator" />
@@ -213,7 +174,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
           ))}
         </ul>
       </div>
-      <button type="submit" className="navbar-search-bar-button " ref={submitButtonRef}>
+      <button type="submit" className="navbar-search-bar-button ">
         <Image
           src="/assets/icons/search.svg"
           alt="Search logo"
@@ -224,18 +185,17 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
       </button>
       <div
         className={cn("search-product-dropdown", {
-          active: productData !== null && productData.length && productsOpened === true
+          active: productRes && productRes.products.length && productsOpened && productQuery.length
         })}
         ref={productDropdownRef}
       >
         <ul className="search-product-dropdown-list">
-          {productData?.map((product: Product) => (
+          {productRes?.products.map((product: Product) => (
             <Link
               href={`/p/${createSlug(product.name)}/${product._id}`}
               key={product._id}
               onClick={() => {
                 setProductQuery("");
-                setProductData(null);
               }}
             >
               <li className="search-product-dropdown-item">

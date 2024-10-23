@@ -1,5 +1,5 @@
 .navbar-search-bar {
-  @apply flex border rounded-lg relative items-center justify-between;
+  @apply flex border rounded-lg relative items-center justify-between shadow-none;
 
   &:focus-within {
     @apply shadow-lg;

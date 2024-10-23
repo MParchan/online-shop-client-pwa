@@ -32,7 +32,7 @@ export default function NavbarAccountMenu() {
         <div className="account-menu">
           <div>
             <div className="login-button-wrapper">
-              <Link href="/">
+              <Link href="/auth/login">
                 <button className="login-button">Log In</button>
               </Link>
             </div>
@@ -41,7 +41,7 @@ export default function NavbarAccountMenu() {
               <p className="signup-button-header">You dont have account?</p>
             </div>
             <div className="signup-button-wrapper">
-              <Link href="/">
+              <Link href="/auth/register">
                 <button className="signup-button">Sign up</button>
               </Link>
             </div>

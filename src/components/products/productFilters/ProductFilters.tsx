@@ -8,18 +8,8 @@ import { useState } from "react";
 import Button from "@/components/ui/button/Button";
 import ProductFiltersModal from "./ProductFiltersModal";
 import { cn } from "@/libs/twMerge.lib";
-
-export interface BrandCount {
-  _id: string;
-  count: number;
-  brand: Brand;
-}
-
-export interface PropertyCount {
-  _id: string;
-  count: number;
-  property: Property;
-}
+import { BrandCount } from "@/types/brandCount.types";
+import { PropertyCount } from "@/types/propertyCount.types";
 
 interface ProductFilterProps {
   brands: Brand[];

@@ -23,7 +23,7 @@ body {
 
   .layout {
     @apply flex mx-3 sm:mx-6 mb-6 mt-[72px] lg:mt-20 max-w-screen-xl xl:mx-auto xl:px-6;
-    @apply min-h-[calc(100dvh-208px)] sm:min-h-[calc(100dvh-216px)] lg:min-h-[calc(100dvh-224px)];
+    @apply min-h-[calc(100dvh-200px)] sm:min-h-[calc(100dvh-212px)] lg:min-h-[calc(100dvh-220px)];
 
     @import "./components/categories/categoryNavigation/categoryNavigation.scss";
     @import "./components/categories/categoryList/categoryList.scss";

@@ -1,11 +1,18 @@
-import productsService from "@/api/services/productsService";
 import ProductList from "@/components/products/productList/ProductList";
+import { getApiBaseUrl } from "@/utils/getApiBaseUrl";
+
+export const revalidate = 3600;
 
 export default async function Home() {
-  const productRes = await productsService.getProducts({
+  const url = `${getApiBaseUrl()}/products?${new URLSearchParams({
     sortField: "createdAt",
     sortOrder: "desc",
-    limit: 8
+    limit: "8"
+  }).toString()}`;
+  const productsRes = await fetch(url).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
   });
 
   return (
@@ -15,7 +22,7 @@ export default async function Home() {
       </div>
       <div>
         <div className="text-xl font-semibold p-4">Latest products</div>
-        <ProductList products={productRes.products} />
+        <ProductList products={productsRes.products} />
       </div>
     </div>
   );

@@ -1,22 +1,29 @@
 import { Subcategory } from "@/types/models/subcategory.types";
-import subcategoriesService from "@/api/services/subcategoriesService";
 import { redirect } from "next/navigation";
 import createSlug from "@/utils/createSlug";
 import { Metadata } from "next";
 import ProductOverview from "@/components/products/productOverwiev/ProductOverwiev";
 import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
 import { Category } from "@/types/models/category.types";
-import brandsService from "@/api/services/brandsService";
 import { Brand } from "@/types/models/brand.types";
 import { Property } from "@/types/models/property.types";
-import propertiesService from "@/api/services/propertiesService";
+import { getApiBaseUrl } from "@/utils/getApiBaseUrl";
 
 interface SubcategoryProps {
   params: { subcategoryName: string; id: string };
   searchParams?: { [key: string]: string | string[] | undefined };
 }
+
+export const revalidate = 3600;
+
 export async function generateMetadata({ params }: SubcategoryProps): Promise<Metadata> {
-  const subcategory: Subcategory = await subcategoriesService.getSubcategoryById(params.id);
+  const subcategory: Subcategory = await fetch(
+    getApiBaseUrl() + "/subcategories/" + params.id
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
   if (params.subcategoryName !== createSlug(subcategory.name)) {
     redirect(`/p/${createSlug(subcategory.name)}/${params.id}`);
   }
@@ -26,19 +33,33 @@ export async function generateMetadata({ params }: SubcategoryProps): Promise<Me
 }
 
 export default async function SubcategoryPage({ params, searchParams }: SubcategoryProps) {
-  const subcategory: Subcategory = await subcategoriesService.getSubcategoryById(params.id);
-
-  const subcategoryBrands = await brandsService.getBrands({
-    subcategory: subcategory._id
+  const subcategory: Subcategory = await fetch(
+    getApiBaseUrl() + "/subcategories/" + params.id
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
   });
   const category = subcategory.category as Category;
+
+  const subcategoryBrands: Brand[] = await fetch(
+    getApiBaseUrl() + "/brands?subcategory=" + subcategory._id
+  ).then((res) => {
+    if (res.ok) {
+      return res.json();
+    }
+  });
 
   const urlParamBrands = searchParams?.brands?.toString().split(",");
   const selectedBrands: Brand[] = [];
   if (urlParamBrands) {
     for (const brandId of urlParamBrands) {
       try {
-        const brand = await brandsService.getBrandById(brandId);
+        const brand: Brand = await fetch(getApiBaseUrl() + "/brands/" + brandId).then((res) => {
+          if (res.ok) {
+            return res.json();
+          }
+        });
         selectedBrands.push(brand);
       } catch {
         const brandIndex = urlParamBrands.indexOf(brandId);
@@ -51,7 +72,13 @@ export default async function SubcategoryPage({ params, searchParams }: Subcateg
   if (urlParamProperties) {
     for (const propertyId of urlParamProperties) {
       try {
-        const property = await propertiesService.getPropertyById(propertyId);
+        const property: Property = await fetch(getApiBaseUrl() + "/properties/" + propertyId).then(
+          (res) => {
+            if (res.ok) {
+              return res.json();
+            }
+          }
+        );
         selectedProperties.push(property);
       } catch {
         const propertyIndex = urlParamProperties.indexOf(propertyId);
