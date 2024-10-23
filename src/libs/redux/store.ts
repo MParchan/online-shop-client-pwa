@@ -5,13 +5,17 @@ import { persistStore, persistReducer } from "redux-persist";
 import storageEngine from "./storageEngine";
 import { api } from "./features/api/api";
 
-const persistConfig = {
-    key: "root",
+const authPersistConfig = {
+    key: "auth",
+    storage: storageEngine
+};
+const cartPersistConfig = {
+    key: "cart",
     storage: storageEngine
 };
 
-const persistedAuthReducer = persistReducer(persistConfig, authReducer);
-const persistedCartReducer = persistReducer(persistConfig, cartReducer);
+const persistedAuthReducer = persistReducer(authPersistConfig, authReducer);
+const persistedCartReducer = persistReducer(cartPersistConfig, cartReducer);
 
 export const makeStore = () => {
     return configureStore({

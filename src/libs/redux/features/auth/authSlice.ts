@@ -1,40 +1,45 @@
 import { createSlice, createAsyncThunk } from "@reduxjs/toolkit";
 import { jwtDecode } from "jwt-decode";
+import { authService } from "../api/services/authService";
+import { FetchBaseQueryError } from "@reduxjs/toolkit/query/react";
 
 export const login = createAsyncThunk(
     "auth/login",
-    async (credentials: { email: string; password: string }, { rejectWithValue }) => {
+    async (credentials: { email: string; password: string }, { rejectWithValue, dispatch }) => {
         try {
-            const token = "";
-            const decodedToken: { email: string } = jwtDecode(token);
-            const userEmail = decodedToken.email;
+            const { login } = authService.endpoints;
+            const result = await dispatch(login.initiate(credentials)).unwrap();
+            const token = result.accessToken;
+            const decodedToken: { user: { email: string } } = jwtDecode(token);
+            const userEmail = decodedToken.user.email;
             return { token, userEmail };
         } catch (error) {
-            return rejectWithValue(error);
-        }
-    }
-);
-
-export const register = createAsyncThunk(
-    "auth/register",
-    async (
-        credentials: { email: string; password: string; confirmPassword: string },
-        { rejectWithValue }
-    ) => {
-        try {
-            const data = null;
-            return data;
-        } catch (error) {
-            return rejectWithValue(error);
+            console.log(error);
+            if (typeof error === "object" && error !== null && "data" in error) {
+                const fetchError = error as FetchBaseQueryError;
+                const errorMessage =
+                    fetchError.data &&
+                    typeof fetchError.data === "object" &&
+                    "message" in fetchError.data
+                        ? (fetchError.data as { message: string }).message
+                        : "Login error";
+                return rejectWithValue(errorMessage);
+            }
+            if (error instanceof Error) {
+                return rejectWithValue(error.message);
+            } else {
+                return rejectWithValue("Login error");
+            }
         }
     }
 );
 
 const initialState = {
-    token: null as string | null,
-    userEmail: null as string | null,
-    status: "idle",
-    error: null as string | null
+    token: undefined as string | undefined,
+    userEmail: undefined as string | undefined,
+    isLogged: false,
+    status: "logged out",
+    error: undefined as string | undefined
 };
 
 const authSlice = createSlice({
@@ -42,21 +47,33 @@ const authSlice = createSlice({
     initialState,
     reducers: {
         logout(state) {
-            state.token = null;
-            state.userEmail = null;
+            state.token = undefined;
+            state.userEmail = undefined;
+            state.isLogged = false;
+            state.status = "logged out";
+            state.error = undefined;
         }
     },
     extraReducers: (builder) => {
         builder
             .addCase(login.pending, (state) => {
+                state.token = undefined;
+                state.userEmail = undefined;
+                state.isLogged = false;
                 state.status = "loading";
+                state.error = undefined;
             })
             .addCase(login.fulfilled, (state, action) => {
-                state.status = "succeeded";
                 state.token = action.payload.token;
                 state.userEmail = action.payload.userEmail;
+                state.isLogged = true;
+                state.status = "succeeded";
+                state.error = undefined;
             })
             .addCase(login.rejected, (state, action) => {
+                state.token = undefined;
+                state.userEmail = undefined;
+                state.isLogged = false;
                 state.status = "failed";
                 state.error = action.payload as string;
             });
