@@ -1,9 +1,7 @@
 "use client";
 
 import Image from "next/image";
-import productsService from "@/api/services/productsService";
 import { Category } from "@/types/models/category.types";
-import { Product } from "@/types/models/product.types";
 import { useEffect, useState } from "react";
 import ProductList from "../productList/ProductList";
 import Loader from "@/components/ui/loader/Loader";
@@ -19,6 +17,7 @@ import { sortPropertyTypes } from "@/utils/sortPropertyTypes";
 import ProductFilters from "../productFilters/ProductFilters";
 import ProductFiltersModal from "../productFilters/ProductFiltersModal";
 import CategoryFilterModal from "@/components/categories/categoryFilter/CategoryFilterModal";
+import { useGetProductsQuery } from "@/libs/redux/features/api/services/productsService";
 
 interface ProductSearchOverviewProps {
   searchQuery: string;
@@ -49,23 +48,17 @@ export default function ProductSearchOverview({
   urlParamPage,
   urlParamLimit
 }: ProductSearchOverviewProps) {
-  const [products, setProducts] = useState<Product[]>([]);
   const [selectedCategory, setSelectedCategory] = useState<Category | undefined>(category);
   const [selectedSubcategory, setSelectedCSubcategory] = useState<Subcategory | undefined>(
     subcategory
   );
-  const [productCount, setProductCount] = useState(0);
-  const [brandCount, setBrandCount] = useState([]);
-  const [propertyCount, setPropertyCount] = useState([]);
   const [brands, setBrands] = useState<string[]>(urlParamBrands ?? []);
   const [properties, setProperties] = useState<string[]>(urlParamProperties ?? []);
   const [selectedBrands, setSelectedBrands] = useState<Brand[]>(urlSelectedBrands);
   const [selectedProperties, setSelectedProperties] = useState<Property[]>(urlSelectedProperties);
-  const [loader, setLoader] = useState(true);
   const [sorting, setSorting] = useState(urlParamSorting ?? "From the latest");
   const [page, setPage] = useState<number>(!urlParamPage ? 1 : Number(urlParamPage));
   const [limit, setLimit] = useState<string>(urlParamLimit ?? "12");
-  const allPages = Math.ceil(productCount / Number(limit));
   const [openCategoryModal, setOpenCategoryModal] = useState(false);
   const [openFilterModal, setOpenFilterModal] = useState(false);
 
@@ -147,69 +140,59 @@ export default function ProductSearchOverview({
     sorting
   ]);
 
-  useEffect(() => {
-    const fetchProducts = async () => {
-      const query: { [key: string]: string | number } = {
-        name: searchQuery,
-        page: page,
-        limit: limit
-      };
-      if (brands.length > 0) {
-        query.brands = brands.join(",");
+  const buildQuery = () => {
+    const params = new URLSearchParams();
+    if (selectedCategory) {
+      if (selectedSubcategory) {
+        params.set("subcategory", selectedSubcategory._id);
+      } else {
+        params.set("category", selectedCategory._id);
       }
-      if (properties.length > 0) {
-        query.properties = properties.join(",");
-      }
-      if (sorting === "From the latest") {
-        query.sortField = "createdAt";
-        query.sortOrder = "desc";
-      }
-      if (sorting === "From the oldest") {
-        query.sortField = "createdAt";
-        query.sortOrder = "asc";
-      }
-      if (sorting === "Alphabetically: from A to Z") {
-        query.sortField = "name";
-        query.sortOrder = "asc";
-      }
-      if (sorting === "Alphabetically: from Z to A") {
-        query.sortField = "name";
-        query.sortOrder = "desc";
-      }
-      if (sorting === "Price: from the cheapest") {
-        query.sortField = "price";
-        query.sortOrder = "asc";
-      }
-      if (sorting === "Price: from the most expensive") {
-        query.sortField = "price";
-        query.sortOrder = "desc";
-      }
-      if (selectedCategory) {
-        if (selectedSubcategory) {
-          query.subcategory = selectedSubcategory._id;
-        } else {
-          query.category = selectedCategory._id;
-        }
-      }
-      const productRes = await productsService.getProducts(query);
-      setProducts(productRes.products);
-      setProductCount(productRes.productCount);
-      setPropertyCount(productRes.properties);
-      setBrandCount(productRes.brands);
-      setLoader(false);
-    };
-    setLoader(true);
-    fetchProducts();
-  }, [
-    limit,
-    page,
-    searchQuery,
-    brands,
-    properties,
-    sorting,
-    selectedCategory,
-    selectedSubcategory
-  ]);
+    }
+    params.set("page", page.toString());
+    params.set("limit", limit);
+    params.set("name", searchQuery);
+
+    if (brands.length > 0) {
+      params.set("brands", brands.join(","));
+    }
+    if (properties.length > 0) {
+      params.set("properties", properties.join(","));
+    }
+
+    switch (sorting) {
+      case "From the latest":
+        params.set("sortField", "createdAt");
+        params.set("sortOrder", "desc");
+        break;
+      case "From the oldest":
+        params.set("sortField", "createdAt");
+        params.set("sortOrder", "asc");
+        break;
+      case "Alphabetically: from A to Z":
+        params.set("sortField", "name");
+        params.set("sortOrder", "asc");
+        break;
+      case "Alphabetically: from Z to A":
+        params.set("sortField", "name");
+        params.set("sortOrder", "desc");
+        break;
+      case "Price: from the cheapest":
+        params.set("sortField", "price");
+        params.set("sortOrder", "asc");
+        break;
+      case "Price: from the most expensive":
+        params.set("sortField", "price");
+        params.set("sortOrder", "desc");
+        break;
+      default:
+        break;
+    }
+
+    return params.toString();
+  };
+
+  const { data: productRes, isFetching, error } = useGetProductsQuery(buildQuery());
 
   useEffect(() => {
     setPage(1);
@@ -223,29 +206,25 @@ export default function ProductSearchOverview({
   };
 
   const removeBrandHandler = (brand: Brand) => {
-    setSelectedBrands((prevBrands) => {
-      return prevBrands.filter((b) => b._id !== brand._id);
-    });
-    setBrands((prevBrands) => {
-      return prevBrands.filter((id) => id !== brand._id);
-    });
+    setSelectedBrands((prevBrands: Brand[]) => prevBrands.filter((b) => b._id !== brand._id));
+    setBrands((prevBrands: string[]) => prevBrands.filter((id) => id !== brand._id));
   };
 
   const removePropertyHandler = (property: Property) => {
-    setSelectedProperties((prevProperties) => {
-      return prevProperties.filter((p) => p._id !== property._id);
-    });
-    setProperties((prevBrands) => {
-      return prevBrands.filter((id) => id !== property._id);
-    });
+    setSelectedProperties((prevProperties: Property[]) =>
+      prevProperties.filter((p) => p._id !== property._id)
+    );
+    setProperties((prevBrands: string[]) => prevBrands.filter((id) => id !== property._id));
   };
+
+  if (error) return <div>Failed to load products.</div>;
 
   return (
     <div className="product-overview">
       <div className="product-overview-subcategory">
         {`"${searchQuery}" `}
         <span className="product-overview-subcategory-quantity">
-          ({productCount} {productCount === 1 ? "result" : "results"})
+          ({productRes?.productCount || 0} {productRes?.productCount === 1 ? "result" : "results"})
         </span>
       </div>
       <div className="product-overview-main">
@@ -263,9 +242,9 @@ export default function ProductSearchOverview({
               {subcategoryBrands && subcategory ? (
                 <ProductFilters
                   brands={subcategoryBrands}
-                  brandCount={brandCount}
-                  propertyCount={propertyCount}
-                  productCount={productCount}
+                  brandCount={productRes?.brands || []}
+                  propertyCount={productRes?.properties || []}
+                  productCount={productRes?.productCount || 0}
                   propertyTypes={subcategory.propertyTypes}
                   selectedBrands={brands}
                   setSelectedBrands={setSelectedBrands}
@@ -372,9 +351,9 @@ export default function ProductSearchOverview({
                       openModal={openFilterModal}
                       setOpenModal={setOpenFilterModal}
                       brands={subcategoryBrands}
-                      brandCount={brandCount}
-                      propertyCount={propertyCount}
-                      productCount={productCount}
+                      brandCount={productRes?.brands || []}
+                      propertyCount={productRes?.properties || []}
+                      productCount={productRes?.productCount || 0}
                       propertyTypes={subcategory.propertyTypes}
                       selectedBrands={brands}
                       setSelectedBrands={setSelectedBrands}
@@ -402,20 +381,24 @@ export default function ProductSearchOverview({
               />
             </div>
             <div className="product-overview-pagination-wrapper">
-              <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
+              <Pagination
+                currentPage={page}
+                allPages={Math.ceil((productRes?.productCount || 1) / Number(limit))}
+                setPage={setPage}
+              />
             </div>
           </div>
-          {loader ? (
+          {isFetching || !productRes ? (
             <div className="product-overview-loading">
               <Loader />
             </div>
-          ) : productCount > 0 ? (
+          ) : productRes.productCount > 0 ? (
             <>
-              <ProductList products={products} />
+              <ProductList products={productRes.products} />
               <div className="product-overview-pagination">
                 <Pagination
                   currentPage={page}
-                  allPages={allPages}
+                  allPages={Math.ceil((productRes?.productCount || 1) / Number(limit))}
                   limit={limit}
                   setPage={setPage}
                   setLimit={setLimit}

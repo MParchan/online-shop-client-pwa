@@ -79,7 +79,7 @@ export default function AddToCart({ product }: AddToCartProps) {
           autoFocus
           onKeyDown={handleChangeQuantity}
           onBlur={handleChangeQuantity}
-          className="w-[48px] h-[42px] !px-2 border border-gray-300"
+          className="w-[48px] h-[42px] !px-2"
         />
       )}
       <Button

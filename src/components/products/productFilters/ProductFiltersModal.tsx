@@ -5,11 +5,12 @@ import { PropertyType } from "@/types/models/propertyType.types";
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 import Button from "@/components/ui/button/Button";
-import { BrandCount, PropertyCount } from "./ProductFilters";
 import PropertySectionModal from "./elements/PropertySectionModal";
 import Input from "@/components/ui/input/Input";
 import { Brand } from "@/types/models/brand.types";
 import { Property } from "@/types/models/property.types";
+import { BrandCount } from "@/types/brandCount.types";
+import { PropertyCount } from "@/types/propertyCount.types";
 
 interface ProductFiltersModalProps {
   openModal: boolean;

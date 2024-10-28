@@ -2,10 +2,10 @@ import type { Metadata } from "next";
 import { Inter } from "next/font/google";
 import "@/styles/globals.scss";
 import Navbar from "@/components/ui/navbar/Navbar";
-import { Category } from "@/types/models/category.types";
-import categoriesService from "@/api/services/categoriesService";
 import Footer from "@/components/ui/footer/Footer";
 import StoreProvider from "./StoreProvider";
+import { Category } from "@/types/models/category.types";
+import { getApiBaseUrl } from "@/utils/getApiBaseUrl";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -23,7 +23,9 @@ export default async function RootLayout({
 }: Readonly<{
   children: React.ReactNode;
 }>) {
-  const categories: Category[] = await categoriesService.getCategories();
+  const res = await fetch(getApiBaseUrl() + "/categories");
+  const categories: Category[] = await res.json();
+
   return (
     <html lang="en">
       <body className={inter.className}>

@@ -4,6 +4,7 @@
 * Next.js 14
 * TypeScript
 * next-pwa
-* Axios
+* Redux Toolkit
+* RTK Query
 * Tailwind CSS
 * SCSS

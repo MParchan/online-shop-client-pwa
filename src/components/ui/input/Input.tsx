@@ -1,12 +1,14 @@
 import { cn } from "@/libs/twMerge.lib";
-import { InputHTMLAttributes } from "react";
+import { InputHTMLAttributes, forwardRef } from "react";
 
 interface InputProps extends InputHTMLAttributes<HTMLInputElement> {
   className?: string;
 }
 
-const Input = ({ className, ...rest }: InputProps) => {
-  return <input className={cn("input", className)} {...rest} />;
-};
+const Input = forwardRef<HTMLInputElement, InputProps>(({ className, ...rest }, ref) => {
+  return <input ref={ref} className={cn("input", className)} {...rest} />;
+});
+
+Input.displayName = "Input";
 
 export default Input;

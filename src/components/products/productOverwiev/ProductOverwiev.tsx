@@ -3,10 +3,7 @@
 import { Subcategory } from "@/types/models/subcategory.types";
 import ProductFilters from "../productFilters/ProductFilters";
 import ProductList from "../productList/ProductList";
-import { useEffect, useState } from "react";
 import Image from "next/image";
-import productsService from "@/api/services/productsService";
-import { Product } from "@/types/models/product.types";
 import { sortPropertyTypes } from "@/utils/sortPropertyTypes";
 import { Brand } from "@/types/models/brand.types";
 import Pagination from "@/components/ui/pagination/Pagination";
@@ -15,6 +12,8 @@ import Select from "@/components/ui/select/Select";
 import { Property } from "@/types/models/property.types";
 import ProductFiltersModal from "../productFilters/ProductFiltersModal";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useGetProductsQuery } from "@/libs/redux/features/api/services/productsService";
 
 interface ProductOverwievProps {
   subcategory: Subcategory;
@@ -27,6 +26,7 @@ interface ProductOverwievProps {
   urlParamBrands?: string[];
   urlParamProperties?: string[];
 }
+
 export default function ProductOverview({
   subcategory,
   subcategoryBrands,
@@ -38,26 +38,25 @@ export default function ProductOverview({
   urlParamBrands,
   urlParamProperties
 }: ProductOverwievProps) {
-  const [products, setProducts] = useState<Product[]>([]);
-  const [brandCount, setBrandCount] = useState([]);
-  const [propertyCount, setPropertyCount] = useState([]);
-  const [productCount, setProductCount] = useState(0);
   const [brands, setBrands] = useState<string[]>(urlParamBrands ?? []);
   const [properties, setProperties] = useState<string[]>(urlParamProperties ?? []);
   const [selectedBrands, setSelectedBrands] = useState<Brand[]>(urlSelectedBrands);
   const [selectedProperties, setSelectedProperties] = useState<Property[]>(urlSelectedProperties);
-  const [loader, setLoader] = useState(true);
   const [page, setPage] = useState<number>(urlParamPage ? Number(urlParamPage) : 1);
   const [limit, setLimit] = useState(urlParamLimit ?? "12");
   const [sorting, setSorting] = useState(urlParamSorting ?? "From the latest");
-  const allPages = Math.ceil(productCount / Number(limit));
   const [openFilterModal, setOpenFilterModal] = useState(false);
+
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
 
-  useEffect(() => {
+  const buildQuery = () => {
     const params = new URLSearchParams(searchParams);
+    const queryParams = new URLSearchParams();
+    queryParams.set("subcategory", subcategory._id);
+    queryParams.set("page", page.toString());
+    queryParams.set("limit", limit);
     if (page > 1) {
       params.set("page", page.toString());
     } else {
@@ -68,76 +67,62 @@ export default function ProductOverview({
     } else {
       params.delete("limit");
     }
+    if (brands.length) {
+      queryParams.set("brands", brands.join(","));
+      params.set("brands", brands.join(","));
+    } else {
+      params.delete("brands");
+    }
+    if (properties.length) {
+      queryParams.set("properties", properties.join(","));
+      params.set("properties", properties.join(","));
+    } else {
+      params.delete("properties");
+    }
     if (sorting !== "From the latest") {
       params.set("sorting", sorting);
     } else {
       params.delete("sorting");
     }
-    if (brands.length) {
-      params.set("brands", brands.toString());
-    } else {
-      params.delete("brands");
+
+    switch (sorting) {
+      case "From the latest":
+        queryParams.set("sortField", "createdAt");
+        queryParams.set("sortOrder", "desc");
+        break;
+      case "From the oldest":
+        queryParams.set("sortField", "createdAt");
+        queryParams.set("sortOrder", "asc");
+        break;
+      case "Alphabetically: from A to Z":
+        queryParams.set("sortField", "name");
+        queryParams.set("sortOrder", "asc");
+        break;
+      case "Alphabetically: from Z to A":
+        queryParams.set("sortField", "name");
+        queryParams.set("sortOrder", "desc");
+        break;
+      case "Price: from the cheapest":
+        queryParams.set("sortField", "price");
+        queryParams.set("sortOrder", "asc");
+        break;
+      case "Price: from the most expensive":
+        queryParams.set("sortField", "price");
+        queryParams.set("sortOrder", "desc");
+        break;
+      default:
+        break;
     }
-    if (properties.length) {
-      params.set("properties", properties.toString());
-    } else {
-      params.delete("properties");
-    }
-    replace(`${pathname}?${params.toString()}`);
-  }, [brands, limit, page, pathname, properties, replace, searchParams, sorting]);
+    return { queryParams: queryParams.toString(), params: params.toString() };
+  };
+
+  const { data: productRes, isFetching, error } = useGetProductsQuery(buildQuery().queryParams);
 
   useEffect(() => {
-    const fetchProducts = async () => {
-      const query: { [key: string]: string | number } = {
-        subcategory: subcategory._id,
-        page: page,
-        limit: limit
-      };
-      if (brands.length > 0) {
-        query.brands = brands.join(",");
-      }
-      if (properties.length > 0) {
-        query.properties = properties.join(",");
-      }
-      if (sorting === "From the latest") {
-        query.sortField = "createdAt";
-        query.sortOrder = "desc";
-      }
-      if (sorting === "From the oldest") {
-        query.sortField = "createdAt";
-        query.sortOrder = "asc";
-      }
-      if (sorting === "Alphabetically: from A to Z") {
-        query.sortField = "name";
-        query.sortOrder = "asc";
-      }
-      if (sorting === "Alphabetically: from Z to A") {
-        query.sortField = "name";
-        query.sortOrder = "desc";
-      }
-      if (sorting === "Price: from the cheapest") {
-        query.sortField = "price";
-        query.sortOrder = "asc";
-      }
-      if (sorting === "Price: from the most expensive") {
-        query.sortField = "price";
-        query.sortOrder = "desc";
-      }
-      const productRes = await productsService.getProducts(query);
-      setProducts(productRes.products);
-      setBrandCount(productRes.brands);
-      setPropertyCount(productRes.properties);
-      setProductCount(productRes.productCount);
-      setLoader(false);
-    };
-
-    setLoader(true);
-    fetchProducts();
-  }, [brands, limit, page, properties, sorting, subcategory._id]);
-
-  useEffect(() => {
-    setPage(1);
-  }, [brands, properties, sorting, limit]);
+    const params = buildQuery().params;
+    replace(`${pathname}?${params}`);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [page, limit, sorting, brands, properties]);
 
   sortPropertyTypes(subcategory.name, subcategory.propertyTypes);
 
@@ -149,37 +134,33 @@ export default function ProductOverview({
   };
 
   const removeBrandHandler = (brand: Brand) => {
-    setSelectedBrands((prevBrands) => {
-      return prevBrands.filter((b) => b._id !== brand._id);
-    });
-    setBrands((prevBrands) => {
-      return prevBrands.filter((id) => id !== brand._id);
-    });
+    setSelectedBrands((prevBrands: Brand[]) => prevBrands.filter((b) => b._id !== brand._id));
+    setBrands((prevBrands: string[]) => prevBrands.filter((id) => id !== brand._id));
   };
 
   const removePropertyHandler = (property: Property) => {
-    setSelectedProperties((prevProperties) => {
-      return prevProperties.filter((p) => p._id !== property._id);
-    });
-    setProperties((prevBrands) => {
-      return prevBrands.filter((id) => id !== property._id);
-    });
+    setSelectedProperties((prevProperties: Property[]) =>
+      prevProperties.filter((p) => p._id !== property._id)
+    );
+    setProperties((prevBrands: string[]) => prevBrands.filter((id) => id !== property._id));
   };
+
+  if (error) return <div>Failed to load products.</div>;
 
   return (
     <div className="product-overview">
       <div className="product-overview-subcategory">
         {subcategory.name + " "}
         <span className="product-overview-subcategory-quantity">
-          ({productCount} {productCount === 1 ? "result" : "results"})
+          ({productRes?.productCount || 0} {productRes?.productCount === 1 ? "result" : "results"})
         </span>
       </div>
       <div className="product-overview-main">
         <ProductFilters
           brands={subcategoryBrands}
-          brandCount={brandCount}
-          propertyCount={propertyCount}
-          productCount={productCount}
+          brandCount={productRes?.brands || []}
+          propertyCount={productRes?.properties || []}
+          productCount={productRes?.productCount || 0}
           propertyTypes={subcategory.propertyTypes}
           selectedBrands={brands}
           setSelectedBrands={setSelectedBrands}
@@ -249,9 +230,9 @@ export default function ProductOverview({
                 openModal={openFilterModal}
                 setOpenModal={setOpenFilterModal}
                 brands={subcategoryBrands}
-                brandCount={brandCount}
-                propertyCount={propertyCount}
-                productCount={productCount}
+                brandCount={productRes?.brands || []}
+                propertyCount={productRes?.properties || []}
+                productCount={productRes?.productCount || 0}
                 propertyTypes={subcategory.propertyTypes}
                 selectedBrands={brands}
                 setSelectedBrands={setSelectedBrands}
@@ -276,20 +257,24 @@ export default function ProductOverview({
               />
             </div>
             <div className="product-overview-pagination-wrapper">
-              <Pagination currentPage={page} allPages={allPages} setPage={setPage} />
+              <Pagination
+                currentPage={page}
+                allPages={Math.ceil((productRes?.productCount || 1) / Number(limit))}
+                setPage={setPage}
+              />
             </div>
           </div>
-          {loader ? (
+          {isFetching || !productRes ? (
             <div className="product-overview-loading">
               <Loader />
             </div>
-          ) : productCount > 0 ? (
+          ) : productRes.productCount > 0 ? (
             <>
-              <ProductList products={products} />
+              <ProductList products={productRes.products} />
               <div className="product-overview-pagination">
                 <Pagination
                   currentPage={page}
-                  allPages={allPages}
+                  allPages={Math.ceil((productRes?.productCount || 1) / Number(limit))}
                   limit={limit}
                   setPage={setPage}
                   setLimit={setLimit}
