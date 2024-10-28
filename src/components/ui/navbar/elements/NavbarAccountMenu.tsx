@@ -1,12 +1,28 @@
 "use client";
 
+import { logout } from "@/libs/redux/features/auth/authSlice";
+import { useAppDispatch, useAppSelector } from "@/libs/redux/hooks";
 import { cn } from "@/libs/twMerge.lib";
 import Image from "next/image";
 import Link from "next/link";
-import { useState } from "react";
+import { usePathname } from "next/navigation";
+import { useEffect, useState } from "react";
 
 export default function NavbarAccountMenu() {
   const [accountMenu, setAccountMenu] = useState(false);
+  const { isLogged } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
+  const pathname = usePathname();
+
+  useEffect(() => {
+    if (!pathname.startsWith("/auth/")) {
+      sessionStorage.setItem("path", pathname);
+    }
+  }, [pathname]);
+
+  const logoutHandler = () => {
+    dispatch(logout());
+  };
 
   return (
     <li
@@ -14,7 +30,7 @@ export default function NavbarAccountMenu() {
       onMouseEnter={() => setAccountMenu(true)}
       onMouseLeave={() => setAccountMenu(false)}
     >
-      <Link href="/" className="navbar-tile">
+      <Link href="/profile" className="navbar-tile">
         <Image
           src="/assets/icons/user.svg"
           alt="Account icon"
@@ -30,22 +46,32 @@ export default function NavbarAccountMenu() {
         })}
       >
         <div className="account-menu">
-          <div>
-            <div className="login-button-wrapper">
-              <Link href="/auth/login">
-                <button className="login-button">Log In</button>
-              </Link>
+          {isLogged ? (
+            <div>
+              <div className="signup-button-wrapper">
+                <button className="signup-button" onClick={logoutHandler}>
+                  Logout
+                </button>
+              </div>
             </div>
-            <hr />
-            <div className="signup-button-header-wrapper">
-              <p className="signup-button-header">You dont have account?</p>
+          ) : (
+            <div>
+              <div className="login-button-wrapper">
+                <Link href="/auth/login">
+                  <button className="login-button">Log In</button>
+                </Link>
+              </div>
+              <hr />
+              <div className="signup-button-header-wrapper">
+                <p className="signup-button-header">You dont have account?</p>
+              </div>
+              <div className="signup-button-wrapper">
+                <Link href="/auth/register">
+                  <button className="signup-button">Sign up</button>
+                </Link>
+              </div>
             </div>
-            <div className="signup-button-wrapper">
-              <Link href="/auth/register">
-                <button className="signup-button">Sign up</button>
-              </Link>
-            </div>
-          </div>
+          )}
         </div>
       </div>
     </li>

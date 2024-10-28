@@ -1,0 +1,27 @@
+.register-form-wrapper {
+  @apply w-full sm:w-[500px] h-fit bg-white rounded-lg p-8;
+
+  .register-form-header {
+    @apply text-center text-2xl;
+  }
+
+  .register-form-input-wrapper {
+    @apply relative my-10;
+
+    .toggle-password-button {
+      @apply flex w-8 h-8 p-1 justify-center items-center absolute top-[9px] right-2 rounded-lg;
+      &:hover {
+        @apply cursor-pointer bg-gray-200;
+      }
+      .toggle-password-button-icon {
+        @apply w-5 h-auto;
+      }
+    }
+  }
+  .register-form-error {
+    @apply text-sm text-red-700;
+  }
+  .register-form-submit {
+    @apply mt-12;
+  }
+}

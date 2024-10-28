@@ -25,6 +25,8 @@ body {
     @apply flex mx-3 sm:mx-6 mb-6 mt-[72px] lg:mt-20 max-w-screen-xl xl:mx-auto xl:px-6;
     @apply min-h-[calc(100dvh-200px)] sm:min-h-[calc(100dvh-212px)] lg:min-h-[calc(100dvh-220px)];
 
+    @import "./components/auth/loginForm/loginForm.scss";
+    @import "./components/auth/registerForm/registerForm.scss";
     @import "./components/categories/categoryNavigation/categoryNavigation.scss";
     @import "./components/categories/categoryList/categoryList.scss";
     @import "./components/categories/categoryOverview/categoryOverview.scss";
@@ -43,6 +45,7 @@ body {
     @import "./components/ui/select/select.scss";
     @import "./components/ui/button/button.scss";
     @import "./components/ui/input/input.scss";
+    @import "./components/ui/input/inputWithLabel.scss";
     @import "./components/ui/loader/loader.scss";
     @import "./components/ui/pagination/pagination.scss";
   }
