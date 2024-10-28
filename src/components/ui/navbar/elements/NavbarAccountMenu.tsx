@@ -10,7 +10,7 @@ import { useEffect, useState } from "react";
 
 export default function NavbarAccountMenu() {
   const [accountMenu, setAccountMenu] = useState(false);
-  const { isLogged } = useAppSelector((state) => state.auth);
+  const { isLogged, userFirstName } = useAppSelector((state) => state.auth);
   const dispatch = useAppDispatch();
   const pathname = usePathname();
 
@@ -48,6 +48,7 @@ export default function NavbarAccountMenu() {
         <div className="account-menu">
           {isLogged ? (
             <div>
+              <header className="account-menu-header">Hello {userFirstName}</header>
               <div className="signup-button-wrapper">
                 <button className="signup-button" onClick={logoutHandler}>
                   Logout

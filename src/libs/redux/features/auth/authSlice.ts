@@ -10,9 +10,10 @@ export const login = createAsyncThunk(
             const { login } = authService.endpoints;
             const result = await dispatch(login.initiate(credentials)).unwrap();
             const token = result.accessToken;
-            const decodedToken: { user: { email: string } } = jwtDecode(token);
+            const decodedToken: { user: { email: string; firstname: string } } = jwtDecode(token);
             const userEmail = decodedToken.user.email;
-            return { token, userEmail };
+            const userFirstName = decodedToken.user.firstname;
+            return { token, userEmail, userFirstName };
         } catch (error) {
             console.log(error);
             if (typeof error === "object" && error !== null && "data" in error) {
@@ -37,6 +38,7 @@ export const login = createAsyncThunk(
 const initialState = {
     token: undefined as string | undefined,
     userEmail: undefined as string | undefined,
+    userFirstName: undefined as string | undefined,
     isLogged: false,
     status: "logged out",
     error: undefined as string | undefined
@@ -49,6 +51,7 @@ const authSlice = createSlice({
         logout(state) {
             state.token = undefined;
             state.userEmail = undefined;
+            state.userFirstName = undefined;
             state.isLogged = false;
             state.status = "logged out";
             state.error = undefined;
@@ -59,6 +62,7 @@ const authSlice = createSlice({
             .addCase(login.pending, (state) => {
                 state.token = undefined;
                 state.userEmail = undefined;
+                state.userFirstName = undefined;
                 state.isLogged = false;
                 state.status = "loading";
                 state.error = undefined;
@@ -66,6 +70,7 @@ const authSlice = createSlice({
             .addCase(login.fulfilled, (state, action) => {
                 state.token = action.payload.token;
                 state.userEmail = action.payload.userEmail;
+                state.userFirstName = action.payload.userFirstName;
                 state.isLogged = true;
                 state.status = "succeeded";
                 state.error = undefined;
@@ -73,6 +78,7 @@ const authSlice = createSlice({
             .addCase(login.rejected, (state, action) => {
                 state.token = undefined;
                 state.userEmail = undefined;
+                state.userFirstName = undefined;
                 state.isLogged = false;
                 state.status = "failed";
                 state.error = action.payload as string;

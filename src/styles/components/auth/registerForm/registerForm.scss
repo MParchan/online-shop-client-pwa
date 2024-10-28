@@ -6,16 +6,19 @@
   }
 
   .register-form-input-wrapper {
-    @apply relative my-10;
+    @apply relative py-4;
 
     .toggle-password-button {
-      @apply flex w-8 h-8 p-1 justify-center items-center absolute top-[9px] right-2 rounded-lg;
+      @apply flex w-8 h-8 p-1 justify-center items-center absolute top-6 right-2 rounded-lg;
       &:hover {
         @apply cursor-pointer bg-gray-200;
       }
       .toggle-password-button-icon {
         @apply w-5 h-auto;
       }
+    }
+    .register-form-input-error {
+      @apply text-sm text-red-700 mt-1 ml-1;
     }
   }
   .register-form-error {

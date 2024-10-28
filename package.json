@@ -31,7 +31,8 @@
     "react-toastify": "^10.0.5",
     "redux-persist": "^6.0.0",
     "sass": "^1.77.1",
-    "tailwind-merge": "^2.3.0"
+    "tailwind-merge": "^2.3.0",
+    "zod": "^3.23.8"
   },
   "devDependencies": {
     "@types/node": "^20",
