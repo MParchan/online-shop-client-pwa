@@ -5,7 +5,20 @@ const withPWA = require("next-pwa")({
     dest: "public",
     register: true,
     skipWaiting: true,
-    disable: process.env.NODE_ENV === "development"
+    cacheOnFrontEndNav: true,
+    runtimeCaching: [
+        {
+            urlPattern: new RegExp(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/.*`),
+            handler: "CacheFirst",
+            options: {
+                cacheName: "api-cache",
+                expiration: {
+                    maxEntries: 50,
+                    maxAgeSeconds: 60 * 60 * 24 * 10
+                }
+            }
+        }
+    ]
 });
 
 const nextConfig = {
@@ -17,9 +30,20 @@ const nextConfig = {
                 pathname: "**"
             }
         ]
+    },
+    async headers() {
+        return [
+            {
+                source: "/:path*",
+                headers: [
+                    {
+                        key: "Cache-Control",
+                        value: "public, max-age=31536000, immutable"
+                    }
+                ]
+            }
+        ];
     }
 };
 
-module.exports = withPWA({
-    ...nextConfig
-});
+module.exports = withPWA(nextConfig);
