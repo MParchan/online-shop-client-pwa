@@ -145,8 +145,6 @@ export default function ProductOverview({
     setProperties((prevBrands: string[]) => prevBrands.filter((id) => id !== property._id));
   };
 
-  if (error) return <div>Failed to load products.</div>;
-
   return (
     <div className="product-overview">
       <div className="product-overview-subcategory">
@@ -266,7 +264,7 @@ export default function ProductOverview({
           </div>
           {isFetching || !productRes ? (
             <div className="product-overview-loading">
-              <Loader />
+              {error ? <div>Failed to load products.</div> : <Loader />}
             </div>
           ) : productRes.productCount > 0 ? (
             <>
