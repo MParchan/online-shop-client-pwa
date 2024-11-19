@@ -2,6 +2,7 @@ import { Product } from "@/types/models/product.types";
 import { api } from "../api";
 import { BrandCount } from "@/types/brandCount.types";
 import { PropertyCount } from "@/types/propertyCount.types";
+import { Opinion } from "@/types/models/opinion.types";
 
 interface GetProductsResponse {
     products: Product[];
@@ -43,6 +44,10 @@ export const productsService = api.injectEndpoints({
                 method: "DELETE"
             }),
             invalidatesTags: ["Products"]
+        }),
+        getProductOpinions: builder.query<Opinion[], { id: string }>({
+            query: ({ id }) => `/products/${id}/opinions`,
+            providesTags: (result, error, { id }) => [{ type: "Opinions", id }]
         })
     }),
     overrideExisting: false
@@ -54,5 +59,6 @@ export const {
     useCreateProductMutation,
     useUpdateProductMutation,
     useDeleteProductMutation,
-    useLazyGetProductsQuery
+    useLazyGetProductsQuery,
+    useGetProductOpinionsQuery
 } = productsService;

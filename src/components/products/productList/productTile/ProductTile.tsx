@@ -3,6 +3,7 @@ import { Product } from "@/types/models/product.types";
 import createSlug from "@/utils/createSlug";
 import Image from "next/image";
 import Link from "next/link";
+import ProductRating from "../../productRating/ProductRating";
 
 interface ProductTileProps {
   product: Product;
@@ -31,6 +32,9 @@ export default function ProductTile({ product }: ProductTileProps) {
             <></>
           )}
           <div>{product.name}</div>
+          <div>
+            <ProductRating opinions={product.opinions} />
+          </div>
           <div className="product-tile-price">${product.price.toFixed(2)}</div>
           <hr className="product-tile-hr" />
         </div>

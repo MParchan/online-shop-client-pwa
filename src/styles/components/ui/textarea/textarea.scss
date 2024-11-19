@@ -1,0 +1,26 @@
+.textarea-wrapper {
+  @apply w-full;
+  .textarea {
+    @apply w-full border rounded-lg resize-none overflow-hidden;
+    @apply p-2;
+
+    &:hover {
+      @apply bg-gray-50 border-zinc-800;
+    }
+    &:focus {
+      @apply outline-none border border-zinc-800 bg-white;
+    }
+  }
+  .textarea-progress-wrapper {
+    @apply mt-2;
+    .textarea-progress-bar-wrapper {
+      @apply w-full h-2 bg-gray-200 rounded;
+      .textarea-progress-bar {
+        @apply h-full bg-blue-500 rounded;
+      }
+    }
+    .textarea-progress-characters {
+      @apply text-right text-sm mt-1 text-gray-500;
+    }
+  }
+}

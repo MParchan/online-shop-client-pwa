@@ -1,6 +1,10 @@
-.product {
+.product-details {
+  @apply mb-6;
   .product-info-name-small {
-    @apply lg:hidden text-2xl my-3;
+    @apply lg:hidden text-2xl mt-3;
+  }
+  .product-info-rating-small {
+    @apply lg:hidden flex mb-3;
   }
   .product-main {
     @apply sm:flex;
@@ -10,7 +14,10 @@
     .product-info {
       @apply lg:w-1/2;
       .product-info-name {
-        @apply hidden lg:block text-3xl m-4;
+        @apply hidden lg:block text-3xl mx-4 mt-2;
+      }
+      .product-info-rating {
+        @apply hidden lg:flex mx-4 mt-1 mb-2;
       }
 
       .product-info-details {
@@ -57,7 +64,14 @@
     }
   }
 
-  .product-desciption {
-    @apply text-xl mt-12 mb-4;
+  .product-section-separator {
+    @apply mt-12;
   }
+
+  .product-desciption {
+    @apply text-xl mt-8;
+  }
+
+  @import "../productSpecification/productSpecification.scss";
+  @import "../productOpinions/productOpinions.scss";
 }

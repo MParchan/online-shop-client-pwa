@@ -11,6 +11,9 @@ import ScrollToSection from "@/components/ui/scrollToSection/ScrollToSection";
 import { Subcategory } from "@/types/models/subcategory.types";
 import AddToCart from "@/components/shoppingCart/addToCart/AddToCart";
 import { sortProductProperties } from "@/utils/sortProductProperties";
+import ProductOpinions from "../productOpinions/ProductOpinions";
+import ProductRating from "../productRating/ProductRating";
+import SectionSeparator from "@/components/ui/sectionSeparator/SectionSeparator";
 
 export default function ProductDetails({ product }: { product: Product }) {
   const sortedImages = SortImages(product.images);
@@ -22,14 +25,24 @@ export default function ProductDetails({ product }: { product: Product }) {
   );
 
   return (
-    <div className="product">
+    <div className="product-details">
       <div className="product-info-name-small">{product.name}</div>
+      <div className="product-info-rating-small">
+        <ScrollToSection elementId="productOpinionsId">
+          <ProductRating opinions={product.opinions} />
+        </ScrollToSection>
+      </div>
       <div className="product-main">
         <div className="product-images-wrapper">
           <ProductImages productName={product.name} images={sortedImages} />
         </div>
         <div className="product-info">
           <div className="product-info-name">{product.name}</div>
+          <div className="product-info-rating">
+            <ScrollToSection elementId="productOpinionsId">
+              <ProductRating opinions={product.opinions} />
+            </ScrollToSection>
+          </div>
           <div className="product-info-details">
             <div className="product-info-specification-wrapper">
               <div className="product-info-specification">
@@ -145,11 +158,24 @@ export default function ProductDetails({ product }: { product: Product }) {
           </div>
         </div>
       </div>
+      <div className="product-section-separator">
+        <SectionSeparator />
+      </div>
       <div className="product-desciption">{product.description}</div>
+      <div className="product-section-separator">
+        <SectionSeparator />
+      </div>
       <ProductSpecification
         productProperties={product.productProperties}
         subcategoryName={subcategory.name}
       />
+      <div className="product-section-separator">
+        <SectionSeparator />
+      </div>
+      <ProductOpinions productId={product._id} />
+      <div className="product-section-separator">
+        <SectionSeparator />
+      </div>
     </div>
   );
 }

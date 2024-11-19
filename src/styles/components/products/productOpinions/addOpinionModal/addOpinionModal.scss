@@ -1,0 +1,69 @@
+.add-opinion-modal-area {
+  @apply fixed w-full h-full top-0 left-0 flex justify-center items-center z-50;
+  &.open {
+    @apply pointer-events-auto;
+  }
+  &.close {
+    @apply pointer-events-none;
+  }
+
+  .add-opinion-modal-wrapper {
+    @apply fixed z-30 transition-all duration-300 ease-in-out transform w-full h-auto max-h-dvh px-2;
+    &.open {
+      @apply opacity-100 translate-y-0;
+    }
+    &.close {
+      @apply opacity-0 translate-y-[200%];
+    }
+
+    .add-opinion-modal {
+      @apply border rounded-lg bg-white max-w-screen-sm m-auto;
+
+      .add-opinion-modal-header {
+        @apply flex justify-between bg-gray-200 p-3 text-2xl font-semibold rounded-t-lg;
+        .add-opinion-modal-close {
+          @apply cursor-pointer;
+        }
+      }
+
+      .add-opinion-modal-main {
+        @apply p-3 sm:px-6 flex flex-col items-center max-h-[calc(100dvh-120px)] overflow-y-auto;
+        .add-opinion-modal-main-rating-header {
+          @apply p-3;
+        }
+        .add-opinion-modal-main-rating {
+          @apply mb-3;
+          @import "./selectStarRating/selectStarRating.scss";
+        }
+
+        .add-opinion-modal-main-description {
+          @apply w-full my-2;
+          .add-opinion-modal-main-description-label {
+            @apply text-sm;
+          }
+        }
+
+        .add-opinion-modal-form-error {
+          @apply text-sm text-red-700;
+        }
+      }
+
+      .add-opinion-modal-footer {
+        @apply flex justify-end p-3 border-t;
+        .add-opinion-modal-footer-button-wrapper {
+          @apply w-40;
+        }
+      }
+    }
+  }
+
+  .add-opinion-modal-overlay {
+    @apply w-full h-full z-20 bg-black transition-opacity duration-300 ease-in-out;
+    &.open {
+      @apply opacity-50 pointer-events-auto;
+    }
+    &.close {
+      @apply opacity-0 pointer-events-none;
+    }
+  }
+}

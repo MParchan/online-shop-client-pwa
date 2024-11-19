@@ -1,0 +1,12 @@
+.select-star-rating-wrapper {
+  @apply flex items-center w-fit;
+
+  .select-star-rating-star-wrapper {
+    @apply cursor-pointer transition-transform duration-200;
+
+    .select-star-rating-star-image {
+      @apply w-8 h-auto;
+      @apply transform transition duration-200;
+    }
+  }
+}

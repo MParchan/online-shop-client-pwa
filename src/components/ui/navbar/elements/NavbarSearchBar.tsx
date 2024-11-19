@@ -174,7 +174,7 @@ export default function NavbarSearchBar({ categories, isHidden }: NavbarSearchBa
           ))}
         </ul>
       </div>
-      <button type="submit" className="navbar-search-bar-button ">
+      <button type="submit" className="navbar-search-bar-button">
         <Image
           src="/assets/icons/search.svg"
           alt="Search logo"
