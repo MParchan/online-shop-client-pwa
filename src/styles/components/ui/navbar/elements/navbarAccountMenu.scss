@@ -4,18 +4,33 @@
     @apply sm:block;
   }
   .account-menu {
-    @apply bg-white rounded-lg p-4 border;
+    @apply bg-white rounded-lg p-2 border;
     @apply shadow-[0_10px_15px_3px_rgba(0,0,0,0.1),0_4px_6px_4px_rgba(0,0,0,0.1)];
 
     .account-menu-header {
-      @apply text-center text-xl;
+      @apply text-center text-lg py-2;
+    }
+
+    .account-menu-list {
+      @apply border-y my-2 py-2;
+
+      .account-menu-item {
+        @apply p-2 rounded-lg flex items-center;
+        &:hover {
+          @apply bg-gray-100;
+        }
+
+        .account-menu-item-icon {
+          @apply w-6 h-auto;
+        }
+        .account-menu-item-name {
+          @apply ml-2;
+        }
+      }
     }
 
     .login-button-wrapper {
-      @apply pb-6;
-      .login-button {
-        @apply rounded-lg bg-zinc-800 text-white w-full p-2;
-      }
+      @apply pb-6 mt-2 mx-1;
     }
 
     .signup-button-header-wrapper {
@@ -25,10 +40,7 @@
       }
     }
     .signup-button-wrapper {
-      @apply pt-2;
-      .signup-button {
-        @apply rounded-lg bg-zinc-300 w-full p-2;
-      }
+      @apply pt-2 mb-2 mx-1;
     }
   }
 }

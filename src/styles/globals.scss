@@ -18,6 +18,7 @@
 
 body {
   @apply min-h-screen;
+  @import "./components/ui/button/button.scss";
   @import "./components/ui/navbar/navbar.scss";
   @import "./components/ui/footer/footer.scss";
 
@@ -25,6 +26,12 @@ body {
     @apply flex mx-3 sm:mx-6 mb-6 mt-[72px] lg:mt-20 max-w-screen-xl xl:mx-auto xl:px-6;
     @apply min-h-[calc(100dvh-200px)] sm:min-h-[calc(100dvh-212px)] lg:min-h-[calc(100dvh-220px)];
 
+    @import "./components/ui/select/select.scss";
+    @import "./components/ui/textarea/textarea.scss";
+    @import "./components/ui/input/input.scss";
+    @import "./components/ui/input/inputWithLabel.scss";
+    @import "./components/ui/loader/loader.scss";
+    @import "./components/ui/pagination/pagination.scss";
     @import "./components/auth/loginForm/loginForm.scss";
     @import "./components/auth/registerForm/registerForm.scss";
     @import "./components/categories/categoryNavigation/categoryNavigation.scss";
@@ -41,13 +48,6 @@ body {
     @import "./components/shoppingCart/cartOverview/cartOverview.scss";
     @import "./components/shoppingCart/cartProductList/cartProductList.scss";
     @import "./components/shoppingCart/addToCart/addToCart.scss";
-    @import "./components/ui/select/select.scss";
-    @import "./components/ui/button/button.scss";
-    @import "./components/ui/textarea/textarea.scss";
-    @import "./components/ui/input/input.scss";
-    @import "./components/ui/input/inputWithLabel.scss";
-    @import "./components/ui/loader/loader.scss";
-    @import "./components/ui/pagination/pagination.scss";
   }
 }
 
