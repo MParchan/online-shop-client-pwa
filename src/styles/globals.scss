@@ -32,6 +32,8 @@ body {
     @import "./components/ui/input/inputWithLabel.scss";
     @import "./components/ui/loader/loader.scss";
     @import "./components/ui/pagination/pagination.scss";
+    @import "./components/ui/modal/modal.scss";
+    @import "./components/ui/selectStarRating/selectStarRating.scss";
     @import "./components/auth/loginForm/loginForm.scss";
     @import "./components/auth/registerForm/registerForm.scss";
     @import "./components/categories/categoryNavigation/categoryNavigation.scss";
@@ -48,6 +50,9 @@ body {
     @import "./components/shoppingCart/cartOverview/cartOverview.scss";
     @import "./components/shoppingCart/cartProductList/cartProductList.scss";
     @import "./components/shoppingCart/addToCart/addToCart.scss";
+    @import "./components/opinions/opinionOverview/opinionOverview.scss";
+    @import "./components/opinions/opinionList/opinionList.scss";
+    @import "./components/profile/profileNavigation/profileNavigation.scss";
   }
 }
 

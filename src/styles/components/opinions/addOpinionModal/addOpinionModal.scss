@@ -1,0 +1,31 @@
+.add-opinion-form {
+  @apply w-full sm:w-[640px];
+
+  .add-opinion-modal-main {
+    @apply p-3 flex flex-col items-center max-h-[calc(100dvh-120px)] overflow-y-auto;
+    .add-opinion-modal-main-rating-header {
+      @apply p-3;
+    }
+    .add-opinion-modal-main-rating {
+      @apply mb-3;
+    }
+
+    .add-opinion-modal-main-description {
+      @apply w-full my-2;
+      .add-opinion-modal-main-description-label {
+        @apply text-sm;
+      }
+    }
+
+    .add-opinion-modal-form-error {
+      @apply text-sm text-red-700;
+    }
+  }
+
+  .add-opinion-modal-footer {
+    @apply flex justify-end p-3 border-t;
+    .add-opinion-modal-footer-button-wrapper {
+      @apply w-40;
+    }
+  }
+}

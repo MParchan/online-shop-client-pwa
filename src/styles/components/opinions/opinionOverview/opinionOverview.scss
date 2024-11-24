@@ -1,0 +1,27 @@
+.opinion-overview {
+  @apply lg:flex w-full;
+
+  .opinion-overview-profile-button {
+    @apply block lg:hidden w-40 mx-4 mt-2;
+    .opinion-overview-profile-button-icon {
+      @apply w-6 h-auto;
+    }
+  }
+  .opinion-overview-profile-navigation {
+    @apply hidden lg:block;
+  }
+
+  .user-opinions {
+    @apply flex-1 sm:p-4;
+    .user-opinions-header {
+      @apply text-xl py-3 m-3;
+      .user-opinions-header-quantity {
+        @apply text-gray-500 ml-1;
+      }
+    }
+
+    .user-opinions-loader {
+      @apply flex w-full justify-center mt-12;
+    }
+  }
+}

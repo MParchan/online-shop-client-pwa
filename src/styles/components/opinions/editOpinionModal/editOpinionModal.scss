@@ -1,0 +1,47 @@
+.edit-opinion-form {
+  @apply w-full sm:w-[640px];
+
+  .edit-opinion-form-body {
+    @apply flex flex-col space-y-8 items-center max-h-[calc(100dvh-120px)] overflow-y-auto p-3;
+
+    .edit-opinion-product {
+      @apply flex w-full items-center justify-start;
+      .edit-opinion-product-image {
+        @apply min-w-20 w-20 h-auto;
+      }
+      .edit-opinion-product-name {
+        @apply text-lg ml-2;
+        a {
+          &:hover {
+            @apply underline;
+          }
+        }
+      }
+    }
+
+    .edit-opinion-rating {
+      @apply flex flex-col justify-center;
+      .edit-opinion-rating-header {
+        @apply text-center;
+      }
+    }
+
+    .edit-opinion-description {
+      @apply w-full;
+      .edit-opinion-description-label {
+        @apply text-sm;
+      }
+    }
+
+    .edit-opinion-form-error {
+      @apply text-sm text-red-700;
+    }
+  }
+
+  .edit-opinion-form-submit-wrapper {
+    @apply flex justify-end p-3 border-t w-full;
+    .edit-opinion-form-submit {
+      @apply w-40;
+    }
+  }
+}

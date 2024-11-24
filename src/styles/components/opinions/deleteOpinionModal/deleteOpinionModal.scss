@@ -1,0 +1,25 @@
+.delete-opinion-form {
+  @apply w-full sm:w-[640px];
+
+  .delete-opinion-form-body {
+    @apply max-h-[calc(100dvh-120px)] overflow-y-auto px-3 py-6;
+
+    .delete-opinion-product-name {
+      @apply text-lg ml-2;
+
+      &:hover {
+        @apply underline;
+      }
+    }
+
+    .edit-opinion-form-error {
+      @apply text-sm text-red-700;
+    }
+  }
+  .delete-opinion-form-submit-wrapper {
+    @apply flex justify-end p-3 border-t w-full;
+    .delete-opinion-form-submit {
+      @apply w-40;
+    }
+  }
+}
