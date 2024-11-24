@@ -7,7 +7,7 @@ export const opinionsService = api.injectEndpoints({
             query: (params) => {
                 return `/opinions?${params}`;
             },
-            providesTags: ["Opinions"]
+            providesTags: ["UserOpinions"]
         }),
         getOpinionById: builder.query<Opinion, { id: string }>({
             query: ({ id }) => `/opinions/${id}`
@@ -22,7 +22,7 @@ export const opinionsService = api.injectEndpoints({
                 body: { rating, description, product }
             }),
             invalidatesTags: (result, error, { product }) => [
-                "Opinions",
+                "UserOpinions",
                 { type: "Opinions", id: product }
             ]
         }),
@@ -35,14 +35,17 @@ export const opinionsService = api.injectEndpoints({
                 method: "PUT",
                 body: { rating, description, product }
             }),
-            invalidatesTags: ["Opinions"]
+            invalidatesTags: (result, error, { product }) => [
+                "UserOpinions",
+                { type: "Opinions", id: product }
+            ]
         }),
         deleteOpinion: builder.mutation<void, { id: string }>({
             query: ({ id }) => ({
                 url: `/opinions/${id}`,
                 method: "DELETE"
             }),
-            invalidatesTags: ["Opinions"]
+            invalidatesTags: ["UserOpinions"]
         })
     }),
     overrideExisting: false

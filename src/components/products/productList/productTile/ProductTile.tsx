@@ -1,18 +1,17 @@
-import { ProductImage } from "@/types/models/image.types";
 import { Product } from "@/types/models/product.types";
 import createSlug from "@/utils/createSlug";
 import Image from "next/image";
 import Link from "next/link";
 import ProductRating from "../../productRating/ProductRating";
+import { getProductMainImage } from "@/utils/getProductMainImage";
 
 interface ProductTileProps {
   product: Product;
 }
 
 export default function ProductTile({ product }: ProductTileProps) {
-  const mainImage: ProductImage | undefined = product.images.find(
-    (image: ProductImage) => image.main
-  );
+  const mainImage = getProductMainImage(product.images);
+
   return (
     <div className="product-tile">
       <Link href={`/p/${createSlug(product.name)}/${product._id}`}>

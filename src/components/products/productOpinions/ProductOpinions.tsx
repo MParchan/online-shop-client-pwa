@@ -8,7 +8,7 @@ import Image from "next/image";
 import { User } from "@/types/models/user.types";
 import { formatDistanceToNow } from "date-fns";
 import { useState } from "react";
-import AddOpinionModal from "./addOpinionModal/AddOpinionModal";
+import AddOpinionModal from "../../opinions/addOpinionModal/AddOpinionModal";
 import { useAppSelector } from "@/libs/redux/hooks";
 import { useRouter } from "next/navigation";
 import { useGetProductOpinionsQuery } from "@/libs/redux/features/api/services/productsService";

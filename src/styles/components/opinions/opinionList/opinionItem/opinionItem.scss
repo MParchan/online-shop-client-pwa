@@ -1,0 +1,60 @@
+.opinion-item {
+  @apply md:flex p-4 border-t;
+
+  .opinion-item-image-wrapper {
+    @apply hidden md:block;
+    .opinion-item-image {
+      @apply w-40 h-auto;
+    }
+  }
+
+  .opinion-item-product-responsive {
+    @apply flex md:hidden items-center mb-2;
+    .opinion-item-image-responsive {
+      @apply min-w-20 w-20 h-auto;
+    }
+    .opinion-item-name-responsive {
+      @apply text-lg ml-2;
+      a {
+        &:hover {
+          @apply underline;
+        }
+      }
+    }
+  }
+
+  .opinion-item-info-wrapper {
+    @apply ml-6 flex-1;
+
+    .opinion-item-product-name {
+      @apply text-lg hidden md:block;
+      a {
+        &:hover {
+          @apply underline;
+        }
+      }
+    }
+    .opinion-item-rating {
+      @apply w-full flex flex-wrap mt-1 space-x-2;
+      .opinion-item-rating-stars {
+        @apply min-w-[100px];
+      }
+      .opinion-item-rating-date {
+        @apply w-fit text-gray-600;
+      }
+    }
+    .opinion-item-description {
+      @apply mt-2;
+    }
+  }
+
+  .opinion-item-actions {
+    @apply flex items-center space-x-2 justify-end;
+    .opinion-item-action-icon {
+      @apply w-8 p-1 h-auto rounded-lg;
+      &:hover {
+        @apply cursor-pointer bg-gray-200;
+      }
+    }
+  }
+}

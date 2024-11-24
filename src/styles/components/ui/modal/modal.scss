@@ -1,0 +1,51 @@
+.modal-area {
+  @apply fixed z-[999] top-0 left-0 w-full h-full;
+  @apply flex justify-center items-center;
+  @apply transition-opacity duration-500 ease-in-out;
+  &.open {
+    @apply pointer-events-auto;
+  }
+  &.close {
+    @apply pointer-events-none;
+  }
+
+  .modal {
+    @apply fixed bg-white z-10 h-auto max-h-dvh rounded-lg w-full sm:w-auto;
+    @apply transition-all duration-300 ease-in-out transform;
+    &.open {
+      @apply opacity-100 translate-y-0;
+    }
+    &.close {
+      @apply opacity-0 translate-y-[200%];
+    }
+
+    .modal-header {
+      @apply flex justify-between bg-gray-200 p-3 text-2xl font-[550] rounded-t-lg;
+      .modal-close-wrapper {
+        @apply p-1 ml-4 rounded-lg cursor-pointer;
+        &:hover {
+          @apply bg-gray-300;
+        }
+        .modal-close {
+          @apply w-6 h-auto;
+        }
+      }
+    }
+
+    .modal-body {
+      @import "../../opinions/addOpinionModal/addOpinionModal.scss";
+      @import "../../opinions/editOpinionModal/editOpinionModal.scss";
+      @import "../../opinions/deleteOpinionModal/deleteOpinionModal.scss";
+    }
+  }
+
+  .modal-overlay {
+    @apply w-full h-full bg-black transition-opacity duration-300 ease-in-out;
+    &.open {
+      @apply opacity-50;
+    }
+    &.close {
+      @apply opacity-0;
+    }
+  }
+}

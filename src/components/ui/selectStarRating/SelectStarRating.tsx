@@ -5,12 +5,17 @@ import Image from "next/image";
 
 interface SelectStarRatingProps {
   maxStars?: number;
+  rating?: number;
   setRating: React.Dispatch<React.SetStateAction<number>>;
 }
 
-export default function SelectStarRating({ maxStars = 5, setRating }: SelectStarRatingProps) {
+export default function SelectStarRating({
+  rating,
+  maxStars = 5,
+  setRating
+}: SelectStarRatingProps) {
   const [hoveredRating, setHoveredRating] = useState(0);
-  const [selectedRating, setSelectedRating] = useState(0);
+  const [selectedRating, setSelectedRating] = useState(rating ?? 0);
 
   const handleMouseEnter = (index: number) => {
     setHoveredRating(index);

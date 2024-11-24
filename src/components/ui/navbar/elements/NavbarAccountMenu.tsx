@@ -7,6 +7,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 import { useEffect, useState } from "react";
+import Button from "../../button/Button";
 
 export default function NavbarAccountMenu() {
   const [accountMenu, setAccountMenu] = useState(false);
@@ -49,17 +50,67 @@ export default function NavbarAccountMenu() {
           {isLogged ? (
             <div>
               <header className="account-menu-header">Hello {userFirstName}</header>
-              <div className="signup-button-wrapper">
-                <button className="signup-button" onClick={logoutHandler}>
+              <div className="account-menu-list">
+                <Link href="/profile">
+                  <div className="account-menu-item">
+                    <Image
+                      src="/assets/icons/user.svg"
+                      alt="Profile icon"
+                      width={24}
+                      height={24}
+                      className="account-menu-item-icon"
+                    ></Image>
+                    <span className="account-menu-item-name">Profile</span>
+                  </div>
+                </Link>
+                <Link href="/profile/orders">
+                  <div className="account-menu-item">
+                    <Image
+                      src="/assets/icons/list_alt.svg"
+                      alt="Orders icon"
+                      width={24}
+                      height={24}
+                      className="account-menu-item-icon"
+                    ></Image>
+                    <span className="account-menu-item-name">Orders</span>
+                  </div>
+                </Link>
+                <Link href="/profile/addresses">
+                  <div className="account-menu-item">
+                    <Image
+                      src="/assets/icons/home_pin.svg"
+                      alt="Addresses icon"
+                      width={24}
+                      height={24}
+                      className="account-menu-item-icon"
+                    ></Image>
+                    <span className="account-menu-item-name">Addresses</span>
+                  </div>
+                </Link>
+                <Link href="/profile/opinions">
+                  <div className="account-menu-item">
+                    <Image
+                      src="/assets/icons/comment.svg"
+                      alt="Comments icon"
+                      width={24}
+                      height={24}
+                      className="w-[22px] h-auto mx-[1px]"
+                    ></Image>
+                    <span className="account-menu-item-name">Opinions</span>
+                  </div>
+                </Link>
+              </div>
+              <div>
+                <Button variant="secondary" onClick={logoutHandler}>
                   Logout
-                </button>
+                </Button>
               </div>
             </div>
           ) : (
             <div>
               <div className="login-button-wrapper">
                 <Link href="/auth/login">
-                  <button className="login-button">Log In</button>
+                  <Button variant="primary">Log In</Button>
                 </Link>
               </div>
               <hr />
@@ -68,7 +119,7 @@ export default function NavbarAccountMenu() {
               </div>
               <div className="signup-button-wrapper">
                 <Link href="/auth/register">
-                  <button className="signup-button">Sign up</button>
+                  <Button variant="secondary">Sign up</Button>
                 </Link>
               </div>
             </div>

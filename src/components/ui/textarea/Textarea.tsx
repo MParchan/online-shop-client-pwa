@@ -5,11 +5,12 @@ import { TextareaHTMLAttributes, useEffect, useRef, useState } from "react";
 interface TextareaProps extends TextareaHTMLAttributes<HTMLTextAreaElement> {
   className?: string;
   maxLength?: number;
+  value?: string;
   setValue?: React.Dispatch<React.SetStateAction<string>>;
 }
 
-const Textarea = ({ className, maxLength = 200, setValue, ...rest }: TextareaProps) => {
-  const [text, setText] = useState("");
+const Textarea = ({ className, maxLength = 200, value, setValue, ...rest }: TextareaProps) => {
+  const [text, setText] = useState(value ?? "");
   const textareaRef = useRef<HTMLTextAreaElement>(null);
 
   const adjustHeight = () => {

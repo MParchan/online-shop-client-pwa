@@ -4,6 +4,7 @@ import authReducer from "../redux/features/auth/authSlice";
 import { persistStore, persistReducer } from "redux-persist";
 import storageEngine from "./storageEngine";
 import { api } from "./features/api/api";
+import { invalidateTagsMiddleware } from "./middleware/invalidateTagsMiddleware";
 
 const authPersistConfig = {
     key: "auth",
@@ -30,7 +31,7 @@ export const makeStore = () => {
                     ignoredActions: ["persist/PERSIST"],
                     ignoredPaths: ["register"]
                 }
-            }).concat(api.middleware)
+            }).concat(api.middleware, invalidateTagsMiddleware)
     });
 };
 
