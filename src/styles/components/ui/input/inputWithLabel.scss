@@ -2,12 +2,13 @@
   @apply relative;
 
   .input-with-label-label {
-    @apply absolute left-4 top-1/2 text-gray-500 text-sm bg-inherit px-1 transition-all duration-200 ease-in-out;
-    @apply -translate-y-1/2 cursor-text;
-  }
-  .input-with-label-label.focused {
-    @apply top-0 text-xs bg-white;
-    @apply -translate-y-1/2 scale-90;
+    @apply absolute left-2 top-1/2 text-gray-500 text-sm bg-inherit px-1 cursor-text;
+    @apply -translate-y-1/2 transition-all duration-200 ease-in-out;
+
+    &.focused {
+      @apply top-0 text-xs bg-white;
+      @apply -translate-y-1/2 translate-x-2 scale-90;
+    }
   }
 
   .input-with-label-input {

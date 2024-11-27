@@ -1,0 +1,35 @@
+.address-overview {
+  @apply lg:flex w-full;
+
+  .address-overview-profile-button {
+    @apply block lg:hidden w-40 mx-3 sm:mx-4 my-2;
+    .address-overview-profile-button-icon {
+      @apply w-6 h-auto;
+    }
+  }
+  .address-overview-profile-navigation {
+    @apply hidden lg:block w-60;
+  }
+
+  .user-addresses {
+    @apply flex-1 py-4 sm:px-2;
+
+    .address-overview-header {
+      @apply text-2xl mx-3 mb-4;
+    }
+    .user-address-add-button {
+      @apply sm:w-40 mx-3;
+    }
+
+    .user-addresses-header {
+      @apply text-xl py-3 mx-3 mt-6;
+      .user-addresses-header-quantity {
+        @apply text-gray-500 ml-1;
+      }
+    }
+
+    .user-addresses-loader {
+      @apply flex w-full justify-center mt-12;
+    }
+  }
+}

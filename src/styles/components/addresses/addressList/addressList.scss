@@ -1,0 +1,9 @@
+.address-list {
+  @apply w-full flex flex-wrap;
+  @import "./addressItem/addressItem.scss";
+
+  .address-list-empty {
+    @apply text-center text-3xl font-light p-3;
+    @apply w-full;
+  }
+}

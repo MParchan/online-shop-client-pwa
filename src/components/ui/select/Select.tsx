@@ -8,7 +8,9 @@ interface SelectProps {
   options: string[];
   defaultValue: string;
   className?: string;
+  classNameInner?: string;
   textAlignment?: "left" | "center" | "right";
+  label?: string;
   setValue: React.Dispatch<React.SetStateAction<string>>;
 }
 
@@ -16,7 +18,9 @@ const Select = ({
   options,
   defaultValue,
   className,
+  classNameInner,
   textAlignment = "center",
+  label,
   setValue
 }: SelectProps) => {
   const [selectedOption, setSelectedOption] = useState(defaultValue);
@@ -43,7 +47,13 @@ const Select = ({
 
   return (
     <div className={cn("select", className)} ref={selectRef}>
-      <button onClick={() => setIsOpen(!isOpen)} className="select-button">
+      <button
+        onClick={(e) => {
+          e.preventDefault();
+          setIsOpen(!isOpen);
+        }}
+        className={cn("select-button", classNameInner)}
+      >
         <div
           className={cn("select-button-option", {
             left: textAlignment === "left",
@@ -51,6 +61,9 @@ const Select = ({
             right: textAlignment === "right"
           })}
         >
+          {label !== "" && (
+            <div className={`select-label ${selectedOption !== "" ? "selected" : ""}`}>{label}</div>
+          )}
           {selectedOption}
         </div>
         <span className="select-button-span">

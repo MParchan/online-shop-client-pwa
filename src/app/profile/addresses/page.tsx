@@ -1,12 +1,10 @@
 import PrivateRoute from "@/app/PrivateRoute";
-import ProfileNavigation from "@/components/profile/profileNavigation/ProfileNavigation";
+import AddressOverview from "@/components/addresses/addressOverview/AddressOverview";
 
 export default function UserAddressesPage() {
   return (
     <PrivateRoute>
-      <div className="flex w-full">
-        <ProfileNavigation />
-      </div>
+      <AddressOverview />
     </PrivateRoute>
   );
 }
