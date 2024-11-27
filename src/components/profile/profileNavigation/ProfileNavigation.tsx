@@ -28,7 +28,7 @@ export default function ProfileNavigation() {
                 alt={`${item.name} icon`}
                 width={24}
                 height={24}
-                className={`${item.href === "/profile/opinions" ? "w-[22px] h-auto mx-[1px]" : ".profile-navigation-item-icon"}`}
+                className={`${item.href === "/profile/opinions" ? "w-[22px] h-[22px] mx-[1px]" : ".profile-navigation-item-icon"}`}
               />
               <span
                 className={`profile-navigation-item-name ${pathname === item.href ? "active" : ""}`}

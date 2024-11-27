@@ -1,4 +1,8 @@
 .opinion-list {
   @apply w-full;
   @import "./opinionItem/opinionItem.scss";
+
+  .opinion-list-empty {
+    @apply text-center text-3xl font-light p-3;
+  }
 }

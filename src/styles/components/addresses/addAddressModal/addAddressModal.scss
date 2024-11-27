@@ -1,0 +1,26 @@
+.add-address-form {
+  @apply w-full sm:w-[640px];
+
+  .add-address-modal-main {
+    @apply p-3 space-y-4 max-h-[calc(100dvh-120px)] overflow-y-auto;
+
+    .add-address-modal-form-input {
+      .add-address-modal-form-input-select {
+        @apply p-3;
+      }
+      .add-address-modal-form-input-error {
+        @apply text-sm text-red-700 ml-3;
+      }
+    }
+    .add-address-modal-form-error {
+      @apply text-sm text-red-700 ml-3;
+    }
+  }
+
+  .add-address-modal-footer {
+    @apply flex justify-end p-3 border-t;
+    .add-address-modal-footer-button-wrapper {
+      @apply w-40;
+    }
+  }
+}

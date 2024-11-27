@@ -13,6 +13,16 @@
       &.right {
         @apply text-right;
       }
+
+      .select-label {
+        @apply absolute left-2 top-1/2 text-gray-500 text-sm bg-inherit px-1 cursor-text;
+        @apply -translate-y-1/2 transition-all duration-200 ease-in-out;
+
+        &.selected {
+          @apply top-0 text-xs bg-white;
+          @apply -translate-y-1/2 translate-x-2 scale-90;
+        }
+      }
     }
     .select-button-span {
       @apply float-right;

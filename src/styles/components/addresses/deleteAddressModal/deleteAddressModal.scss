@@ -1,0 +1,17 @@
+.delete-address-form {
+  @apply w-full sm:w-[640px];
+
+  .delete-address-form-body {
+    @apply max-h-[calc(100dvh-120px)] overflow-y-auto px-3 py-6;
+
+    .delete-address-form-error {
+      @apply text-sm text-red-700;
+    }
+  }
+  .delete-address-form-submit-wrapper {
+    @apply flex justify-end p-3 border-t w-full;
+    .delete-address-form-submit {
+      @apply w-40;
+    }
+  }
+}
