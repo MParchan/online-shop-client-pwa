@@ -1,12 +1,10 @@
 import PrivateRoute from "@/app/PrivateRoute";
-import ProfileNavigation from "@/components/profile/profileNavigation/ProfileNavigation";
+import OrderOverview from "@/components/orders/orderOverview/OrderOverview";
 
 export default function UserOrdersPage() {
   return (
     <PrivateRoute>
-      <div className="flex w-full">
-        <ProfileNavigation />
-      </div>
+      <OrderOverview />
     </PrivateRoute>
   );
 }

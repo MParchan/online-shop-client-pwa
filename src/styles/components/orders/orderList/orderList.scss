@@ -1,0 +1,8 @@
+.order-list {
+  @apply w-full;
+  @import "./orderItem/orderItem.scss";
+
+  .order-list-empty {
+    @apply text-center text-3xl font-light p-3;
+  }
+}
