@@ -32,7 +32,7 @@ export default function CartOverview() {
           <div className="cart-overview-cart-content">
             <div className="cart-overview-header">
               <span>
-                Shopping cart{" "}
+                Shopping cart
                 <span className="cart-overview-header-quantity">
                   ({totalQuantity} {totalQuantity > 1 ? "products" : "product"})
                 </span>
@@ -57,16 +57,18 @@ export default function CartOverview() {
                 <span className="cart-overview-summary-price-value">${totalPrice.toFixed(2)}</span>
               </div>
               <div className="cart-overview-summary-button-wrapper">
-                <Button variant="green">
-                  Go to delivery
-                  <Image
-                    src="/assets/icons/arrow_right.svg"
-                    alt="Arrow right icon"
-                    width={24}
-                    height={24}
-                    className="cart-overview-summary-button-icon"
-                  />
-                </Button>
+                <Link href="/order-checkout">
+                  <Button variant="green">
+                    Go to checkout
+                    <Image
+                      src="/assets/icons/arrow_right.svg"
+                      alt="Arrow right icon"
+                      width={24}
+                      height={24}
+                      className="cart-overview-summary-button-icon"
+                    />
+                  </Button>
+                </Link>
               </div>
             </div>
           </div>
