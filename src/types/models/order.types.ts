@@ -6,6 +6,9 @@ export type Order = {
     date: Date;
     status: string;
     paymentMethod: string;
+    customerName: string;
+    email: string;
+    phoneNumber: string;
     country: string;
     city: string;
     zipcode: string;

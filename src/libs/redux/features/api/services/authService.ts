@@ -1,3 +1,4 @@
+import { User } from "@/types/models/user.types";
 import { api } from "../api";
 
 interface RegisterBody {
@@ -16,7 +17,8 @@ export const authService = api.injectEndpoints({
                 url: "/auth/login",
                 method: "POST",
                 body: credentials
-            })
+            }),
+            invalidatesTags: ["Auth"]
         }),
         register: builder.mutation<void, RegisterBody>({
             query: (credentials) => ({
@@ -24,9 +26,13 @@ export const authService = api.injectEndpoints({
                 method: "POST",
                 body: credentials
             })
+        }),
+        getUserInfo: builder.query<User, void>({
+            query: () => "/auth/user",
+            providesTags: ["Auth"]
         })
     }),
     overrideExisting: false
 });
 
-export const { useRegisterMutation } = authService;
+export const { useLoginMutation, useRegisterMutation, useGetUserInfoQuery } = authService;

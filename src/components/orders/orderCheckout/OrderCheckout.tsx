@@ -7,16 +7,42 @@ import InputWithLabel from "@/components/ui/input/InputWithLabel";
 import Select from "@/components/ui/select/Select";
 import { availableCountries } from "@/utils/availableCountries";
 import { useEffect, useState } from "react";
+import { useGetUserInfoQuery } from "@/libs/redux/features/api/services/authService";
+import { paymentMethods } from "@/utils/paymentMethods";
+import Link from "next/link";
+import Button from "@/components/ui/button/Button";
+import Image from "next/image";
+import { useAppSelector } from "@/libs/redux/hooks";
+import { useRouter } from "next/navigation";
 
 export default function OrderCheckout() {
-  const [firstName, setFirstName] = useState("");
-  const [lastName, setLastName] = useState("");
+  const [customerName, setCustomerName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phoneNumber, setPhoneNumber] = useState("");
   const [country, setCountry] = useState("");
   const [city, setCity] = useState("");
   const [zipcode, setZipcode] = useState("");
   const [street, setStreet] = useState("");
+  const [paymentMethod, setPaymentMethod] = useState("");
+  const router = useRouter();
+  const products = useAppSelector((state) => state.cart.items);
 
+  const { data: user } = useGetUserInfoQuery();
   const { data: addresses = [], isLoading: isAddressesLoading } = useGetAddressesQuery();
+
+  useEffect(() => {
+    if (products.length === 0) {
+      router.push("/cart");
+    }
+  }, [products, router]);
+
+  useEffect(() => {
+    if (user) {
+      setCustomerName(user.firstName + " " + user.lastName);
+      setEmail(user.email);
+      setPhoneNumber(user.phoneNumber);
+    }
+  }, [user]);
 
   useEffect(() => {
     document.body.style.backgroundColor = "#f5f5f5";
@@ -31,29 +57,34 @@ export default function OrderCheckout() {
       <div className="order-checkout-content">
         <div className="order-checkout-details-wrapper">
           <div className="order-checkout-address">
-            {isAddressesLoading ? (
-              <div>
-                <Loader />
-              </div>
-            ) : (
-              <AddressList addresses={addresses} />
-            )}
+            <div>
+              <div>Your addresses</div>
+              {isAddressesLoading ? <Loader /> : <AddressList addresses={addresses} />}
+            </div>
             <div className="order-checkout-details-form">
-              <div>Order data</div>
+              <div>Delivery address</div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
-                  label="First name"
+                  label="Name and surname or company name"
                   type="text"
-                  value={firstName}
-                  onChange={(e) => setFirstName(e.target.value)}
+                  value={customerName}
+                  onChange={(e) => setCustomerName(e.target.value)}
                 />
               </div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
-                  label="Last name"
+                  label="Email"
                   type="text"
-                  value={lastName}
-                  onChange={(e) => setLastName(e.target.value)}
+                  value={email}
+                  onChange={(e) => setEmail(e.target.value)}
+                />
+              </div>
+              <div className="order-checkout-details-form-input">
+                <InputWithLabel
+                  label="Phone number"
+                  type="text"
+                  value={phoneNumber}
+                  onChange={(e) => setPhoneNumber(e.target.value)}
                 />
               </div>
               <div className="order-checkout-details-form-input">
@@ -93,11 +124,55 @@ export default function OrderCheckout() {
             </div>
           </div>
           <div className="order-checkout-payment">
-            <div>Payment</div>
+            <div>Payment method</div>
+            <div className="order-checkout-payment-method-wrapper">
+              {paymentMethods.map((method) => (
+                <label
+                  key={method}
+                  className={`order-checkout-payment-method-label ${
+                    paymentMethod === method ? "selected" : ""
+                  }`}
+                >
+                  <input
+                    type="radio"
+                    name="paymentMethod"
+                    value={method}
+                    checked={paymentMethod === method}
+                    onChange={() => setPaymentMethod(method)}
+                    className="hidden"
+                  />
+                  <span
+                    className={`order-checkout-payment-method-radio-button ${
+                      paymentMethod === method ? "selected" : ""
+                    }`}
+                  >
+                    {paymentMethod === method && (
+                      <span className="order-checkout-payment-method-radio-button-inner"></span>
+                    )}
+                  </span>
+                  {method}
+                </label>
+              ))}
+            </div>
           </div>
         </div>
         <div className="order-checkout-summary-wrapper">
-          <div className="order-checkout-summary"></div>
+          <div className="order-checkout-summary">
+            <div className="order-checkout-summary-button">
+              <Link href="/order-checkout">
+                <Button variant="green">
+                  Go to summary
+                  <Image
+                    src="/assets/icons/arrow_right.svg"
+                    alt="Arrow right icon"
+                    width={24}
+                    height={24}
+                    className="order-checkout-summary-button-icon"
+                  />
+                </Button>
+              </Link>
+            </div>
+          </div>
         </div>
       </div>
     </div>

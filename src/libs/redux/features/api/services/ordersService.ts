@@ -3,6 +3,9 @@ import { api } from "../api";
 
 interface CreateOrder {
     paymentMethod: string;
+    customerName: string;
+    email: string;
+    phoneNumber: string;
     country: string;
     city: string;
     zipcode: string;
@@ -22,10 +25,30 @@ export const ordersService = api.injectEndpoints({
             query: ({ id }) => `/orders/${id}`
         }),
         createOrder: builder.mutation<Order, CreateOrder>({
-            query: ({ paymentMethod, country, city, zipcode, street, orderProducts }) => ({
+            query: ({
+                paymentMethod,
+                customerName,
+                email,
+                phoneNumber,
+                country,
+                city,
+                zipcode,
+                street,
+                orderProducts
+            }) => ({
                 url: "/orders",
                 method: "POST",
-                body: { paymentMethod, country, city, zipcode, street, orderProducts }
+                body: {
+                    paymentMethod,
+                    customerName,
+                    email,
+                    phoneNumber,
+                    country,
+                    city,
+                    zipcode,
+                    street,
+                    orderProducts
+                }
             }),
             invalidatesTags: ["UserOrders"]
         })
