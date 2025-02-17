@@ -2,7 +2,6 @@
 
 import Loader from "@/components/ui/loader/Loader";
 import { useGetAddressesQuery } from "@/libs/redux/features/api/services/addressesService";
-import AddressList from "@/components/addresses/addressList/AddressList";
 import InputWithLabel from "@/components/ui/input/InputWithLabel";
 import Select from "@/components/ui/select/Select";
 import { availableCountries } from "@/utils/availableCountries";
@@ -14,6 +13,9 @@ import Button from "@/components/ui/button/Button";
 import Image from "next/image";
 import { useAppSelector } from "@/libs/redux/hooks";
 import { useRouter } from "next/navigation";
+import { Address } from "@/types/models/address.types";
+import SelectAddressList from "@/components/addresses/selectAddressList/SelectAddressList";
+import OrderProductList from "../orderProductList/OrderProductList";
 
 export default function OrderCheckout() {
   const [customerName, setCustomerName] = useState("");
@@ -24,8 +26,10 @@ export default function OrderCheckout() {
   const [zipcode, setZipcode] = useState("");
   const [street, setStreet] = useState("");
   const [paymentMethod, setPaymentMethod] = useState("");
+  const [address, setAddress] = useState<Address>();
   const router = useRouter();
   const products = useAppSelector((state) => state.cart.items);
+  const totalPrice = useAppSelector((state) => state.cart.totalPrice);
 
   const { data: user } = useGetUserInfoQuery();
   const { data: addresses = [], isLoading: isAddressesLoading } = useGetAddressesQuery();
@@ -45,6 +49,15 @@ export default function OrderCheckout() {
   }, [user]);
 
   useEffect(() => {
+    if (address) {
+      setCountry(address.country);
+      setCity(address.city);
+      setZipcode(address.zipcode);
+      setStreet(address.street);
+    }
+  }, [address]);
+
+  useEffect(() => {
     document.body.style.backgroundColor = "#f5f5f5";
     return () => {
       document.body.style.backgroundColor = "white";
@@ -58,11 +71,18 @@ export default function OrderCheckout() {
         <div className="order-checkout-details-wrapper">
           <div className="order-checkout-address">
             <div>
-              <div>Your addresses</div>
-              {isAddressesLoading ? <Loader /> : <AddressList addresses={addresses} />}
+              <div className="order-checkout-address-header">Delivery address</div>
+              {isAddressesLoading ? (
+                <Loader />
+              ) : (
+                <SelectAddressList
+                  addresses={addresses}
+                  selectedAddress={address}
+                  setSelectedAddress={setAddress}
+                />
+              )}
             </div>
             <div className="order-checkout-details-form">
-              <div>Delivery address</div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
                   label="Name and surname or company name"
@@ -124,7 +144,7 @@ export default function OrderCheckout() {
             </div>
           </div>
           <div className="order-checkout-payment">
-            <div>Payment method</div>
+            <div className="order-checkout-payment-header">Payment method</div>
             <div className="order-checkout-payment-method-wrapper">
               {paymentMethods.map((method) => (
                 <label
@@ -158,19 +178,28 @@ export default function OrderCheckout() {
         </div>
         <div className="order-checkout-summary-wrapper">
           <div className="order-checkout-summary">
-            <div className="order-checkout-summary-button">
-              <Link href="/order-checkout">
-                <Button variant="green">
-                  Go to summary
-                  <Image
-                    src="/assets/icons/arrow_right.svg"
-                    alt="Arrow right icon"
-                    width={24}
-                    height={24}
-                    className="order-checkout-summary-button-icon"
-                  />
-                </Button>
-              </Link>
+            <OrderProductList products={products} />
+            <div className="order-checkout-summary-info">
+              <div className="order-checkout-summary-price">
+                <span>Total:</span>
+                <span>
+                  <b>${totalPrice.toFixed(2)}</b>
+                </span>
+              </div>
+              <div className="order-checkout-summary-button">
+                <Link href="/order-checkout">
+                  <Button variant="green">
+                    Go to summary
+                    <Image
+                      src="/assets/icons/arrow_right.svg"
+                      alt="Arrow right icon"
+                      width={24}
+                      height={24}
+                      className="order-checkout-summary-button-icon"
+                    />
+                  </Button>
+                </Link>
+              </div>
             </div>
           </div>
         </div>

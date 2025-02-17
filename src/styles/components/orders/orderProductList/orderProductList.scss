@@ -1,0 +1,5 @@
+.order-product-list-wrapper {
+  @apply p-3 max-h-[600px] overflow-auto;
+
+  @import "./orderProductItem/orderProductItem.scss";
+}

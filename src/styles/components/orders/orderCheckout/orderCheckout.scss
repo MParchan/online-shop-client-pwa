@@ -14,8 +14,12 @@
       .order-checkout-address {
         @apply bg-white rounded-lg p-3;
 
+        .order-checkout-address-header {
+          @apply text-xl py-3;
+        }
+
         .order-checkout-details-form {
-          @apply space-y-4;
+          @apply space-y-4 pt-2;
 
           .order-checkout-details-form-input {
             .order-checkout-details-form-input-select {
@@ -26,6 +30,10 @@
       }
       .order-checkout-payment {
         @apply bg-white rounded-lg p-3;
+
+        .order-checkout-payment-header {
+          @apply text-xl pb-3;
+        }
 
         .order-checkout-payment-method-wrapper {
           @apply space-y-4;
@@ -53,12 +61,18 @@
       @apply lg:w-[360px] p-3;
 
       .order-checkout-summary {
-        @apply bg-white rounded-lg p-4 lg:sticky lg:top-32;
+        @apply bg-white rounded-lg lg:sticky lg:top-32;
 
-        .order-checkout-summary-button {
-          @apply w-full;
-          .order-checkout-summary-button-icon {
-            @apply w-6 h-auto invert;
+        .order-checkout-summary-info {
+          @apply p-3;
+          .order-checkout-summary-price {
+            @apply flex justify-between mb-3;
+          }
+          .order-checkout-summary-button {
+            @apply w-full;
+            .order-checkout-summary-button-icon {
+              @apply w-6 h-auto invert;
+            }
           }
         }
       }
