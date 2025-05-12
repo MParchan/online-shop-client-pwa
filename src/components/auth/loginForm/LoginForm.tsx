@@ -2,8 +2,10 @@
 
 import Button from "@/components/ui/button/Button";
 import InputWithLabel from "@/components/ui/input/InputWithLabel";
+import { useSubscribeToPushMutation } from "@/libs/redux/features/api/services/subscriptionService";
 import { login } from "@/libs/redux/features/auth/authSlice";
 import { useAppDispatch, useAppSelector } from "@/libs/redux/hooks";
+import { urlBase64ToUint8Array } from "@/utils/urlBase64ToUint8Array";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
 import React, { useEffect, useState } from "react";
@@ -17,6 +19,7 @@ export default function LoginForm() {
   const dispatch = useAppDispatch();
   const { status, error } = useAppSelector((state) => state.auth);
   const router = useRouter();
+  const [subscribeToPush] = useSubscribeToPushMutation();
 
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
@@ -30,10 +33,24 @@ export default function LoginForm() {
 
   useEffect(() => {
     if (status === "succeeded") {
+      if ("serviceWorker" in navigator && "PushManager" in window) {
+        const subscribeUser = async () => {
+          const reg = await navigator.serviceWorker.ready;
+          const subscription = await reg.pushManager.subscribe({
+            userVisibleOnly: true,
+            applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!)
+          });
+
+          await subscribeToPush({ subscription });
+        };
+
+        subscribeUser();
+      }
+
       const previousPath = sessionStorage.getItem("path");
       router.push(previousPath || "/");
     }
-  }, [status, router]);
+  }, [status, router, subscribeToPush]);
 
   return (
     <div className="login-form-wrapper">
