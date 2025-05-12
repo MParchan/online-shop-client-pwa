@@ -4,7 +4,9 @@ import { logout } from "../features/auth/authSlice";
 
 export const invalidateTagsMiddleware: Middleware = (store) => (next) => (action) => {
     if (logout.match(action)) {
-        store.dispatch(api.util.invalidateTags(["UserOpinions"]));
+        store.dispatch(
+            api.util.invalidateTags(["Auth", "UserOpinions", "UserAddresses", "UserOrders"])
+        );
     }
     return next(action);
 };

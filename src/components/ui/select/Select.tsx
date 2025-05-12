@@ -28,6 +28,10 @@ const Select = ({
   const selectRef = useRef<HTMLDivElement | null>(null);
 
   useEffect(() => {
+    setSelectedOption(defaultValue);
+  }, [defaultValue]);
+
+  useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
         setIsOpen(false);

@@ -1,0 +1,27 @@
+.order-overview {
+  @apply lg:flex w-full;
+
+  .order-overview-profile-button {
+    @apply block lg:hidden w-40 mx-3 sm:mx-4 my-2;
+    .order-overview-profile-button-icon {
+      @apply w-6 h-auto;
+    }
+  }
+  .order-overview-profile-navigation {
+    @apply hidden lg:block w-60 border-r;
+  }
+
+  .user-orders {
+    @apply flex-1 sm:p-4;
+    .user-orders-header {
+      @apply text-xl py-3 m-3;
+      .user-orders-header-quantity {
+        @apply text-gray-500 ml-1;
+      }
+    }
+
+    .user-orders-loader {
+      @apply flex w-full justify-center mt-12;
+    }
+  }
+}

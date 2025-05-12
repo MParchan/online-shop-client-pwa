@@ -1,0 +1,87 @@
+.order-checkout {
+  @apply w-full lg:pt-6;
+
+  .order-checkout-header {
+    @apply text-2xl mx-4;
+  }
+
+  .order-checkout-content {
+    @apply lg:flex;
+
+    .order-checkout-details-wrapper {
+      @apply p-3 flex-1 space-y-6;
+
+      .order-checkout-address {
+        @apply bg-white rounded-lg p-3;
+
+        .order-checkout-address-header {
+          @apply text-xl py-3;
+        }
+
+        .order-checkout-details-form {
+          @apply space-y-4 pt-2;
+
+          .order-checkout-details-form-input {
+            .order-checkout-details-form-input-select {
+              @apply p-3;
+            }
+            .order-checkout-details-form-input-error {
+              @apply text-sm text-red-600;
+            }
+          }
+        }
+      }
+      .order-checkout-payment {
+        @apply bg-white rounded-lg p-3;
+
+        .order-checkout-payment-header {
+          @apply text-xl pb-3;
+        }
+        .order-checkout-payment-error {
+          @apply text-sm text-red-600;
+        }
+
+        .order-checkout-payment-method-wrapper {
+          @apply space-y-4;
+
+          .order-checkout-payment-method-label {
+            @apply flex items-center p-3 border rounded-lg cursor-pointer;
+            &.selected {
+              @apply border-zinc-700 bg-gray-100;
+            }
+            .order-checkout-payment-method-radio-button {
+              @apply w-5 h-5 mr-3 flex items-center justify-center border rounded-full;
+              &.selected {
+                @apply bg-zinc-700;
+              }
+              .order-checkout-payment-method-radio-button-inner {
+                @apply w-2 h-2 bg-white rounded-full;
+              }
+            }
+          }
+        }
+      }
+    }
+
+    .order-checkout-summary-wrapper {
+      @apply lg:w-[360px] p-3;
+
+      .order-checkout-summary {
+        @apply bg-white rounded-lg lg:sticky lg:top-32;
+
+        .order-checkout-summary-info {
+          @apply p-3;
+          .order-checkout-summary-price {
+            @apply flex justify-between mb-3;
+          }
+          .order-checkout-summary-button {
+            @apply w-full;
+            .order-checkout-summary-button-icon {
+              @apply w-6 h-auto invert;
+            }
+          }
+        }
+      }
+    }
+  }
+}

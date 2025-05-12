@@ -5,7 +5,7 @@
     @apply border border-zinc-800 rounded-lg p-3;
 
     .address-item-info {
-      @apply mb-3;
+      @apply mb-3 truncate;
       .address-item-name {
         @apply font-bold;
       }

@@ -1,0 +1,32 @@
+.order-summary {
+  @apply w-full;
+
+  .order-summary-back-button {
+    @apply w-fit my-4;
+  }
+
+  .order-summary-wrapper {
+    @apply bg-white w-full rounded-lg p-4;
+
+    .order-summary-section {
+      @apply py-2;
+
+      .order-summary-header {
+        @apply text-xl font-semibold mt-2;
+      }
+      .order-summary-details {
+        @apply pl-3 mb-3;
+      }
+      .order-summary-price {
+        @apply py-2 flex justify-end;
+        .order-summary-price-value {
+          @apply ml-2;
+        }
+      }
+    }
+
+    .order-summary-error {
+      @apply text-sm text-red-600;
+    }
+  }
+}

@@ -1,0 +1,9 @@
+.select-address-list {
+  @apply w-full flex flex-wrap;
+  @import "./selectAddressItem/selectAddressItem.scss";
+
+  .select-address-list-empty {
+    @apply text-center text-3xl font-light p-3;
+    @apply w-full;
+  }
+}

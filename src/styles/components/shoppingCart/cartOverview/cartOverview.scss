@@ -2,12 +2,13 @@
   @apply w-full lg:pt-6;
   .cart-overview-cart-content-wrapper {
     @apply lg:flex;
+
     .cart-overview-cart-content {
       @apply flex-1;
       .cart-overview-header {
         @apply mx-4 text-2xl sm:flex justify-between items-center;
         .cart-overview-header-quantity {
-          @apply text-gray-500 text-xl;
+          @apply text-gray-500 text-xl ml-2;
         }
         .cart-overview-clear-cart {
           @apply flex text-sm items-center rounded-lg p-1 pr-3 mt-3 sm:mt-0 w-fit;

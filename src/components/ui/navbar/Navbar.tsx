@@ -53,7 +53,7 @@ export default function Navbar({ categories }: NavbarProps) {
           </div>
           <ul className="navbar-tile-list">
             <li className="navbar-tile-list-item">
-              <a className="navbar-tile">
+              <Link href="/contact" className="navbar-tile">
                 <Image
                   src="/assets/icons/contact.svg"
                   alt="Contact logo"
@@ -62,7 +62,7 @@ export default function Navbar({ categories }: NavbarProps) {
                   className="navbar-tile-logo"
                 />
                 <p className="navbar-tile-text">Contact</p>
-              </a>
+              </Link>
             </li>
             <NavbarAccountMenu />
             <NavbarCart />

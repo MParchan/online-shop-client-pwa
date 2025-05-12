@@ -5,7 +5,7 @@
 }
 
 .cart-menu-wrapper {
-  @apply hidden absolute rounded-lg bg-inherit w-80 top-full z-20 right-0 pt-1;
+  @apply hidden absolute rounded-lg bg-inherit w-96 top-full z-20 right-0 pt-1;
   &.active {
     @apply sm:block;
   }

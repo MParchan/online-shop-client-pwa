@@ -8,7 +8,7 @@
     }
   }
   .address-overview-profile-navigation {
-    @apply hidden lg:block w-60;
+    @apply hidden lg:block w-60 border-r;
   }
 
   .user-addresses {

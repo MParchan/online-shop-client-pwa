@@ -1,0 +1,19 @@
+.order-product-item {
+  @apply flex items-center py-3 border-b space-x-2;
+
+  .order-product-item-image {
+    @apply w-20 h-auto;
+  }
+
+  .order-product-item-details {
+    @apply text-sm flex flex-col w-full;
+
+    .order-product-item-info {
+      @apply flex justify-between;
+
+      .order-product-item-quantity {
+        @apply text-gray-500;
+      }
+    }
+  }
+}
