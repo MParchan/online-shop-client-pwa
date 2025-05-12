@@ -8,14 +8,47 @@ import { availableCountries } from "@/utils/availableCountries";
 import { useEffect, useState } from "react";
 import { useGetUserInfoQuery } from "@/libs/redux/features/api/services/authService";
 import { paymentMethods } from "@/utils/paymentMethods";
-import Link from "next/link";
+import { z } from "zod";
 import Button from "@/components/ui/button/Button";
 import Image from "next/image";
-import { useAppSelector } from "@/libs/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/libs/redux/hooks";
 import { useRouter } from "next/navigation";
 import { Address } from "@/types/models/address.types";
 import SelectAddressList from "@/components/addresses/selectAddressList/SelectAddressList";
 import OrderProductList from "../orderProductList/OrderProductList";
+import { zipcodePatterns } from "@/utils/zipcodePatterns";
+import { OrderData, setOrderData } from "@/libs/redux/features/order/orderSlice";
+
+const createOrderSchema = z
+  .object({
+    customerName: z.string().min(1, "Customer name is required"),
+    phoneNumber: z
+      .string()
+      .min(1, "Phone number is required")
+      .regex(/\(?([0-9]{3})\)?([ .-]?)([0-9]{3})\2([0-9]{3,4})/, "Invalid phone number format"),
+    email: z.string().min(1, "Email is required").email("Invalid email format"),
+    country: z.string().min(1, "Country is required"),
+    city: z.string().min(1, "City is required"),
+    zipcode: z.string().min(1, "Zipcode is required"),
+    street: z
+      .string()
+      .min(1, "Street is required")
+      .regex(
+        /^[\p{L}\s\d.,-]+ \d+[A-Za-z]?([/\-\s]?\d+[A-Za-z]?)?$/u,
+        "Street must include both street name and house number"
+      ),
+    paymentMethod: z.string().min(1, "Payment method is required")
+  })
+  .superRefine((data, ctx) => {
+    const pattern = zipcodePatterns[data.country];
+    if (pattern && !pattern.test(data.zipcode)) {
+      ctx.addIssue({
+        code: "custom",
+        path: ["zipcode"],
+        message: "Invalid zipcode format for the selected country"
+      });
+    }
+  });
 
 export default function OrderCheckout() {
   const [customerName, setCustomerName] = useState("");
@@ -30,7 +63,11 @@ export default function OrderCheckout() {
   const router = useRouter();
   const products = useAppSelector((state) => state.cart.items);
   const totalPrice = useAppSelector((state) => state.cart.totalPrice);
+  const orderData: OrderData = useAppSelector((state) => state.order);
+  const [loading, setLoading] = useState(false);
+  const [errors, setErrors] = useState<Record<string, string | undefined>>({});
 
+  const dispatch = useAppDispatch();
   const { data: user } = useGetUserInfoQuery();
   const { data: addresses = [], isLoading: isAddressesLoading } = useGetAddressesQuery();
 
@@ -46,7 +83,7 @@ export default function OrderCheckout() {
       setEmail(user.email);
       setPhoneNumber(user.phoneNumber);
     }
-  }, [user]);
+  }, [user, orderData]);
 
   useEffect(() => {
     if (address) {
@@ -58,11 +95,75 @@ export default function OrderCheckout() {
   }, [address]);
 
   useEffect(() => {
+    if (orderData.customerName) {
+      setCustomerName(orderData.customerName);
+    }
+    if (orderData.email) {
+      setEmail(orderData.email);
+    }
+    if (orderData.phoneNumber) {
+      setPhoneNumber(orderData.phoneNumber);
+    }
+    if (orderData.country) {
+      setCountry(orderData.country);
+    }
+    if (orderData.city) {
+      setCity(orderData.city);
+    }
+    if (orderData.zipcode) {
+      setZipcode(orderData.zipcode);
+    }
+    if (orderData.street) {
+      setStreet(orderData.street);
+    }
+    if (orderData.paymentMethod) {
+      setPaymentMethod(orderData.paymentMethod);
+    }
+  }, [orderData]);
+
+  useEffect(() => {
     document.body.style.backgroundColor = "#f5f5f5";
     return () => {
       document.body.style.backgroundColor = "white";
     };
   }, []);
+
+  const handleSubmit = async () => {
+    setLoading(true);
+    setErrors({});
+    const result = createOrderSchema.safeParse({
+      customerName,
+      email,
+      phoneNumber,
+      country,
+      city,
+      zipcode,
+      street,
+      paymentMethod
+    });
+    if (!result.success) {
+      const validationErrors: Record<string, string | undefined> = Object.fromEntries(
+        Object.entries(result.error.flatten().fieldErrors).map(([key, value]) => [key, value?.[0]])
+      );
+      setErrors(validationErrors);
+      setLoading(false);
+    } else {
+      dispatch(
+        setOrderData({
+          customerName: customerName,
+          email: email,
+          phoneNumber: phoneNumber,
+          country: country,
+          city: city,
+          zipcode: zipcode,
+          street: street,
+          paymentMethod: paymentMethod
+        })
+      );
+      setLoading(false);
+      router.push("/order-summary");
+    }
+  };
 
   return (
     <div className="order-checkout">
@@ -90,6 +191,9 @@ export default function OrderCheckout() {
                   value={customerName}
                   onChange={(e) => setCustomerName(e.target.value)}
                 />
+                {errors.customerName && (
+                  <p className="order-checkout-details-form-input-error">{errors.customerName}</p>
+                )}
               </div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
@@ -98,6 +202,9 @@ export default function OrderCheckout() {
                   value={email}
                   onChange={(e) => setEmail(e.target.value)}
                 />
+                {errors.email && (
+                  <p className="order-checkout-details-form-input-error">{errors.email}</p>
+                )}
               </div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
@@ -106,6 +213,9 @@ export default function OrderCheckout() {
                   value={phoneNumber}
                   onChange={(e) => setPhoneNumber(e.target.value)}
                 />
+                {errors.phoneNumber && (
+                  <p className="order-checkout-details-form-input-error">{errors.phoneNumber}</p>
+                )}
               </div>
               <div className="order-checkout-details-form-input">
                 <Select
@@ -116,6 +226,9 @@ export default function OrderCheckout() {
                   textAlignment="left"
                   classNameInner="order-checkout-details-form-input-select"
                 />
+                {errors.country && (
+                  <p className="order-checkout-details-form-input-error">{errors.country}</p>
+                )}
               </div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
@@ -124,6 +237,9 @@ export default function OrderCheckout() {
                   value={city}
                   onChange={(e) => setCity(e.target.value)}
                 />
+                {errors.city && (
+                  <p className="order-checkout-details-form-input-error">{errors.city}</p>
+                )}
               </div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
@@ -132,6 +248,9 @@ export default function OrderCheckout() {
                   value={zipcode}
                   onChange={(e) => setZipcode(e.target.value)}
                 />
+                {errors.zipcode && (
+                  <p className="order-checkout-details-form-input-error">{errors.zipcode}</p>
+                )}
               </div>
               <div className="order-checkout-details-form-input">
                 <InputWithLabel
@@ -140,11 +259,17 @@ export default function OrderCheckout() {
                   value={street}
                   onChange={(e) => setStreet(e.target.value)}
                 />
+                {errors.street && (
+                  <p className="order-checkout-details-form-input-error">{errors.street}</p>
+                )}
               </div>
             </div>
           </div>
           <div className="order-checkout-payment">
             <div className="order-checkout-payment-header">Payment method</div>
+            {errors.paymentMethod && (
+              <p className="order-checkout-payment-error">{errors.paymentMethod}</p>
+            )}
             <div className="order-checkout-payment-method-wrapper">
               {paymentMethods.map((method) => (
                 <label
@@ -187,18 +312,16 @@ export default function OrderCheckout() {
                 </span>
               </div>
               <div className="order-checkout-summary-button">
-                <Link href="/order-checkout">
-                  <Button variant="green">
-                    Go to summary
-                    <Image
-                      src="/assets/icons/arrow_right.svg"
-                      alt="Arrow right icon"
-                      width={24}
-                      height={24}
-                      className="order-checkout-summary-button-icon"
-                    />
-                  </Button>
-                </Link>
+                <Button onClick={handleSubmit} variant="green" loading={loading} disabled={loading}>
+                  Go to summary
+                  <Image
+                    src="/assets/icons/arrow_right.svg"
+                    alt="Arrow right icon"
+                    width={24}
+                    height={24}
+                    className="order-checkout-summary-button-icon"
+                  />
+                </Button>
               </div>
             </div>
           </div>

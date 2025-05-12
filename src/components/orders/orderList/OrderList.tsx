@@ -4,6 +4,7 @@ import OrderItem from "./orderItem/OrderItem";
 interface OrderListProps {
   orders: Order[];
 }
+
 export default function OrderList({ orders }: OrderListProps) {
   return (
     <div className="order-list">

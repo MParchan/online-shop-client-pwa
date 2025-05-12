@@ -25,6 +25,9 @@
             .order-checkout-details-form-input-select {
               @apply p-3;
             }
+            .order-checkout-details-form-input-error {
+              @apply text-sm text-red-600;
+            }
           }
         }
       }
@@ -33,6 +36,9 @@
 
         .order-checkout-payment-header {
           @apply text-xl pb-3;
+        }
+        .order-checkout-payment-error {
+          @apply text-sm text-red-600;
         }
 
         .order-checkout-payment-method-wrapper {

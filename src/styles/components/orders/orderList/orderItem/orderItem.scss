@@ -1,3 +1,7 @@
 .order-item {
   @apply md:flex p-4 border-t;
+
+  .order-item-button-wrapper {
+    @apply py-2;
+  }
 }

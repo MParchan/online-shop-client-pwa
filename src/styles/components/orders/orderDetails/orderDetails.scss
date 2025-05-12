@@ -1,0 +1,25 @@
+.order-details {
+  @apply w-full;
+  .order-details-loader {
+    @apply flex w-full justify-center mt-12;
+  }
+
+  .order-details-wrapper {
+    @apply bg-white w-full rounded-lg p-4;
+
+    .order-details-button-wrapper {
+      @apply flex w-fit;
+    }
+
+    .order-details-section {
+      @apply py-2;
+
+      .order-details-header {
+        @apply text-xl font-semibold mt-2;
+      }
+      .order-details-details {
+        @apply pl-3 mb-3;
+      }
+    }
+  }
+}

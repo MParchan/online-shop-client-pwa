@@ -14,5 +14,6 @@ export type Order = {
     zipcode: string;
     street: string;
     user: string | User;
+    value: number;
     orderProducts: OrderProduct[];
 };

@@ -10,7 +10,7 @@ interface CreateOrder {
     city: string;
     zipcode: string;
     street: string;
-    orderProducts: [{ product: string; quantity: number }];
+    orderProducts: { product: string; quantity: number }[];
 }
 
 export const ordersService = api.injectEndpoints({
@@ -51,8 +51,20 @@ export const ordersService = api.injectEndpoints({
                 }
             }),
             invalidatesTags: ["UserOrders"]
+        }),
+        changeOrderStatus: builder.mutation<Order, { id: string; status: string }>({
+            query: ({ id, status }) => ({
+                url: `/orders/${id}/status`,
+                method: "PATCH",
+                body: { status: status }
+            })
         })
     })
 });
 
-export const { useGetOrdersQuery, useGetOrderByIdQuery, useCreateOrderMutation } = ordersService;
+export const {
+    useGetOrdersQuery,
+    useGetOrderByIdQuery,
+    useCreateOrderMutation,
+    useChangeOrderStatusMutation
+} = ordersService;
