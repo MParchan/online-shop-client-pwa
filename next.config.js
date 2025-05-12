@@ -7,6 +7,7 @@ const withPWA = require("@ducanh2912/next-pwa").default({
     register: true,
     skipWaiting: true,
     cacheOnFrontEndNav: true,
+    importScripts: ["/custom-sw.js"],
     runtimeCaching: [
         {
             urlPattern: new RegExp(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/.*`),
