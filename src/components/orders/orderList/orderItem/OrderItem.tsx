@@ -5,8 +5,10 @@ import Link from "next/link";
 
 interface OrderItemProps {
   order: Order;
+  isAdmin?: boolean;
 }
-export default function OrderItem({ order }: OrderItemProps) {
+
+export default function OrderItem({ order, isAdmin }: OrderItemProps) {
   return (
     <div className="order-item">
       <div>
@@ -24,7 +26,7 @@ export default function OrderItem({ order }: OrderItemProps) {
         </div>
         <div>${order.value.toFixed(2)}</div>
         <div className="order-item-button-wrapper">
-          <Link href={`/order/${order._id}`}>
+          <Link href={isAdmin ? `/admin/orders/${order._id}` : `/orders/${order._id}`}>
             <Button className="text-sm">View details</Button>
           </Link>
         </div>

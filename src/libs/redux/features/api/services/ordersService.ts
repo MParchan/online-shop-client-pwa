@@ -1,6 +1,11 @@
 import { Order } from "@/types/models/order.types";
 import { api } from "../api";
 
+interface GetOrdersResponse {
+    orders: Order[];
+    orderCount: number;
+}
+
 interface CreateOrder {
     paymentMethod: string;
     customerName: string;
@@ -15,7 +20,7 @@ interface CreateOrder {
 
 export const ordersService = api.injectEndpoints({
     endpoints: (builder) => ({
-        getOrders: builder.query<Order[], string | void>({
+        getOrders: builder.query<GetOrdersResponse, string | void>({
             query: (params) => {
                 return `/orders?${params}`;
             },
@@ -52,9 +57,18 @@ export const ordersService = api.injectEndpoints({
             }),
             invalidatesTags: ["UserOrders"]
         }),
+        getAllOrders: builder.query<GetOrdersResponse, string | void>({
+            query: (params) => {
+                return `/orders/admin/all?${params}`;
+            },
+            providesTags: ["UserOrders"]
+        }),
+        getOrderDetails: builder.query<Order, { id: string }>({
+            query: ({ id }) => `/orders/admin/${id}/details`
+        }),
         changeOrderStatus: builder.mutation<Order, { id: string; status: string }>({
             query: ({ id, status }) => ({
-                url: `/orders/${id}/status`,
+                url: `/orders/admin/${id}/status`,
                 method: "PATCH",
                 body: { status: status }
             })
@@ -66,5 +80,7 @@ export const {
     useGetOrdersQuery,
     useGetOrderByIdQuery,
     useCreateOrderMutation,
+    useGetAllOrdersQuery,
+    useGetOrderDetailsQuery,
     useChangeOrderStatusMutation
 } = ordersService;
