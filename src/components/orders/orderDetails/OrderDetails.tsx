@@ -1,9 +1,13 @@
 "use client";
 
 import Loader from "@/components/ui/loader/Loader";
-import { useGetOrderByIdQuery } from "@/libs/redux/features/api/services/ordersService";
+import {
+  useChangeOrderStatusMutation,
+  useGetOrderByIdQuery,
+  useGetOrderDetailsQuery
+} from "@/libs/redux/features/api/services/ordersService";
 import { useRouter } from "next/navigation";
-import { useEffect } from "react";
+import { useEffect, useState } from "react";
 import Image from "next/image";
 import OrderProductList from "../orderProductList/OrderProductList";
 import { Product } from "@/types/models/product.types";
@@ -12,14 +16,26 @@ import { CartItem } from "@/libs/redux/features/cart/cartSlice";
 import { format } from "date-fns";
 import Button from "@/components/ui/button/Button";
 import Link from "next/link";
+import Select from "@/components/ui/select/Select";
+import { orderStatuses } from "@/utils/orderStatuses";
 
 interface OrderDetailsProps {
   orderId: string;
+  isAdmin?: boolean;
 }
 
-export default function OrderDetails({ orderId }: OrderDetailsProps) {
-  const { data: order, isLoading, error } = useGetOrderByIdQuery({ id: orderId });
+export default function OrderDetails({ orderId, isAdmin }: OrderDetailsProps) {
+  const orderDetailsQuery = useGetOrderDetailsQuery({ id: orderId }, { skip: !isAdmin });
+  const orderByIdQuery = useGetOrderByIdQuery({ id: orderId }, { skip: isAdmin });
+
+  const order = isAdmin ? orderDetailsQuery.data : orderByIdQuery.data;
+  const isLoading = isAdmin ? orderDetailsQuery.isLoading : orderByIdQuery.isLoading;
+  const error = isAdmin ? orderDetailsQuery.error : orderByIdQuery.error;
+
+  const [status, setStatus] = useState<string>(order?.status || "");
+  const [loading, setLoading] = useState(false);
   const router = useRouter();
+
   useEffect(() => {
     if (error && "status" in error && error.status === 403) {
       router.push("/profile");
@@ -33,6 +49,24 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
     price: (orderProduct.product as Product).price,
     quantity: orderProduct.quantity
   }));
+
+  console.log(isAdmin);
+  const [changeStatus] = useChangeOrderStatusMutation();
+  const handleChangeStatus = async () => {
+    if (order) {
+      try {
+        setLoading(true);
+        await changeStatus({
+          id: order._id,
+          status: status
+        }).unwrap();
+        setLoading(false);
+      } catch (error) {
+        setLoading(false);
+      }
+    }
+  };
+
   return (
     <div className="order-details">
       {isLoading || !order ? (
@@ -42,7 +76,7 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
       ) : (
         <div className="order-details-wrapper">
           <div className="order-details-button-wrapper">
-            <Link href="/profile/orders">
+            <Link href={isAdmin ? "/admin/orders" : "/profile/orders"}>
               <Button variant="secondary">
                 <Image
                   src="/assets/icons/arrow_left.svg"
@@ -75,7 +109,20 @@ export default function OrderDetails({ orderId }: OrderDetailsProps) {
           </div>
           <div className="order-details-section">
             <div className="order-details-header">Status:</div>
-            <div className="order-details-details">{order.status}</div>
+            {isAdmin ? (
+              <div className="order-details-status">
+                <Select options={orderStatuses} defaultValue={order.status} setValue={setStatus} />
+                <Button
+                  onClick={handleChangeStatus}
+                  disabled={status === "" || loading}
+                  loading={loading}
+                >
+                  Change status
+                </Button>
+              </div>
+            ) : (
+              <div className="order-details-details">{order.status}</div>
+            )}
           </div>
           <div className="order-details-section">
             <div className="order-details-header">Value:</div>

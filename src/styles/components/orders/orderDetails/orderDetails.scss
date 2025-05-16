@@ -17,6 +17,11 @@
       .order-details-header {
         @apply text-xl font-semibold mt-2;
       }
+
+      .order-details-status {
+        @apply flex flex-col gap-4 w-full sm:w-80;
+      }
+
       .order-details-details {
         @apply pl-3 mb-3;
       }

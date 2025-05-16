@@ -10,10 +10,12 @@ export const login = createAsyncThunk(
             const { login } = authService.endpoints;
             const result = await dispatch(login.initiate(credentials)).unwrap();
             const token = result.accessToken;
-            const decodedToken: { user: { email: string; firstname: string } } = jwtDecode(token);
+            const decodedToken: { user: { email: string; firstname: string; role: string } } =
+                jwtDecode(token);
             const userEmail = decodedToken.user.email;
             const userFirstName = decodedToken.user.firstname;
-            return { token, userEmail, userFirstName };
+            const userRole = decodedToken.user.role;
+            return { token, userEmail, userFirstName, userRole };
         } catch (error) {
             console.log(error);
             if (typeof error === "object" && error !== null && "data" in error) {
@@ -39,6 +41,7 @@ const initialState = {
     token: undefined as string | undefined,
     userEmail: undefined as string | undefined,
     userFirstName: undefined as string | undefined,
+    userRole: undefined as string | undefined,
     isLogged: false,
     status: "logged out",
     error: undefined as string | undefined
@@ -52,6 +55,7 @@ const authSlice = createSlice({
             state.token = undefined;
             state.userEmail = undefined;
             state.userFirstName = undefined;
+            state.userRole = undefined;
             state.isLogged = false;
             state.status = "logged out";
             state.error = undefined;
@@ -63,6 +67,7 @@ const authSlice = createSlice({
                 state.token = undefined;
                 state.userEmail = undefined;
                 state.userFirstName = undefined;
+                state.userRole = undefined;
                 state.isLogged = false;
                 state.status = "loading";
                 state.error = undefined;
@@ -71,6 +76,7 @@ const authSlice = createSlice({
                 state.token = action.payload.token;
                 state.userEmail = action.payload.userEmail;
                 state.userFirstName = action.payload.userFirstName;
+                state.userRole = action.payload.userRole;
                 state.isLogged = true;
                 state.status = "succeeded";
                 state.error = undefined;
@@ -79,6 +85,7 @@ const authSlice = createSlice({
                 state.token = undefined;
                 state.userEmail = undefined;
                 state.userFirstName = undefined;
+                state.userRole = undefined;
                 state.isLogged = false;
                 state.status = "failed";
                 state.error = action.payload as string;

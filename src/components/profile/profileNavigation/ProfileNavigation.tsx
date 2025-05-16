@@ -6,15 +6,24 @@ import Image from "next/image";
 import { usePathname } from "next/navigation";
 
 export default function ProfileNavigation() {
-  const { userFirstName } = useAppSelector((state) => state.auth);
+  const { userFirstName, userRole } = useAppSelector((state) => state.auth);
   const pathname = usePathname();
 
-  const navigationItems = [
-    { href: "/profile", name: "Profile", icon: "/assets/icons/user.svg" },
-    { href: "/profile/orders", name: "Orders", icon: "/assets/icons/list_alt.svg" },
-    { href: "/profile/addresses", name: "Addresses", icon: "/assets/icons/home_pin.svg" },
-    { href: "/profile/opinions", name: "Opinions", icon: "/assets/icons/comment.svg" }
-  ];
+  const navigationItems =
+    userRole === "Admin"
+      ? [
+          { href: "/profile", name: "Profile", icon: "/assets/icons/user.svg" },
+          { href: "/profile/orders", name: "Orders", icon: "/assets/icons/list_alt.svg" },
+          { href: "/profile/addresses", name: "Addresses", icon: "/assets/icons/home_pin.svg" },
+          { href: "/profile/opinions", name: "Opinions", icon: "/assets/icons/comment.svg" },
+          { href: "/admin/orders", name: "All orders", icon: "/assets/icons/list_alt.svg" }
+        ]
+      : [
+          { href: "/profile", name: "Profile", icon: "/assets/icons/user.svg" },
+          { href: "/profile/orders", name: "Orders", icon: "/assets/icons/list_alt.svg" },
+          { href: "/profile/addresses", name: "Addresses", icon: "/assets/icons/home_pin.svg" },
+          { href: "/profile/opinions", name: "Opinions", icon: "/assets/icons/comment.svg" }
+        ];
 
   return (
     <div className="profile-navigation">
