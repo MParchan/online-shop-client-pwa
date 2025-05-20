@@ -1,29 +1,22 @@
-/** @type {import('next').NextConfig} */
-
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const withPWA = require("@ducanh2912/next-pwa").default({
-    dest: "public",
+const fs = require("fs");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const crypto = require("crypto");
+// eslint-disable-next-line @typescript-eslint/no-var-requires
+const withSerwist = require("@serwist/next").default({
+    swSrc: "/src/app/sw.ts",
+    swDest: "public/sw.js",
     disable: process.env.NODE_ENV === "development",
-    register: true,
-    skipWaiting: true,
-    cacheOnFrontEndNav: true,
-    importScripts: ["/custom-sw.js"],
-    runtimeCaching: [
+    reloadOnOnline: true,
+    additionalPrecacheEntries: [
         {
-            urlPattern: new RegExp(`${process.env.NEXT_PUBLIC_API_URL}/api/v1/.*`),
-            handler: "CacheFirst",
-            options: {
-                cacheName: "api-cache",
-                expiration: {
-                    maxEntries: 50,
-                    maxAgeSeconds: 60 * 60 * 24 * 10
-                }
-            }
+            url: "/offline",
+            revision: crypto
+                .createHash("md5")
+                .update(fs.readFileSync("src/app/offline/page.tsx", "utf-8"))
+                .digest("hex")
         }
-    ],
-    fallbacks: {
-        document: "/offline"
-    }
+    ]
 });
 
 const nextConfig = {
@@ -52,4 +45,4 @@ const nextConfig = {
     }
 };
 
-module.exports = withPWA(nextConfig);
+module.exports = withSerwist(nextConfig);
