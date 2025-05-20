@@ -64,14 +64,19 @@ export const ordersService = api.injectEndpoints({
             providesTags: ["UserOrders"]
         }),
         getOrderDetails: builder.query<Order, { id: string }>({
-            query: ({ id }) => `/orders/admin/${id}/details`
+            query: ({ id }) => `/orders/admin/${id}/details`,
+            providesTags: (result, error, { id }) => [{ type: "UserOrders", id }]
         }),
         changeOrderStatus: builder.mutation<Order, { id: string; status: string }>({
             query: ({ id, status }) => ({
                 url: `/orders/admin/${id}/status`,
                 method: "PATCH",
                 body: { status: status }
-            })
+            }),
+            invalidatesTags: (result, error, { id }) => [
+                "UserOrders",
+                { type: "UserOrders", id: id }
+            ]
         })
     })
 });
