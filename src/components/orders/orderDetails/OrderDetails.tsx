@@ -50,7 +50,6 @@ export default function OrderDetails({ orderId, isAdmin }: OrderDetailsProps) {
     quantity: orderProduct.quantity
   }));
 
-  console.log(isAdmin);
   const [changeStatus] = useChangeOrderStatusMutation();
   const handleChangeStatus = async () => {
     if (order) {
