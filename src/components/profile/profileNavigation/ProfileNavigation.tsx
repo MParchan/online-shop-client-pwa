@@ -1,12 +1,15 @@
 "use client";
 
-import { useAppSelector } from "@/libs/redux/hooks";
+import { useAppDispatch, useAppSelector } from "@/libs/redux/hooks";
 import Link from "next/link";
 import Image from "next/image";
 import { usePathname } from "next/navigation";
+import Button from "@/components/ui/button/Button";
+import { logout } from "@/libs/redux/features/auth/authSlice";
 
 export default function ProfileNavigation() {
   const { userFirstName, userRole } = useAppSelector((state) => state.auth);
+  const dispatch = useAppDispatch();
   const pathname = usePathname();
 
   const navigationItems =
@@ -24,6 +27,10 @@ export default function ProfileNavigation() {
           { href: "/profile/addresses", name: "Addresses", icon: "/assets/icons/home_pin.svg" },
           { href: "/profile/opinions", name: "Opinions", icon: "/assets/icons/comment.svg" }
         ];
+
+  const handleLogout = () => {
+    dispatch(logout());
+  };
 
   return (
     <div className="profile-navigation">
@@ -47,6 +54,11 @@ export default function ProfileNavigation() {
             </div>
           </Link>
         ))}
+        <div className="w-full flex flex-row justify-center mt-8">
+          <div className="w-1/2">
+            <Button onClick={handleLogout}>Log out</Button>
+          </div>
+        </div>
       </div>
     </div>
   );
