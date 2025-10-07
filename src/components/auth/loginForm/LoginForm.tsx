@@ -41,7 +41,7 @@ export default function LoginForm() {
             applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!)
           });
           console.log(subscription);
-          await subscribeToPush({ subscription });
+          await subscribeToPush({ webPush: subscription });
         };
 
         subscribeUser();

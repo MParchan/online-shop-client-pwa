@@ -2,14 +2,14 @@ import { api } from "../api";
 
 export const subscriptionService = api.injectEndpoints({
     endpoints: (builder) => ({
-        subscribeToPush: builder.mutation<void, { subscription: PushSubscription }>({
-            query: ({ subscription }) => ({
+        subscribeToPush: builder.mutation<void, { webPush: PushSubscription }>({
+            query: ({ webPush }) => ({
                 url: "/subscribe/push",
                 method: "POST",
                 headers: {
                     "Content-Type": "application/json"
                 },
-                body: subscription
+                body: webPush
             })
         })
     })
