@@ -6,10 +6,7 @@ export const subscriptionService = api.injectEndpoints({
             query: ({ webPush }) => ({
                 url: "/subscribe/push",
                 method: "POST",
-                headers: {
-                    "Content-Type": "application/json"
-                },
-                body: webPush
+                body: { webPush }
             })
         })
     })
