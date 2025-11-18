@@ -36,11 +36,16 @@ export default function LoginForm() {
       if ("serviceWorker" in navigator && "PushManager" in window) {
         const subscribeUser = async () => {
           const reg = await navigator.serviceWorker.ready;
-          const subscription = await reg.pushManager.subscribe({
-            userVisibleOnly: true,
-            applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!)
-          });
-          console.log(subscription);
+
+          let subscription = await reg.pushManager.getSubscription();
+
+          if (!subscription) {
+            subscription = await reg.pushManager.subscribe({
+              userVisibleOnly: true,
+              applicationServerKey: urlBase64ToUint8Array(process.env.NEXT_PUBLIC_VAPID_PUBLIC_KEY!)
+            });
+          }
+
           await subscribeToPush({ webPush: subscription });
         };
 
@@ -51,7 +56,6 @@ export default function LoginForm() {
       router.push(previousPath || "/");
     }
   }, [status, router, subscribeToPush]);
-
   return (
     <div className="login-form-wrapper">
       <header className="login-form-header">Log In</header>
