@@ -1,6 +1,7 @@
 {
   "name": "Online shop client PWA",
   "short_name": "Online shop",
+  "id": "/online-shop-pwa",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FFFFFF",
