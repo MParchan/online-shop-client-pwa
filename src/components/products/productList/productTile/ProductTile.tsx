@@ -1,9 +1,11 @@
+"use client";
 import { Product } from "@/types/models/product.types";
 import createSlug from "@/utils/createSlug";
 import Image from "next/image";
-import Link from "next/link";
+//import Link from "next/link";
 import ProductRating from "../../productRating/ProductRating";
 import { getProductMainImage } from "@/utils/getProductMainImage";
+import { useRouter } from "next/navigation";
 
 interface ProductTileProps {
   product: Product;
@@ -11,10 +13,18 @@ interface ProductTileProps {
 
 export default function ProductTile({ product }: ProductTileProps) {
   const mainImage = getProductMainImage(product.images);
+  const router = useRouter();
 
+  const handlePress = () => {
+    const startTime = Date.now();
+
+    const url = `/p/${createSlug(product.name)}/${product._id}?startTime=${startTime}`;
+
+    router.push(url);
+  };
   return (
     <div className="product-tile">
-      <Link href={`/p/${createSlug(product.name)}/${product._id}`}>
+      <button onClick={handlePress}>
         <div className="product-tile-content">
           {mainImage ? (
             <div className="product-tile-image-wrapper">
@@ -37,7 +47,7 @@ export default function ProductTile({ product }: ProductTileProps) {
           <div className="product-tile-price">${product.price.toFixed(2)}</div>
           <hr className="product-tile-hr" />
         </div>
-      </Link>
+      </button>
     </div>
   );
 }

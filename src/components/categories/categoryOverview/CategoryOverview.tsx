@@ -1,8 +1,11 @@
+"use client";
 import { Category } from "@/types/models/category.types";
 import CategoryList from "../categoryList/CategoryList";
-import Link from "next/link";
+//import Link from "next/link";
 import Image from "next/image";
 import createSlug from "@/utils/createSlug";
+import { useRouter } from "next/navigation";
+import { Subcategory } from "@/types/models/subcategory.types";
 
 interface CategoryOverviewProps {
   categories: Category[];
@@ -10,6 +13,15 @@ interface CategoryOverviewProps {
 }
 
 export default function CategoryOverview({ categories, selectedCategory }: CategoryOverviewProps) {
+  const router = useRouter();
+
+  const handlePress = (subcategory: Subcategory) => {
+    const startTime = Date.now();
+
+    const url = `/s/${createSlug(subcategory.name)}/${subcategory._id}?startTime=${startTime}`;
+
+    router.push(url);
+  };
   return (
     <div className="category-overview">
       <div className="category-overview-name">{selectedCategory.name}</div>
@@ -20,9 +32,9 @@ export default function CategoryOverview({ categories, selectedCategory }: Categ
           <div className="category-overview-subcategories-title">in {selectedCategory.name}</div>
           <div className="category-overview-subcategories-list">
             {selectedCategory.subcategories.map((subcategory) => (
-              <Link
+              <button
                 key={subcategory._id}
-                href={`/s/${createSlug(subcategory.name)}/${subcategory._id}`}
+                onClick={() => handlePress(subcategory)}
                 className="category-overview-subcategory-item"
               >
                 <div className="category-overview-subcategory-wrapper">
@@ -49,7 +61,7 @@ export default function CategoryOverview({ categories, selectedCategory }: Categ
                     height={24}
                   />
                 </div>
-              </Link>
+              </button>
             ))}
             {Array(3 - (selectedCategory.subcategories.length % 3))
               .fill(null)

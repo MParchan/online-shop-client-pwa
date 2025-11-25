@@ -25,6 +25,7 @@ interface ProductOverwievProps {
   urlParamSorting?: string;
   urlParamBrands?: string[];
   urlParamProperties?: string[];
+  startTime: string | string[] | undefined;
 }
 
 export default function ProductOverview({
@@ -36,7 +37,8 @@ export default function ProductOverview({
   urlParamLimit,
   urlParamSorting,
   urlParamBrands,
-  urlParamProperties
+  urlParamProperties,
+  startTime
 }: ProductOverwievProps) {
   const [brands, setBrands] = useState<string[]>(urlParamBrands ?? []);
   const [properties, setProperties] = useState<string[]>(urlParamProperties ?? []);
@@ -46,7 +48,6 @@ export default function ProductOverview({
   const [limit, setLimit] = useState(urlParamLimit ?? "12");
   const [sorting, setSorting] = useState(urlParamSorting ?? "From the latest");
   const [openFilterModal, setOpenFilterModal] = useState(false);
-
   const searchParams = useSearchParams();
   const pathname = usePathname();
   const { replace } = useRouter();
@@ -116,7 +117,22 @@ export default function ProductOverview({
     return { queryParams: queryParams.toString(), params: params.toString() };
   };
 
-  const { data: productRes, isFetching, error } = useGetProductsQuery(buildQuery().queryParams);
+  const {
+    data: productRes,
+    isFetching,
+    error,
+    isSuccess
+  } = useGetProductsQuery(buildQuery().queryParams);
+
+  useEffect(() => {
+    if (isSuccess && productRes && startTime) {
+      const endTime = Date.now();
+      const start = Number(startTime);
+      const duration = endTime - start;
+
+      console.log(`Czas od kliknięcia do załadowania danych: ${duration}ms`);
+    }
+  }, [isSuccess, productRes, startTime]);
 
   useEffect(() => {
     const params = buildQuery().params;
