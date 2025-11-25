@@ -1,3 +1,4 @@
+import UrlUpdater from "@/app/urlUpdater";
 import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
 import ProductDetails from "@/components/products/productDetails/ProductDetails";
 import { Category } from "@/types/models/category.types";
@@ -10,6 +11,7 @@ import { redirect } from "next/navigation";
 
 interface ProductProps {
   params: { productName: string; id: string };
+  searchParams?: { [key: string]: string | string[] | undefined };
 }
 
 export const revalidate = 3600;
@@ -25,7 +27,7 @@ export async function generateMetadata({ params }: ProductProps): Promise<Metada
   };
 }
 
-export default async function ProductPage({ params }: ProductProps) {
+export default async function ProductPage({ params, searchParams }: ProductProps) {
   const product: Product = await fetch(getApiBaseUrl() + "/products/" + params.id).then((res) => {
     if (res.ok) {
       return res.json();
@@ -40,6 +42,7 @@ export default async function ProductPage({ params }: ProductProps) {
 
   return (
     <div>
+      <UrlUpdater startTime={searchParams?.startTime} />
       <CategoryNavigation category={category} subcategory={subcategory} />
       <ProductDetails product={product} />
     </div>
