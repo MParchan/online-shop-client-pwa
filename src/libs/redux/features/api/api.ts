@@ -4,6 +4,7 @@ import { getApiBaseUrl } from "@/utils/getApiBaseUrl";
 
 export const api = createApi({
     reducerPath: "api",
+    refetchOnMountOrArgChange: false,
     baseQuery: fetchBaseQuery({
         baseUrl: getApiBaseUrl(),
         prepareHeaders: (headers, { getState }) => {

@@ -1,20 +1,13 @@
 // eslint-disable-next-line @typescript-eslint/no-var-requires
-const fs = require("fs");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
-const crypto = require("crypto");
-// eslint-disable-next-line @typescript-eslint/no-var-requires
 const withSerwist = require("@serwist/next").default({
-    swSrc: "/src/app/sw.ts",
+    swSrc: "src/app/sw.ts",
     swDest: "public/sw.js",
     disable: process.env.NODE_ENV === "development",
     reloadOnOnline: true,
     additionalPrecacheEntries: [
         {
             url: "/offline",
-            revision: crypto
-                .createHash("md5")
-                .update(fs.readFileSync("src/app/offline/page.tsx", "utf-8"))
-                .digest("hex")
+            revision: Date.now().toString()
         }
     ]
 });
@@ -33,7 +26,7 @@ const nextConfig = {
     async headers() {
         return [
             {
-                source: "/:path*",
+                source: "/_next/static/:path*",
                 headers: [
                     {
                         key: "Cache-Control",

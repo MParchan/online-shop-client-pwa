@@ -16,9 +16,9 @@ export default function ProductTile({ product }: ProductTileProps) {
   const router = useRouter();
 
   const handlePress = () => {
-    const startTime = Date.now();
+    //const startTime = Date.now();
 
-    const url = `/p/${createSlug(product.name)}/${product._id}?startTime=${startTime}`;
+    const url = `/p/${createSlug(product.name)}/${product._id}`;
 
     router.push(url);
   };

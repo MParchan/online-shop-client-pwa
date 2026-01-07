@@ -100,7 +100,7 @@ export default async function SubcategoryPage({ params, searchParams }: Subcateg
         urlParamSorting={searchParams?.sorting?.toString()}
         urlParamBrands={urlParamBrands}
         urlParamProperties={urlParamProperties}
-        startTime={searchParams?.startTime}
+        //startTime={searchParams?.startTime}
       />
     </div>
   );
