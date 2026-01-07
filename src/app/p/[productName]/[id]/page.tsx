@@ -1,4 +1,3 @@
-import UrlUpdater from "@/app/urlUpdater";
 import CategoryNavigation from "@/components/categories/categoryNavigation/CategoryNavigation";
 import ProductDetails from "@/components/products/productDetails/ProductDetails";
 import { Category } from "@/types/models/category.types";
@@ -27,7 +26,7 @@ export async function generateMetadata({ params }: ProductProps): Promise<Metada
   };
 }
 
-export default async function ProductPage({ params, searchParams }: ProductProps) {
+export default async function ProductPage({ params }: ProductProps) {
   const product: Product = await fetch(getApiBaseUrl() + "/products/" + params.id).then((res) => {
     if (res.ok) {
       return res.json();
@@ -42,7 +41,6 @@ export default async function ProductPage({ params, searchParams }: ProductProps
 
   return (
     <div>
-      <UrlUpdater startTime={searchParams?.startTime} />
       <CategoryNavigation category={category} subcategory={subcategory} />
       <ProductDetails product={product} />
     </div>

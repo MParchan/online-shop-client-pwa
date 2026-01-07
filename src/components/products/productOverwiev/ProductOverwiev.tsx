@@ -25,7 +25,7 @@ interface ProductOverwievProps {
   urlParamSorting?: string;
   urlParamBrands?: string[];
   urlParamProperties?: string[];
-  startTime: string | string[] | undefined;
+  //startTime: string | string[] | undefined;
 }
 
 export default function ProductOverview({
@@ -37,8 +37,8 @@ export default function ProductOverview({
   urlParamLimit,
   urlParamSorting,
   urlParamBrands,
-  urlParamProperties,
-  startTime
+  urlParamProperties
+  //startTime
 }: ProductOverwievProps) {
   const [brands, setBrands] = useState<string[]>(urlParamBrands ?? []);
   const [properties, setProperties] = useState<string[]>(urlParamProperties ?? []);
@@ -120,11 +120,11 @@ export default function ProductOverview({
   const {
     data: productRes,
     isFetching,
-    error,
-    isSuccess
+    error
+    //isSuccess
   } = useGetProductsQuery(buildQuery().queryParams);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (isSuccess && productRes && startTime) {
       const endTime = Date.now();
       const start = Number(startTime);
@@ -132,7 +132,7 @@ export default function ProductOverview({
 
       console.log(`Czas od kliknięcia do załadowania danych: ${duration}ms`);
     }
-  }, [isSuccess, productRes, startTime]);
+  }, [isSuccess, productRes, startTime]);*/
 
   useEffect(() => {
     const params = buildQuery().params;
